@@ -235,7 +235,7 @@ nav{display:flex;align-items:stretch;gap:0;margin-left:8px}
     <input type="text" id="search" placeholder="Search name, ID, item…" oninput="renderTable()">
     <select id="f-group" onchange="renderTable()"><option value="">All groups</option><option>Weapons</option><option>Attire</option><option>Doors</option><option>Storage</option><option>Furniture</option><option>Tools</option></select>
     <select id="f-item" onchange="renderTable()"><option value="">All items</option></select>
-    <select id="f-perm" onchange="renderTable()"><option value="">All permissions</option><option value="__none__">No permission (all users)</option></select>
+    <select id="f-perm" onchange="renderTable()"><option value="">All permissions</option><option value="__none__">No restriction (all users)</option><option value="__use_exclusive__">skinbox.use only (no higher perms)</option></select>
     <select id="f-status" onchange="renderTable()"><option value="">All statuses</option><option value="Approved">Approved</option><option value="Workshop">Workshop</option><option value="Unavailable">Unavailable</option><option value="loading">Loading</option></select>
     <button class="btn" onclick="exportCSV()">⬇ CSV</button>
   </div>
@@ -301,7 +301,8 @@ nav{display:flex;align-items:stretch;gap:0;margin-left:8px}
       <div class="form-group" style="flex:0 0 auto">
         <label>Include skins from</label>
         <select id="view-export-scope" onchange="updateViewExportInfo()">
-          <option value="own">Selected group only</option>
+          <option value="own">Selected group only (all skins)</option>
+          <option value="exclusive">Selected group — exclude higher perms</option>
           <option value="all">All groups combined</option>
         </select>
       </div>
@@ -391,7 +392,10 @@ function refreshPermSelects(){
     const cur=el.value;
     while(el.options.length>1)el.remove(1);
     groups.forEach(g=>{const o=document.createElement('option');o.value=g;o.textContent=g;el.appendChild(o);});
-    if(id==='f-perm'){const o=document.createElement('option');o.value='__none__';o.textContent='No permission (public)';el.insertBefore(o,el.options[1]);}
+    if(id==='f-perm'){
+      const o1=document.createElement('option');o1.value='__none__';o1.textContent='No permission (public)';el.insertBefore(o1,el.options[1]);
+      const o2=document.createElement('option');o2.value='__use_exclusive__';o2.textContent='skinbox.use only (no higher perms)';el.insertBefore(o2,el.options[2]);
+    }
     el.value=cur||'';
   });
   // view-only export perm picker — always has skinbox.use first, then custom groups
@@ -614,6 +618,10 @@ function filtered(){
     if(cat&&s.cat!==cat)return false;
     if(st&&skinData[s.id]?.status!==st)return false;
     if(perm==='__none__'){if(getSkinPerms(s.id).length)return false;}
+    else if(perm==='__use_exclusive__'){
+      // Show only skins that have NO custom perm assignment at all
+      if(getSkinPerms(s.id).length)return false;
+    }
     else if(perm){if(!permGroups[perm]?.has(s.id))return false;}
     if(q){const n=(skinData[s.id]?.name||'').toLowerCase();if(!n.includes(q)&&!s.id.includes(q)&&!s.catLabel.toLowerCase().includes(q))return false;}
     return true;
@@ -764,10 +772,31 @@ function exportCSV(){
 function getViewExportSkins(){
   const perm=document.getElementById('view-export-perm')?.value||'__use__';
   const scope=document.getElementById('view-export-scope')?.value||'own';
+
   if(scope==='all') return skins;
-  if(perm==='__use__') return skins; // skinbox.use = all imported workshop skins
-  // custom perm group: skins whose ID is in that group
+
+  // All IDs that belong to ANY custom perm group
+  const allCustomIds=new Set(Object.values(permGroups).flatMap(s=>[...s]));
+
+  if(perm==='__use__'){
+    if(scope==='exclusive'){
+      // skinbox.use but strip out anything in a custom perm group
+      return skins.filter(s=>!allCustomIds.has(s.id));
+    }
+    return skins; // own = full imported workshop list
+  }
+
+  // Custom perm group selected
   const ids=permGroups[perm]||new Set();
+  if(scope==='exclusive'){
+    // Only skins in THIS group that aren't in any OTHER custom group
+    const otherIds=new Set(
+      Object.entries(permGroups)
+        .filter(([p])=>p!==perm)
+        .flatMap(([,s])=>[...s])
+    );
+    return skins.filter(s=>ids.has(s.id)&&!otherIds.has(s.id));
+  }
   return skins.filter(s=>ids.has(s.id));
 }
 
@@ -777,9 +806,16 @@ function updateViewExportInfo(){
   const perm=document.getElementById('view-export-perm')?.value||'__use__';
   const scope=document.getElementById('view-export-scope')?.value||'own';
   const subset=getViewExportSkins();
-  const label=perm==='__use__'?'skinbox.use (all users)':perm;
-  const scopeLabel=scope==='all'?'all groups combined':'selected group only';
-  el.textContent=`Will export ${subset.length} skin${subset.length!==1?'s':''} for "${label}" (${scopeLabel})`;
+  const label=perm==='__use__'?'skinbox.use':perm;
+  const allCustomIds=new Set(Object.values(permGroups).flatMap(s=>[...s]));
+  const excluded=perm==='__use__'&&scope==='exclusive'
+    ?skins.filter(s=>allCustomIds.has(s.id)).length
+    :0;
+  let note=`Will export <strong>${subset.length} skin${subset.length!==1?'s':''}</strong> for <strong>${label}</strong>`;
+  if(scope==='exclusive'&&perm==='__use__') note+=` — <span style="color:var(--amber)">${excluded} higher-perm skins hidden</span>`;
+  else if(scope==='exclusive') note+=` — exclusive to this group only`;
+  else if(scope==='all') note+=` — all groups merged`;
+  el.innerHTML=note;
 }
 
 function exportViewChart(){
