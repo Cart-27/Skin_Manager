@@ -119,56 +119,62 @@ nav{display:flex;align-items:stretch;margin-left:8px}
 
 <!-- SKINS TAB -->
 <div class="tab active" id="tab-skins">
-  <div class="panel" style="border-color:var(--blue)">
-    <h3 style="color:var(--blue)">&#x1F4C2; Load SkinBox.json</h3>
-    <p style="font-size:13px;color:var(--text2);margin-bottom:12px">Upload your updated SkinBox.json to reload all skins and permission groups from it.</p>
-    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-      <input type="file" id="json-upload" accept=".json" style="display:none" onchange="loadJSON(this)">
-      <button class="btn" style="border-color:var(--blue);color:var(--blue)" onclick="document.getElementById('json-upload').click()">&#x1F4C2; Choose SkinBox.json</button>
-      <span id="json-upload-status" style="font-size:12px;color:var(--text3)">No file loaded</span>
-    </div>
-  </div>
 
-    <div class="panel">
-    <h3>&#x2795; Add New Skin</h3>
-    <div class="form-row">
-      <div class="form-group" style="flex:0 0 180px">
-        <label>Steam Workshop ID</label>
-        <input type="text" id="add-id" placeholder="e.g. 3107825915" oninput="previewSkin()">
-      </div>
-      <div class="form-group" style="flex:0 0 200px">
-        <label>Item Shortname</label>
-        <select id="add-item"><option value="">&#x2014; select item &#x2014;</option></select>
-      </div>
-      <div class="form-group" style="flex:0 0 190px">
-        <label>Permission Group (optional)</label>
-        <select id="add-perm"><option value="">&#x2014; none (all users) &#x2014;</option></select>
-      </div>
-      <button class="btn primary" onclick="addSkin()" style="flex:0 0 auto">Add Skin</button>
-    </div>
-    <div id="preview-wrap" style="display:none">
-      <div class="preview-card">
-        <img id="prev-img" class="preview-img" src="" alt="">
-        <div><div class="preview-name" id="prev-name">Loading...</div><div class="preview-sub" id="prev-sub"></div></div>
-        <span id="prev-badge" class="badge" style="margin-left:auto"></span>
+  <!-- TOP PANELS: Load JSON + Add Skin side by side on wide screens -->
+  <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:0">
+    <div class="panel" style="border-color:var(--blue);flex:1;min-width:260px;margin-bottom:16px">
+      <h3 style="color:var(--blue)">&#x1F4C2; Load SkinBox.json</h3>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:12px">Upload your config to reload all skins and permissions.</p>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <input type="file" id="json-upload" accept=".json" style="display:none" onchange="loadJSON(this)">
+        <button class="btn" style="border-color:var(--blue);color:var(--blue)" onclick="document.getElementById('json-upload').click()">&#x1F4C2; Choose File</button>
+        <span id="json-upload-status" style="font-size:12px;color:var(--text3)">No file loaded</span>
       </div>
     </div>
-    <div style="margin-top:12px">
-      <div class="form-group">
-        <label>Bulk Add &#x2014; paste IDs (one per line or comma-separated)</label>
-        <textarea id="bulk-ids" placeholder="3107825915&#10;3107825287"></textarea>
+    <div class="panel" style="flex:2;min-width:320px;margin-bottom:16px">
+      <h3>&#x2795; Add New Skin</h3>
+      <div class="form-row">
+        <div class="form-group" style="flex:0 0 160px">
+          <label>Workshop ID</label>
+          <input type="text" id="add-id" placeholder="e.g. 3107825915" oninput="previewSkin()">
+        </div>
+        <div class="form-group">
+          <label>Item Shortname</label>
+          <select id="add-item"><option value="">&#x2014; select &#x2014;</option></select>
+        </div>
+        <div class="form-group">
+          <label>Permission (optional)</label>
+          <select id="add-perm"><option value="">&#x2014; none &#x2014;</option></select>
+        </div>
+        <button class="btn primary" onclick="addSkin()" style="flex:0 0 auto">Add</button>
       </div>
-      <div class="form-row" style="margin-top:8px">
-        <div class="form-group" style="flex:0 0 200px"><label>Item for bulk</label><select id="bulk-item"><option value="">&#x2014; select item &#x2014;</option></select></div>
-        <div class="form-group" style="flex:0 0 190px"><label>Permission group for bulk</label><select id="bulk-perm"><option value="">&#x2014; none &#x2014;</option></select></div>
-        <button class="btn" onclick="bulkAdd()">Bulk Add</button>
+      <div id="preview-wrap" style="display:none">
+        <div class="preview-card">
+          <img id="prev-img" class="preview-img" src="" alt="">
+          <div><div class="preview-name" id="prev-name">Loading...</div><div class="preview-sub" id="prev-sub"></div></div>
+          <span id="prev-badge" class="badge" style="margin-left:auto"></span>
+        </div>
       </div>
+      <details style="margin-top:12px">
+        <summary style="font-size:12px;color:var(--text3);cursor:pointer;user-select:none">&#x25B6; Bulk Add</summary>
+        <div style="margin-top:10px">
+          <div class="form-group">
+            <label>Paste IDs (one per line or comma-separated)</label>
+            <textarea id="bulk-ids" placeholder="3107825915&#10;3107825287"></textarea>
+          </div>
+          <div class="form-row" style="margin-top:8px">
+            <div class="form-group"><label>Item</label><select id="bulk-item"><option value="">&#x2014; select &#x2014;</option></select></div>
+            <div class="form-group"><label>Permission</label><select id="bulk-perm"><option value="">&#x2014; none &#x2014;</option></select></div>
+            <button class="btn" onclick="bulkAdd()">Bulk Add</button>
+          </div>
+        </div>
+      </details>
     </div>
   </div>
 
   <div id="cors-warning" style="display:none" class="warn-box">
-    <strong style="color:var(--rust)">&#x26A0; Steam data blocked by browser</strong><br>
-    <span style="color:var(--text2)">Open via a web server or GitHub Pages for Steam names and images to load. The skin list still works fully.</span><br>
+    <strong style="color:var(--rust)">&#x26A0; Steam data blocked</strong><br>
+    <span style="color:var(--text2)">Set your Cloudflare Worker URL in the Setup tab.</span><br>
     <span id="cors-error-detail" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--red);display:block;margin:6px 0"></span>
     <button class="btn primary" style="margin-top:8px" onclick="retryFetch()">&#8634; Retry</button>
   </div>
@@ -182,8 +188,15 @@ nav{display:flex;align-items:stretch;margin-left:8px}
     <div class="stat amber"><div class="stat-label">Perm-Gated</div><div class="stat-val" id="s-gated">0</div></div>
   </div>
 
+  <!-- VIEW TOGGLE + SHARED TOOLBAR -->
   <div class="toolbar">
-    <input type="text" id="f-search" placeholder="Search name, ID, item..." oninput="renderTable()">
+    <!-- View toggle buttons -->
+    <div style="display:flex;gap:4px;border:1px solid var(--border2);border-radius:var(--radius);overflow:hidden;flex-shrink:0">
+      <button id="vbtn-category" class="view-toggle-btn active" onclick="setMainView('category')" title="Category Grid">&#x229E; Categories</button>
+      <button id="vbtn-grid"     class="view-toggle-btn"        onclick="setMainView('grid')"     title="Skin Grid">&#x2630; Skin Grid</button>
+      <button id="vbtn-table"    class="view-toggle-btn"        onclick="setMainView('table')"    title="Table">&#x2630; Table</button>
+    </div>
+    <input type="text" id="f-search" placeholder="Search name, ID, item..." oninput="onSearch()">
     <select id="f-group" onchange="renderTable()">
       <option value="">All groups</option>
       <option>Weapons</option><option>Attire</option><option>Doors</option>
@@ -204,17 +217,46 @@ nav{display:flex;align-items:stretch;margin-left:8px}
     <button class="btn" onclick="exportCSV()">&#x2B07; CSV</button>
   </div>
 
-  <div style="overflow-x:auto">
-    <table class="skin-table">
-      <thead><tr>
-        <th style="width:50px">Img</th>
-        <th>Skin Name</th><th>Item</th><th>Skin ID</th><th>Status</th><th>Permissions</th><th style="width:50px"></th>
-      </tr></thead>
-      <tbody id="tbody"></tbody>
-    </table>
+  <!-- CATEGORY VIEW -->
+  <div id="view-category">
+    <div class="cat-grid" id="cat-grid"></div>
   </div>
-  <div id="pager" style="text-align:center;padding:14px;font-size:12px;color:var(--text3)"></div>
-  <button class="btn" id="load-more-btn" onclick="loadMore()" style="display:none;margin:0 auto 24px">Load more</button>
+
+  <!-- CATEGORY DRILL-DOWN: skins for a selected item -->
+  <div id="view-cat-detail" style="display:none">
+    <div style="display:flex;align-items:center;gap:12px;padding:12px 0 16px">
+      <button class="btn" onclick="backToCategories()">&#x2190; Back</button>
+      <div>
+        <div id="cat-detail-title" style="font-size:18px;font-weight:900;color:var(--text)"></div>
+        <div id="cat-detail-sub" style="font-size:12px;color:var(--text3)"></div>
+      </div>
+      <button class="btn primary" style="margin-left:auto" onclick="addSkinToCurrentCat()">&#x2795; Add Skin to this Item</button>
+    </div>
+    <div class="skin-card-grid" id="cat-skin-grid"></div>
+  </div>
+
+  <!-- SKIN GRID VIEW -->
+  <div id="view-grid" style="display:none">
+    <div class="skin-card-grid" id="skin-grid"></div>
+    <div id="pager-grid" style="text-align:center;padding:14px;font-size:12px;color:var(--text3)"></div>
+    <button class="btn" id="load-more-grid" onclick="loadMoreGrid()" style="display:none;margin:0 auto 24px">Load more</button>
+  </div>
+
+  <!-- TABLE VIEW -->
+  <div id="view-table" style="display:none">
+    <div style="overflow-x:auto">
+      <table class="skin-table">
+        <thead><tr>
+          <th style="width:50px">Img</th>
+          <th>Skin Name</th><th>Item</th><th>Skin ID</th><th>Status</th><th>Permissions</th><th style="width:50px"></th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div id="pager" style="text-align:center;padding:14px;font-size:12px;color:var(--text3)"></div>
+    <button class="btn" id="load-more-btn" onclick="loadMore()" style="display:none;margin:0 auto 24px">Load more</button>
+  </div>
+
 </div>
 
 <!-- PERMS TAB -->
