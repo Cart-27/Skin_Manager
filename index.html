@@ -473,10 +473,14 @@ let WORKER_URL = localStorage.getItem('skinbox_worker_url') || '';
 
 function proxyImg(url) {
   if (!url) return null;
+  // Route through our Cloudflare worker which fetches with proper Steam headers
+  // Falls back to weserv if worker URL not set yet
+  if (WORKER_URL) {
+    return WORKER_URL + '?url=' + encodeURIComponent(url);
+  }
   const clean = url.replace(/^https?:\/\//, '').replace(/\/\//g, '/');
   return 'https://images.weserv.nl/?url=' + encodeURIComponent(clean) +
-    '&w=200&h=200&fit=cover&output=webp&errorredirect=' +
-    encodeURIComponent('via.placeholder.com/200x200/1c1b1b/444?text=No+Image');
+    '&w=200&h=200&fit=cover&output=webp';
 }
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
@@ -1371,7 +1375,7 @@ const WURL  = ${jWorker};
 const skinData = {};
 SKINS.forEach(s => { skinData[s.id] = {name:s.name, img:s.img, status:s.status||'loading'}; });
 
-function proxyImg(u){if(!u)return null;const c=u.replace(/^https?:\/\//,'').replace(/\/\//g,'/');return 'https://images.weserv.nl/?url='+encodeURIComponent(c)+'&w=200&h=200&fit=cover&output=webp&errorredirect='+encodeURIComponent('via.placeholder.com/200x200/1c1b1b/444?text=No+Image');}
+function proxyImg(u){if(!u)return null;if(WURL){return WURL+'?url='+encodeURIComponent(u);}const c=u.replace(/^https?:\/\//,'').replace(/\/\//g,'/');return 'https://images.weserv.nl/?url='+encodeURIComponent(c)+'&w=200&h=200&fit=cover&output=webp';}
 
 let view='cat', drillCat=null, PAGE=80, vis=PAGE, tvis=PAGE;
 
