@@ -130,7 +130,7 @@ h1{font-size:17px;font-weight:900;letter-spacing:2px;text-transform:uppercase}
 const SUPABASE_URL  = 'https://jysvwzwumkiyhshpcdab.supabase.co';
 const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp5c3Z3end1bWtpeWhzaHBjZGFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNzMzNDgsImV4cCI6MjA5Njk0OTM0OH0.GOiyTUe1sjPfngA4A_cUHLEWay7RwDoL70BxLmVYu5c';
 const WORKER_URL    = 'https://steam-proxy.rustinction.workers.dev';
-const ADMIN_PASS    = 'Riderdieistheway86!';  // set your own password
+const ADMIN_PASS    = 'Riderdieistheway1!';
 const SERVER_NAME   = 'Rustinction';
 const MONTHLY_LIMIT = null;
 </script>
@@ -1339,6 +1339,8 @@ async function addSelectedCollSkins() {
   await loadAdmin();
   renderCollResults();
 }
+
+function showTab(t) {
   document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
   document.getElementById('tab-' + t).classList.add('active');
