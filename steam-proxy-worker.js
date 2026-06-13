@@ -109,6 +109,34 @@ async function handle(req) {
     }
   }
 
+  // ── STEAM COLLECTION DETAILS ──────────────────────────────────────────────
+  if (req.method === 'POST' && url.pathname === '/collection') {
+    try {
+      const body = await req.text();
+      const r = await fetch(
+        'https://api.steampowered.com/ISteamRemoteStorage/GetCollectionDetails/v1/',
+        {
+          method: 'POST',
+          body,
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'User-Agent':   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+            'Origin':       'https://steamcommunity.com',
+            'Referer':      'https://steamcommunity.com/',
+          }
+        }
+      );
+      const text = await r.text();
+      return new Response(text, {
+        headers: { 'Content-Type': 'application/json', ...CORS }
+      });
+    } catch(e) {
+      return new Response(JSON.stringify({ error: e.message }), {
+        status: 500, headers: { 'Content-Type': 'application/json', ...CORS }
+      });
+    }
+  }
+
   // ── STEAM API PROXY: POST ─────────────────────────────────────────────────
   if (req.method !== 'POST') {
     return new Response('Steam proxy is running OK', { status: 200, headers: CORS });
