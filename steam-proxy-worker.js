@@ -55,7 +55,7 @@ async function handle(req) {
         }).toString(),
       });
       const tokenData = await tokenRes.json();
-      if (!tokenData.access_token) throw new Error('No access token');
+      if (!tokenData.access_token) throw new Error('No access token — Discord said: ' + JSON.stringify(tokenData));
 
       const userRes = await fetch('https://discord.com/api/users/@me', {
         headers: { 'Authorization': 'Bearer ' + tokenData.access_token },
