@@ -2,99 +2,171 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SkinBox Manager</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
-:root{--rust:#E8461A;--rust-dark:#b33614;--bg:#111010;--surface:#1c1b1b;--surface2:#242323;--surface3:#2e2d2d;--border:#333;--border2:#444;--text:#f0ebe5;--text2:#a09890;--text3:#6a6260;--green:#4caf7d;--green-bg:#1a2e22;--blue:#4a9eda;--blue-bg:#192232;--amber:#e8a21a;--amber-bg:#2e2510;--red:#e85a4a;--red-bg:#2e1a18;--radius:6px}
+:root{
+  --rust:#E8461A;--rust-dark:#b33614;
+  --bg:#111010;--surface:#1c1b1b;--surface2:#242323;--surface3:#2e2d2d;
+  --border:#333;--border2:#444;
+  --text:#f0ebe5;--text2:#a09890;--text3:#6a6260;
+  --green:#4caf7d;--green-bg:#1a2e22;
+  --blue:#4a9eda;--blue-bg:#192232;
+  --amber:#e8a21a;--amber-bg:#2e2510;
+  --red:#e85a4a;--red-bg:#2e1a18;
+  --radius:6px;
+}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+/* HEADER */
 header{background:var(--surface);border-bottom:2px solid var(--rust);padding:0 24px;display:flex;align-items:stretch;position:sticky;top:0;z-index:100}
-.logo{display:flex;align-items:center;gap:12px;padding:14px 20px 14px 0;border-right:1px solid var(--border)}
-.logo-icon{width:36px;height:36px;background:var(--rust);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:18px}
-.logo h1{font-size:18px;font-weight:900;letter-spacing:2px;text-transform:uppercase}
-.logo span{font-size:11px;color:var(--text3);font-family:'Share Tech Mono',monospace;letter-spacing:1px}
+.logo{display:flex;align-items:center;gap:12px;padding:12px 20px 12px 0;border-right:1px solid var(--border)}
+.logo-icon{width:34px;height:34px;background:var(--rust);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:17px}
+.logo h1{font-size:16px;font-weight:900;letter-spacing:2px;text-transform:uppercase}
+.logo span{font-size:10px;color:var(--text3);font-family:'Share Tech Mono',monospace}
 nav{display:flex;align-items:stretch;margin-left:8px}
-.nav-btn{background:none;border:none;color:var(--text2);padding:0 18px;font-size:13px;font-weight:700;font-family:'Barlow',sans-serif;cursor:pointer;letter-spacing:1px;text-transform:uppercase;border-bottom:3px solid transparent;transition:all .15s}
+.nav-btn{background:none;border:none;color:var(--text2);padding:0 16px;font-size:12px;font-weight:700;font-family:'Barlow',sans-serif;cursor:pointer;letter-spacing:1px;text-transform:uppercase;border-bottom:3px solid transparent;transition:all .15s}
 .nav-btn:hover{color:var(--text);background:var(--surface2)}
 .nav-btn.active{color:var(--rust);border-bottom-color:var(--rust)}
-.hdr-right{margin-left:auto;display:flex;align-items:center;gap:10px;padding-left:16px}
+.hdr-right{margin-left:auto;display:flex;align-items:center;gap:8px;padding-left:16px}
 .badge-count{background:var(--rust);color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;font-family:'Share Tech Mono',monospace}
-.tab{display:none;padding:20px 24px}.tab.active{display:block}
-.stat-strip{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
-.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:12px 18px;min-width:120px}
-.stat-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
-.stat-val{font-size:24px;font-weight:900;color:var(--rust);font-family:'Share Tech Mono',monospace}
+/* TABS */
+.tab{display:none;padding:16px 24px}.tab.active{display:block}
+/* STATS */
+.stat-strip{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 16px;min-width:110px}
+.stat-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
+.stat-val{font-size:22px;font-weight:900;color:var(--rust);font-family:'Share Tech Mono',monospace}
 .stat.green .stat-val{color:var(--green)}.stat.blue .stat-val{color:var(--blue)}.stat.amber .stat-val{color:var(--amber)}
-.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
-.toolbar input,.toolbar select{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:var(--radius);font-size:13px;height:36px;font-family:'Barlow',sans-serif}
-.toolbar input{flex:1;min-width:180px}
+/* TOOLBAR */
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.toolbar input,.toolbar select{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:7px 11px;border-radius:var(--radius);font-size:12px;height:34px;font-family:'Barlow',sans-serif}
+.toolbar input{flex:1;min-width:160px}
 .toolbar input:focus,.toolbar select:focus{outline:none;border-color:var(--rust)}
-.btn{background:var(--surface2);border:1px solid var(--border2);color:var(--text);padding:8px 16px;border-radius:var(--radius);font-size:13px;font-weight:700;cursor:pointer;font-family:'Barlow',sans-serif;transition:all .12s;height:36px;white-space:nowrap}
+/* BUTTONS */
+.btn{background:var(--surface2);border:1px solid var(--border2);color:var(--text);padding:7px 14px;border-radius:var(--radius);font-size:12px;font-weight:700;cursor:pointer;font-family:'Barlow',sans-serif;transition:all .12s;height:34px;white-space:nowrap}
 .btn:hover{background:var(--surface3)}
-.btn.primary{background:var(--rust);border-color:var(--rust);color:#fff}
-.btn.primary:hover{background:var(--rust-dark)}
+.btn.primary{background:var(--rust);border-color:var(--rust);color:#fff}.btn.primary:hover{background:var(--rust-dark)}
 .btn.success{background:var(--green-bg);border-color:var(--green);color:var(--green)}
 .btn.danger{background:var(--red-bg);border-color:var(--red);color:var(--red)}
 .btn.amber{background:var(--amber-bg);border-color:var(--amber);color:var(--amber)}
-.skin-table{width:100%;border-collapse:collapse;font-size:13px}
-.skin-table th{background:var(--surface2);color:var(--text2);padding:9px 12px;text-align:left;border-bottom:2px solid var(--rust);font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:700;position:sticky;top:0;z-index:5}
+.btn.blue{background:var(--blue-bg);border-color:var(--blue);color:var(--blue)}
+/* VIEW TOGGLE */
+.vtog{display:flex;border:1px solid var(--border2);border-radius:var(--radius);overflow:hidden;flex-shrink:0}
+.vtog-btn{background:none;border:none;border-right:1px solid var(--border2);color:var(--text2);padding:0 14px;height:34px;font-size:12px;font-weight:700;font-family:'Barlow',sans-serif;cursor:pointer;transition:all .12s}
+.vtog-btn:last-child{border-right:none}
+.vtog-btn:hover{background:var(--surface3);color:var(--text)}
+.vtog-btn.active{background:var(--rust);color:#fff}
+/* CATEGORY GRID */
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;padding-bottom:20px}
+.cat-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 8px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:border-color .12s,transform .1s;position:relative;text-align:center}
+.cat-card:hover{border-color:var(--rust);transform:translateY(-2px)}
+.cat-card img,.cat-card-icon{width:64px;height:64px;object-fit:contain}
+.cat-card-icon{display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--text3);background:var(--surface2);border-radius:8px}
+.cat-card-name{font-size:11px;font-weight:700;color:var(--text);line-height:1.3}
+.cat-card-sub{font-size:10px;color:var(--text3);font-family:'Share Tech Mono',monospace}
+.cat-card-count{position:absolute;top:6px;right:6px;background:var(--rust);color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:99px;font-family:'Share Tech Mono',monospace}
+.cat-card-perm{position:absolute;top:6px;left:6px;width:8px;height:8px;border-radius:50%}
+/* SKIN CARD GRID */
+.skin-card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:10px;padding-bottom:20px}
+.skin-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:border-color .12s,transform .1s}
+.skin-card:hover{border-color:var(--rust);transform:translateY(-2px)}
+.skin-card img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:var(--surface2)}
+.skin-card-ph{width:100%;aspect-ratio:1;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--text3)}
+.skin-card-body{padding:7px 9px}
+.skin-card-name{font-size:11px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
+.skin-card-id{font-size:10px;font-family:'Share Tech Mono',monospace;color:var(--text3);margin-bottom:5px}
+.skin-card-footer{display:flex;gap:3px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+/* TABLE */
+.skin-table{width:100%;border-collapse:collapse;font-size:12px}
+.skin-table th{background:var(--surface2);color:var(--text2);padding:8px 12px;text-align:left;border-bottom:2px solid var(--rust);font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:700;position:sticky;top:0;z-index:5}
 .skin-table td{padding:7px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
 .skin-table tr:hover td{background:var(--surface2)}
-.skin-table img{width:40px;height:40px;object-fit:cover;border-radius:4px;background:var(--surface3)}
-.img-ph{width:40px;height:40px;background:var(--surface3);border-radius:4px;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:16px}
-.skin-id{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text3)}
-.ws-link{color:var(--blue);text-decoration:none;font-size:11px}
-.ws-link:hover{text-decoration:underline}
-.perm-pills{display:flex;gap:4px;flex-wrap:wrap}
-.pill{font-size:10px;padding:2px 8px;border-radius:99px;font-weight:700;font-family:'Share Tech Mono',monospace;cursor:pointer;border:none}
-.pill-add{background:var(--surface3);color:var(--text3);border:1px dashed var(--border2) !important;cursor:pointer}
-.pill-add:hover{border-color:var(--rust) !important;color:var(--rust)}
-.badge{font-size:10px;padding:2px 8px;border-radius:99px;font-weight:700}
+.skin-table img{width:38px;height:38px;object-fit:cover;border-radius:4px;background:var(--surface2)}
+.img-ph{width:38px;height:38px;background:var(--surface2);border-radius:4px;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:14px}
+/* BADGES & PILLS */
+.badge{font-size:10px;padding:2px 7px;border-radius:99px;font-weight:700}
 .b-approved{background:var(--green-bg);color:var(--green)}
 .b-workshop{background:var(--blue-bg);color:var(--blue)}
 .b-unavail{background:#2a2a2a;color:var(--text3)}
 .b-loading{background:#2a2710;color:#a09050;animation:pulse 1.4s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-.panel{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:20px}
-.panel h3{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
-.form-row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:12px}
-.form-group{display:flex;flex-direction:column;gap:5px;flex:1;min-width:140px}
-.form-group label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;font-weight:700}
-.form-group input,.form-group select,.form-group textarea{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:var(--radius);font-size:13px;font-family:'Barlow',sans-serif}
+.pill{font-size:10px;padding:2px 7px;border-radius:99px;font-weight:700;font-family:'Share Tech Mono',monospace;cursor:pointer;border:none}
+.pill-add{background:var(--surface3);color:var(--text3);border:1px dashed var(--border2) !important}
+.pill-add:hover{border-color:var(--rust) !important;color:var(--rust)}
+.perm-pills{display:flex;gap:3px;flex-wrap:wrap}
+/* PANEL */
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:18px;margin-bottom:16px}
+.panel h3{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text2);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.form-row{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-bottom:10px}
+.form-group{display:flex;flex-direction:column;gap:4px;flex:1;min-width:130px}
+.form-group label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;font-weight:700}
+.form-group input,.form-group select,.form-group textarea{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:7px 11px;border-radius:var(--radius);font-size:12px;font-family:'Barlow',sans-serif}
 .form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--rust)}
-.form-group textarea{min-height:70px;resize:vertical;font-size:12px;font-family:'Share Tech Mono',monospace}
-.preview-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;display:flex;gap:12px;align-items:center;min-height:70px}
-.preview-img{width:60px;height:60px;object-fit:cover;border-radius:4px;background:var(--surface3);flex-shrink:0}
-.preview-name{font-size:14px;font-weight:700}
-.preview-sub{font-size:11px;color:var(--text3);margin-top:2px}
-.perm-group-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px}
-.perm-group-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.form-group textarea{min-height:64px;resize:vertical;font-size:11px;font-family:'Share Tech Mono',monospace}
+/* PREVIEW */
+.preview-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:10px;display:flex;gap:10px;align-items:center;margin-top:8px}
+.preview-img{width:54px;height:54px;object-fit:cover;border-radius:4px;background:var(--surface3);flex-shrink:0}
+.preview-name{font-size:13px;font-weight:700}.preview-sub{font-size:11px;color:var(--text3);margin-top:2px}
+/* PERM GROUPS */
+.perm-group-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px}
+.perm-group-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
 .perm-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.perm-name{font-family:'Share Tech Mono',monospace;font-size:14px;font-weight:700}
+.perm-name{font-family:'Share Tech Mono',monospace;font-size:13px;font-weight:700}
 .perm-count{font-size:11px;color:var(--text3);margin-left:auto}
-.perm-skins-list{display:flex;gap:6px;flex-wrap:wrap}
-.perm-skin-chip{background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:3px 8px;font-size:11px;font-family:'Share Tech Mono',monospace;display:flex;align-items:center;gap:6px;color:var(--text2)}
-.perm-skin-chip button{background:none;border:none;color:var(--red);cursor:pointer;font-size:13px;line-height:1;padding:0}
-.export-box{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text2);max-height:400px;overflow:auto;white-space:pre-wrap;word-break:break-all;line-height:1.6}
-.export-actions{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
-.progress-wrap{background:var(--surface3);border-radius:3px;height:3px;margin-bottom:16px;overflow:hidden}
+.perm-skins-list{display:flex;gap:5px;flex-wrap:wrap}
+.perm-skin-chip{background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:3px 8px;font-size:10px;font-family:'Share Tech Mono',monospace;display:flex;align-items:center;gap:5px;color:var(--text2)}
+.perm-skin-chip button{background:none;border:none;color:var(--red);cursor:pointer;font-size:12px;line-height:1;padding:0}
+/* CHANGE LOG */
+.log-entry{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);align-items:flex-start;font-size:12px}
+.log-entry:last-child{border-bottom:none}
+.log-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.log-icon.add{background:var(--green-bg);color:var(--green)}
+.log-icon.remove{background:var(--red-bg);color:var(--red)}
+.log-icon.perm{background:var(--blue-bg);color:var(--blue)}
+.log-icon.import{background:var(--amber-bg);color:var(--amber)}
+.log-time{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text3);white-space:nowrap;margin-top:2px}
+.log-desc{color:var(--text);flex:1}
+.log-detail{color:var(--text3);font-size:11px;margin-top:2px}
+/* EXPORT BOX */
+.export-box{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--text2);max-height:360px;overflow:auto;white-space:pre-wrap;word-break:break-all;line-height:1.6}
+.export-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+/* PROGRESS */
+.progress-wrap{background:var(--surface3);border-radius:3px;height:3px;margin-bottom:14px;overflow:hidden}
 .progress-bar{height:100%;background:var(--rust);width:0%;transition:width .3s}
-.ctx-menu{position:fixed;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);padding:4px 0;z-index:999;min-width:160px;box-shadow:0 8px 24px #00000088;display:none}
-.ctx-item{padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;color:var(--text2);letter-spacing:.5px;text-transform:uppercase}
+/* CONTEXT MENU */
+.ctx-menu{position:fixed;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);padding:4px 0;z-index:999;min-width:155px;box-shadow:0 8px 24px #00000088;display:none}
+.ctx-item{padding:7px 14px;font-size:11px;font-weight:700;cursor:pointer;color:var(--text2);letter-spacing:.5px;text-transform:uppercase}
 .ctx-item:hover{background:var(--surface3);color:var(--text)}
 .ctx-item.danger{color:var(--red)}
-.ctx-sep{border-top:1px solid var(--border);margin:4px 0}
-.toast{position:fixed;bottom:24px;right:24px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);padding:12px 20px;font-size:13px;font-weight:700;z-index:9999;transform:translateY(80px);opacity:0;transition:all .25s;max-width:300px}
+.ctx-sep{border-top:1px solid var(--border);margin:3px 0}
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);padding:10px 18px;font-size:12px;font-weight:700;z-index:9999;transform:translateY(80px);opacity:0;transition:all .25s;max-width:280px}
 .toast.show{transform:translateY(0);opacity:1}
 .toast.success{border-color:var(--green);color:var(--green)}
 .toast.error{border-color:var(--red);color:var(--red)}
+/* MODAL */
 .modal-overlay{position:fixed;inset:0;background:#000000aa;z-index:500;display:none;align-items:center;justify-content:center}
 .modal-overlay.show{display:flex}
-.modal{background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:24px;width:440px;max-width:95vw}
-.modal h3{font-size:16px;font-weight:700;margin-bottom:16px}
-.modal-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:20px}
-.warn-box{background:#2a1a10;border:1px solid #e8461a88;border-radius:6px;padding:14px 18px;font-size:13px;line-height:1.6;margin-bottom:16px}
+.modal{background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:22px;width:420px;max-width:95vw}
+.modal h3{font-size:15px;font-weight:700;margin-bottom:14px}
+.modal-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
+/* WARN BOX */
+.warn-box{background:#2a1a10;border:1px solid #e8461a88;border-radius:6px;padding:12px 16px;font-size:12px;line-height:1.6;margin-bottom:14px}
+/* SETUP */
+.step-row{display:flex;gap:14px;margin-bottom:16px}
+.step-num{width:26px;height:26px;background:var(--rust);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;flex-shrink:0}
+/* DRILL DOWN HEADER */
+.drill-header{display:flex;align-items:center;gap:12px;padding:4px 0 16px}
+.drill-title{font-size:20px;font-weight:900;color:var(--text)}
+.drill-sub{font-size:12px;color:var(--text3);margin-top:2px}
+/* MISC */
+details summary{font-size:11px;color:var(--text3);cursor:pointer;user-select:none;padding:4px 0}
+details summary:hover{color:var(--text)}
+.ws-link{color:var(--blue);text-decoration:none;font-size:10px}
+.ws-link:hover{text-decoration:underline}
+.skin-id-mono{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text3)}
 </style>
 </head>
 <body>
@@ -102,48 +174,50 @@ nav{display:flex;align-items:stretch;margin-left:8px}
 <header>
   <div class="logo">
     <div class="logo-icon">&#x1F980;</div>
-    <div><h1>SkinBox Manager</h1><span>v2.2.31 CONFIG EDITOR</span></div>
+    <div><h1>SkinBox Manager</h1><span>CONFIG EDITOR</span></div>
   </div>
   <nav>
     <button class="nav-btn active" onclick="showTab('skins')">Skins</button>
-    <button class="nav-btn" onclick="showTab('perms')">Permission Groups</button>
+    <button class="nav-btn" onclick="showTab('perms')">Permissions</button>
+    <button class="nav-btn" onclick="showTab('log')">&#x1F4CB; Change Log</button>
     <button class="nav-btn" onclick="showTab('export')">Export</button>
-    <button class="nav-btn" onclick="showTab('setup')" style="color:var(--amber)">⚙ Setup</button>
+    <button class="nav-btn" onclick="showTab('setup')" style="color:var(--amber)">&#x2699; Setup</button>
   </nav>
   <div class="hdr-right">
-    <span id="load-status" style="font-size:12px;color:var(--text3)">Loading Steam data...</span>
-    <button id="steam-retry-btn" class="btn" style="display:none;height:28px;padding:0 10px;font-size:11px" onclick="retryFetch()">&#8634; Retry</button>
+    <span id="load-status" style="font-size:11px;color:var(--text3)">Loading...</span>
+    <button id="steam-retry-btn" class="btn" style="display:none;height:26px;padding:0 8px;font-size:10px" onclick="retryFetch()">&#8634; Retry</button>
     <span class="badge-count" id="hdr-count">0</span>
   </div>
 </header>
 
-<!-- SKINS TAB -->
+<!-- ═══════════════ SKINS TAB ═══════════════ -->
 <div class="tab active" id="tab-skins">
 
-  <!-- TOP PANELS: Load JSON + Add Skin side by side on wide screens -->
-  <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:0">
-    <div class="panel" style="border-color:var(--blue);flex:1;min-width:260px;margin-bottom:16px">
+  <div style="display:flex;gap:14px;flex-wrap:wrap">
+    <!-- Load JSON -->
+    <div class="panel" style="border-color:var(--blue);flex:1;min-width:240px">
       <h3 style="color:var(--blue)">&#x1F4C2; Load SkinBox.json</h3>
-      <p style="font-size:13px;color:var(--text2);margin-bottom:12px">Upload your config to reload all skins and permissions.</p>
-      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <p style="font-size:12px;color:var(--text2);margin-bottom:10px">Upload your config to reload all skins and permissions.</p>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
         <input type="file" id="json-upload" accept=".json" style="display:none" onchange="loadJSON(this)">
-        <button class="btn" style="border-color:var(--blue);color:var(--blue)" onclick="document.getElementById('json-upload').click()">&#x1F4C2; Choose File</button>
-        <span id="json-upload-status" style="font-size:12px;color:var(--text3)">No file loaded</span>
+        <button class="btn blue" onclick="document.getElementById('json-upload').click()">&#x1F4C2; Choose File</button>
+        <span id="json-upload-status" style="font-size:11px;color:var(--text3)">No file loaded</span>
       </div>
     </div>
-    <div class="panel" style="flex:2;min-width:320px;margin-bottom:16px">
+    <!-- Add Skin -->
+    <div class="panel" style="flex:2;min-width:300px">
       <h3>&#x2795; Add New Skin</h3>
       <div class="form-row">
-        <div class="form-group" style="flex:0 0 160px">
+        <div class="form-group" style="flex:0 0 155px">
           <label>Workshop ID</label>
-          <input type="text" id="add-id" placeholder="e.g. 3107825915" oninput="previewSkin()">
+          <input type="text" id="add-id" placeholder="3107825915" oninput="previewSkin()">
         </div>
         <div class="form-group">
           <label>Item Shortname</label>
           <select id="add-item"><option value="">&#x2014; select &#x2014;</option></select>
         </div>
         <div class="form-group">
-          <label>Permission (optional)</label>
+          <label>Permission</label>
           <select id="add-perm"><option value="">&#x2014; none &#x2014;</option></select>
         </div>
         <button class="btn primary" onclick="addSkin()" style="flex:0 0 auto">Add</button>
@@ -155,14 +229,14 @@ nav{display:flex;align-items:stretch;margin-left:8px}
           <span id="prev-badge" class="badge" style="margin-left:auto"></span>
         </div>
       </div>
-      <details style="margin-top:12px">
-        <summary style="font-size:12px;color:var(--text3);cursor:pointer;user-select:none">&#x25B6; Bulk Add</summary>
-        <div style="margin-top:10px">
+      <details style="margin-top:10px">
+        <summary>&#x25B6; Bulk Add</summary>
+        <div style="margin-top:8px">
           <div class="form-group">
             <label>Paste IDs (one per line or comma-separated)</label>
             <textarea id="bulk-ids" placeholder="3107825915&#10;3107825287"></textarea>
           </div>
-          <div class="form-row" style="margin-top:8px">
+          <div class="form-row" style="margin-top:6px">
             <div class="form-group"><label>Item</label><select id="bulk-item"><option value="">&#x2014; select &#x2014;</option></select></div>
             <div class="form-group"><label>Permission</label><select id="bulk-perm"><option value="">&#x2014; none &#x2014;</option></select></div>
             <button class="btn" onclick="bulkAdd()">Bulk Add</button>
@@ -173,10 +247,10 @@ nav{display:flex;align-items:stretch;margin-left:8px}
   </div>
 
   <div id="cors-warning" style="display:none" class="warn-box">
-    <strong style="color:var(--rust)">&#x26A0; Steam data blocked</strong><br>
-    <span style="color:var(--text2)">Set your Cloudflare Worker URL in the Setup tab.</span><br>
-    <span id="cors-error-detail" style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--red);display:block;margin:6px 0"></span>
-    <button class="btn primary" style="margin-top:8px" onclick="retryFetch()">&#8634; Retry</button>
+    <strong style="color:var(--rust)">&#x26A0; Steam fetch failed</strong> &mdash;
+    <span style="color:var(--text2)">Set your Cloudflare Worker URL in the &#x2699; Setup tab.</span>
+    <span id="cors-error-detail" style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--red);display:block;margin:4px 0"></span>
+    <button class="btn primary" style="margin-top:6px;height:28px;font-size:11px" onclick="retryFetch()">&#8634; Retry</button>
   </div>
 
   <div class="progress-wrap"><div class="progress-bar" id="prog"></div></div>
@@ -188,27 +262,26 @@ nav{display:flex;align-items:stretch;margin-left:8px}
     <div class="stat amber"><div class="stat-label">Perm-Gated</div><div class="stat-val" id="s-gated">0</div></div>
   </div>
 
-  <!-- VIEW TOGGLE + SHARED TOOLBAR -->
+  <!-- TOOLBAR -->
   <div class="toolbar">
-    <!-- View toggle buttons -->
-    <div style="display:flex;gap:4px;border:1px solid var(--border2);border-radius:var(--radius);overflow:hidden;flex-shrink:0">
-      <button id="vbtn-category" class="view-toggle-btn active" onclick="setMainView('category')" title="Category Grid">&#x229E; Categories</button>
-      <button id="vbtn-grid"     class="view-toggle-btn"        onclick="setMainView('grid')"     title="Skin Grid">&#x2630; Skin Grid</button>
-      <button id="vbtn-table"    class="view-toggle-btn"        onclick="setMainView('table')"    title="Table">&#x2630; Table</button>
+    <div class="vtog">
+      <button class="vtog-btn active" id="vbtn-cat" onclick="setMainView('cat')">&#x229E; Categories</button>
+      <button class="vtog-btn" id="vbtn-grid" onclick="setMainView('grid')">&#x25A6; Grid</button>
+      <button class="vtog-btn" id="vbtn-table" onclick="setMainView('table')">&#x2630; Table</button>
     </div>
-    <input type="text" id="f-search" placeholder="Search name, ID, item..." oninput="onSearch()">
-    <select id="f-group" onchange="renderTable()">
+    <input type="text" id="f-search" placeholder="Search name, ID, item..." oninput="onSearchChange()">
+    <select id="f-group" onchange="onFilterChange()">
       <option value="">All groups</option>
       <option>Weapons</option><option>Attire</option><option>Doors</option>
       <option>Storage</option><option>Furniture</option><option>Tools</option>
     </select>
-    <select id="f-item" onchange="renderTable()"><option value="">All items</option></select>
-    <select id="f-perm" onchange="renderTable()">
+    <select id="f-item" onchange="onFilterChange()"><option value="">All items</option></select>
+    <select id="f-perm" onchange="onFilterChange()">
       <option value="">All permissions</option>
-      <option value="__none__">No restriction (all users)</option>
-      <option value="__use_exclusive__">skinbox.use only (excludes higher perms)</option>
+      <option value="__none__">No restriction (all)</option>
+      <option value="__use_excl__">skinbox.use only</option>
     </select>
-    <select id="f-status" onchange="renderTable()">
+    <select id="f-status" onchange="onFilterChange()">
       <option value="">All statuses</option>
       <option value="Approved">Approved</option>
       <option value="Workshop">Workshop</option>
@@ -218,28 +291,28 @@ nav{display:flex;align-items:stretch;margin-left:8px}
   </div>
 
   <!-- CATEGORY VIEW -->
-  <div id="view-category">
+  <div id="view-cat">
     <div class="cat-grid" id="cat-grid"></div>
   </div>
 
-  <!-- CATEGORY DRILL-DOWN: skins for a selected item -->
+  <!-- CATEGORY DRILL-DOWN -->
   <div id="view-cat-detail" style="display:none">
-    <div style="display:flex;align-items:center;gap:12px;padding:12px 0 16px">
-      <button class="btn" onclick="backToCategories()">&#x2190; Back</button>
+    <div class="drill-header">
+      <button class="btn" onclick="backToCat()">&#x2190; Back</button>
       <div>
-        <div id="cat-detail-title" style="font-size:18px;font-weight:900;color:var(--text)"></div>
-        <div id="cat-detail-sub" style="font-size:12px;color:var(--text3)"></div>
+        <div class="drill-title" id="drill-title"></div>
+        <div class="drill-sub" id="drill-sub"></div>
       </div>
-      <button class="btn primary" style="margin-left:auto" onclick="addSkinToCurrentCat()">&#x2795; Add Skin to this Item</button>
+      <button class="btn primary" style="margin-left:auto;height:32px;font-size:11px" onclick="addSkinToItem()">&#x2795; Add Skin Here</button>
     </div>
-    <div class="skin-card-grid" id="cat-skin-grid"></div>
+    <div class="skin-card-grid" id="drill-skin-grid"></div>
   </div>
 
-  <!-- SKIN GRID VIEW -->
+  <!-- GRID VIEW -->
   <div id="view-grid" style="display:none">
     <div class="skin-card-grid" id="skin-grid"></div>
-    <div id="pager-grid" style="text-align:center;padding:14px;font-size:12px;color:var(--text3)"></div>
-    <button class="btn" id="load-more-grid" onclick="loadMoreGrid()" style="display:none;margin:0 auto 24px">Load more</button>
+    <div id="pager-grid" style="text-align:center;padding:12px;font-size:11px;color:var(--text3)"></div>
+    <button class="btn" id="load-more-grid" onclick="loadMoreGrid()" style="display:none;margin:0 auto 20px">Load more</button>
   </div>
 
   <!-- TABLE VIEW -->
@@ -247,19 +320,18 @@ nav{display:flex;align-items:stretch;margin-left:8px}
     <div style="overflow-x:auto">
       <table class="skin-table">
         <thead><tr>
-          <th style="width:50px">Img</th>
-          <th>Skin Name</th><th>Item</th><th>Skin ID</th><th>Status</th><th>Permissions</th><th style="width:50px"></th>
+          <th style="width:46px">Img</th>
+          <th>Skin Name</th><th>Item</th><th>Skin ID</th><th>Status</th><th>Permissions</th><th style="width:44px"></th>
         </tr></thead>
         <tbody id="tbody"></tbody>
       </table>
     </div>
-    <div id="pager" style="text-align:center;padding:14px;font-size:12px;color:var(--text3)"></div>
-    <button class="btn" id="load-more-btn" onclick="loadMore()" style="display:none;margin:0 auto 24px">Load more</button>
+    <div id="pager" style="text-align:center;padding:12px;font-size:11px;color:var(--text3)"></div>
+    <button class="btn" id="load-more-btn" onclick="loadMore()" style="display:none;margin:0 auto 20px">Load more</button>
   </div>
-
 </div>
 
-<!-- PERMS TAB -->
+<!-- ═══════════════ PERMS TAB ═══════════════ -->
 <div class="tab" id="tab-perms">
   <div class="panel">
     <h3>Create New Permission Group</h3>
@@ -268,29 +340,40 @@ nav{display:flex;align-items:stretch;margin-left:8px}
         <label>Permission name (must start with skinbox.)</label>
         <input type="text" id="new-perm-name" placeholder="skinbox.vip">
       </div>
-      <button class="btn primary" onclick="createPermGroup()">Create Group</button>
+      <button class="btn primary" onclick="createPermGroup()">Create</button>
     </div>
-    <p style="font-size:12px;color:var(--text3);margin-top:8px">Grant on server: <code style="font-family:'Share Tech Mono',monospace;color:var(--amber)">o.grant group &lt;group&gt; &lt;permission&gt;</code></p>
+    <p style="font-size:11px;color:var(--text3);margin-top:6px">Server grant: <code style="font-family:'Share Tech Mono',monospace;color:var(--amber)">o.grant group &lt;group&gt; &lt;permission&gt;</code></p>
   </div>
   <div id="perm-cards"></div>
 </div>
 
-<!-- EXPORT TAB -->
+<!-- ═══════════════ CHANGE LOG TAB ═══════════════ -->
+<div class="tab" id="tab-log">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+    <h2 style="font-size:16px;font-weight:900;flex:1">Change Log</h2>
+    <button class="btn" onclick="exportLog()">&#x2B07; Export Log CSV</button>
+    <button class="btn danger" onclick="clearLog()">&#x1F5D1; Clear Log</button>
+  </div>
+  <div id="log-empty" style="text-align:center;padding:40px;color:var(--text3);font-size:13px">No changes recorded yet. Actions like adding/removing skins and changing permissions will appear here.</div>
+  <div id="log-entries"></div>
+</div>
+
+<!-- ═══════════════ EXPORT TAB ═══════════════ -->
 <div class="tab" id="tab-export">
   <div class="panel">
     <h3>Export SkinBox.json</h3>
-    <p style="font-size:13px;color:var(--text2);margin-bottom:16px">Generates a complete config ready for <code style="font-family:'Share Tech Mono',monospace;color:var(--rust)">oxide/config/SkinBox.json</code></p>
-    <button class="btn primary" onclick="generateExport()" style="margin-bottom:16px">Generate Config JSON</button>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:14px">Generates a complete config for <code style="font-family:'Share Tech Mono',monospace;color:var(--rust)">oxide/config/SkinBox.json</code> or <code style="font-family:'Share Tech Mono',monospace;color:var(--rust)">carbon/configs/SkinBox.json</code></p>
+    <button class="btn primary" onclick="generateExport()" style="margin-bottom:14px">Generate Config JSON</button>
     <div class="export-box" id="export-box">Click "Generate Config JSON" to preview...</div>
     <div class="export-actions">
       <button class="btn success" onclick="downloadJSON()">&#x2B07; Download SkinBox.json</button>
-      <button class="btn" onclick="copyJSON()">&#x2398; Copy to Clipboard</button>
-      <button class="btn" onclick="exportCSV()">&#x2B07; Export CSV</button>
+      <button class="btn" onclick="copyJSON()">&#x2398; Copy</button>
+      <button class="btn" onclick="exportCSV()">&#x2B07; CSV</button>
     </div>
   </div>
   <div class="panel">
     <h3>&#x1F441; Export View-Only Chart</h3>
-    <p style="font-size:13px;color:var(--text2);margin-bottom:16px">Share a read-only skin list. Choose which permission group to export.</p>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:14px">Shareable read-only skin list for Discord or your website.</p>
     <div class="form-row" style="align-items:flex-end">
       <div class="form-group">
         <label>Permission group</label>
@@ -298,7 +381,7 @@ nav{display:flex;align-items:stretch;margin-left:8px}
           <option value="__use__">skinbox.use (all users)</option>
         </select>
       </div>
-      <div class="form-group" style="flex:0 0 240px">
+      <div class="form-group" style="flex:0 0 220px">
         <label>Scope</label>
         <select id="view-export-scope" onchange="updateViewInfo()">
           <option value="own">All skins in selected group</option>
@@ -306,83 +389,49 @@ nav{display:flex;align-items:stretch;margin-left:8px}
           <option value="all">All groups combined</option>
         </select>
       </div>
-      <button class="btn amber" onclick="exportViewChart()">&#x1F441; Download View-Only Chart</button>
+      <button class="btn amber" onclick="exportViewChart()">&#x1F441; Download</button>
     </div>
-    <div id="view-export-info" style="margin-top:10px;font-size:12px;color:var(--text3)"></div>
+    <div id="view-export-info" style="margin-top:8px;font-size:11px;color:var(--text3)"></div>
   </div>
 </div>
 
-<!-- SETUP TAB -->
+<!-- ═══════════════ SETUP TAB ═══════════════ -->
 <div class="tab" id="tab-setup">
-  <div class="panel" style="border-color:var(--amber);max-width:700px">
-    <h3 style="color:var(--amber)">⚙ One-Time Setup — Cloudflare Worker Proxy</h3>
-    <p style="font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.7">
-      Steam blocks direct browser requests (CORS). A free Cloudflare Worker acts as a middleman — it's a 5-minute setup, free forever (100k requests/day), no credit card needed.
-    </p>
+  <div class="panel" style="border-color:var(--amber);max-width:680px">
+    <h3 style="color:var(--amber)">&#x2699; Cloudflare Worker Setup</h3>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:14px;line-height:1.7">Steam blocks direct browser requests. A free Cloudflare Worker proxies the calls. 5-minute setup, 100k requests/day free.</p>
 
-    <div style="counter-reset:steps">
-
-      <div style="display:flex;gap:14px;margin-bottom:18px">
-        <div style="width:28px;height:28px;background:var(--rust);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0">1</div>
-        <div>
-          <div style="font-weight:700;margin-bottom:4px">Create a free Cloudflare account</div>
-          <a href="https://dash.cloudflare.com/sign-up" target="_blank" style="color:var(--blue);font-size:13px">dash.cloudflare.com/sign-up</a>
-          <span style="font-size:12px;color:var(--text3)"> — no credit card required</span>
-        </div>
-      </div>
-
-      <div style="display:flex;gap:14px;margin-bottom:18px">
-        <div style="width:28px;height:28px;background:var(--rust);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0">2</div>
-        <div style="flex:1">
-          <div style="font-weight:700;margin-bottom:6px">Create a Worker</div>
-          <p style="font-size:13px;color:var(--text2);margin-bottom:8px">In the Cloudflare dashboard: <strong>Workers &amp; Pages → Create → Create Worker</strong>. Name it anything (e.g. <code style="font-family:'Share Tech Mono',monospace;color:var(--amber)">steam-proxy</code>). Click <strong>Deploy</strong>.</p>
-          <p style="font-size:13px;color:var(--text2);margin-bottom:8px">Then click <strong>Edit Code</strong> and replace everything with this:</p>
-          <div style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:12px;font-family:'Share Tech Mono',monospace;font-size:12px;color:#c8d0e0;line-height:1.6;position:relative">
-            <button onclick="copyWorkerCode()" class="btn" style="position:absolute;top:8px;right:8px;height:24px;padding:0 10px;font-size:11px">Copy</button>
-<pre id="worker-code" style="margin:0;white-space:pre-wrap">export default {
-  async fetch(request) {
-    if (request.method === 'OPTIONS') {
-      return new Response(null, { headers: corsHeaders() });
-    }
-    const body = await request.text();
-    const steam = await fetch(
-      'https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/',
-      { method: 'POST', body }
-    );
-    const data = await steam.json();
-    return new Response(JSON.stringify(data), {
-      headers: { 'Content-Type': 'application/json', ...corsHeaders() }
-    });
-  }
-};
-function corsHeaders() {
-  return {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
-  };
-}</pre>
-          </div>
-          <p style="font-size:12px;color:var(--text3);margin-top:8px">Click <strong>Save and Deploy</strong>.</p>
-        </div>
-      </div>
-
-      <div style="display:flex;gap:14px;margin-bottom:18px">
-        <div style="width:28px;height:28px;background:var(--rust);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0">3</div>
-        <div style="flex:1">
-          <div style="font-weight:700;margin-bottom:6px">Paste your Worker URL here</div>
-          <p style="font-size:13px;color:var(--text2);margin-bottom:8px">Your worker URL looks like: <code style="font-family:'Share Tech Mono',monospace;color:var(--amber)">https://steam-proxy.YOUR-NAME.workers.dev</code></p>
-          <div style="display:flex;gap:8px;align-items:center">
-            <input type="text" id="worker-url-input" placeholder="https://steam-proxy.your-name.workers.dev" style="flex:1;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:var(--radius);font-size:13px;font-family:'Share Tech Mono',monospace">
-            <button class="btn primary" onclick="saveWorkerUrl()">Save &amp; Test</button>
-          </div>
-          <div id="worker-test-result" style="margin-top:8px;font-size:12px"></div>
-        </div>
-      </div>
-
+    <div class="step-row">
+      <div class="step-num">1</div>
+      <div><div style="font-weight:700;margin-bottom:4px">Create a free Cloudflare account</div>
+      <a href="https://dash.cloudflare.com/sign-up" target="_blank" style="color:var(--blue);font-size:12px">dash.cloudflare.com/sign-up</a></div>
     </div>
 
-    <div id="worker-status-box" style="margin-top:8px;padding:10px 14px;border-radius:var(--radius);font-size:13px;display:none"></div>
+    <div class="step-row">
+      <div class="step-num">2</div>
+      <div style="flex:1">
+        <div style="font-weight:700;margin-bottom:6px">Deploy the worker via terminal</div>
+        <p style="font-size:12px;color:var(--text2);margin-bottom:8px">Install Node.js from <a href="https://nodejs.org" target="_blank" style="color:var(--blue)">nodejs.org</a>, then run these commands:</p>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:10px;font-family:'Share Tech Mono',monospace;font-size:11px;color:#c8d0e0;line-height:2">
+          npm install -g wrangler<br>
+          wrangler login<br>
+          wrangler deploy steam-proxy-worker.js --name steam-proxy --compatibility-date 2024-01-01
+        </div>
+        <p style="font-size:11px;color:var(--text3);margin-top:6px">Download the worker file: <a href="https://cart-27.github.io/Skin_Manager.html/steam-proxy-worker.js" target="_blank" style="color:var(--blue)">steam-proxy-worker.js</a></p>
+      </div>
+    </div>
+
+    <div class="step-row">
+      <div class="step-num">3</div>
+      <div style="flex:1">
+        <div style="font-weight:700;margin-bottom:6px">Paste your Worker URL</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input type="text" id="worker-url-input" placeholder="https://steam-proxy.your-name.workers.dev" style="flex:1;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:7px 11px;border-radius:var(--radius);font-size:12px;font-family:'Share Tech Mono',monospace">
+          <button class="btn primary" onclick="saveWorkerUrl()">Save &amp; Test</button>
+        </div>
+        <div id="worker-test-result" style="margin-top:6px;font-size:11px"></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -391,7 +440,7 @@ function corsHeaders() {
   <div class="ctx-item" onclick="ctxWorkshop()">Open Steam Workshop</div>
   <div class="ctx-item" onclick="ctxCopy()">Copy Skin ID</div>
   <div class="ctx-sep"></div>
-  <div class="ctx-item" style="color:var(--text3);font-size:10px;padding:4px 16px">TOGGLE PERMISSION</div>
+  <div class="ctx-item" style="color:var(--text3);font-size:10px;padding:3px 14px">TOGGLE PERMISSION</div>
   <div id="ctx-perm-items"></div>
   <div class="ctx-sep"></div>
   <div class="ctx-item danger" onclick="ctxRemove()">Remove Skin</div>
@@ -401,7 +450,7 @@ function corsHeaders() {
 <div class="modal-overlay" id="perm-modal">
   <div class="modal">
     <h3>Assign Permission Group</h3>
-    <p style="font-size:13px;color:var(--text2);margin-bottom:16px">Skins with no group are visible to everyone with <code style="font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--rust)">skinbox.use</code>.</p>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:14px">Skins with no group are visible to all <code style="font-family:'Share Tech Mono',monospace;color:var(--rust)">skinbox.use</code> players.</p>
     <div class="form-group"><label>Permission Group</label><select id="modal-perm-select"><option value="">&#x2014; none (all users) &#x2014;</option></select></div>
     <div class="modal-footer">
       <button class="btn" onclick="closeModal()">Cancel</button>
@@ -413,28 +462,36 @@ function corsHeaders() {
 <div class="toast" id="toast"></div>
 
 <script>
-// ── DATA ─────────────────────────────────────────────────────────────────────
-const BASE_CONFIG = {"Skin Options": {"Maximum number of approved skins allowed for each item (-1 is unlimited)": -1, "Maximum number of pages viewable": 6, "Include approved skins (WARNING! Allowing users to use paid content they don't own is against Rusts TOS)": false, "Only show approved skins that the player owns": true, "Remove approved skin ID's from config workshop skin list": true, "Include redirected skins (WARNING! Allowing users to use paid content they don't own is against Rusts TOS)": false, "Only use approved skins for these item shortnames (only used when 'Include approved skins' is disabled)": [], "Approved skin timeout (seconds)": 180, "Include manually imported workshop skins": true, "Show skin ID's in the name for admins": true, "Skin list order (Config, ConfigReversed, Alphabetical)": "Config", "Steam API key for workshop skins (https://steamcommunity.com/dev/apikey)": "7BBAA6C4F61C8ABDC4F6AAA4843DA893"}, "Cooldown Options": {"Enable cooldowns": false, "Cooldown time start's when a item is removed from the box": true, "Length of cooldown time (seconds)": 0}, "Command Options": {"Commands to open the SkinBox": ["skinbox", "sb"], "Commands to open the deployed item SkinBox": ["skindeployed", "sd"], "Commands to open the skin set box": ["skinset", "ss"], "Allow skinning via Skinbox spray can": false, "Commands to request a skin": ["skinrequest"]}, "Permission Options": {"Permission required to use SkinBox": "skinbox.use", "Permission required to reskin deployed items": "skinbox.use", "Permission required to use admin functions": "skinbox.admin", "Permission that bypasses usage costs": "skinbox.ignorecost", "Permission that bypasses usage cooldown": "skinbox.ignorecooldown", "Permission that bypasses DLC checks": "skinbox.ignoredlccheck", "Permission required to skin weapons": "skinbox.use", "Permission required to skin deployables": "skinbox.use", "Permission required to skin attire": "skinbox.use", "Permission required to view approved skins": "skinbox.use", "Permission required to use skin sets": "skinbox.use", "Permission required to use the request skin command": "skinbox.use", "Custom permissions per skin": {"skinbox.moderator": [2657768804, 2367359297, 2891471916, 1605574469, 1974252534, 2593972552, 1397801899, 2764955948, 2448189526, 2933068526, 2563327535, 2040286809, 2575456552, 2172078031, 3141140471, 2839756581, 1411073464, 889479991, 801622102, 1403885411, 2835736365, 3010775069, 2566480912, 816600190, 3303652830, 3312593417, 3303653646, 3318426834, 3318425833, 3312592708, 3307990655, 3323535395, 1187639508, 2368583775, 2368585506, 2966057188, 3355824388, 3436155834, 3449521233, 833914324, 838828104, 2052378272, 2497239256, 2529277044, 2766762596, 2766803410, 2966509367, 3309770326, 2957853483, 2957851194, 2957774272, 1656595937, 1125809328, 3449435411, 3449439014, 2143175116, 3449436059, 2602738572], "skinbox.example2": [9993, 9994, 9995], "skinbox.example3": [9996, 9997, 9998], "skinbox.cart": [9993, 9994, 9995, 3216540470, 3145395239, 3145393223, 3164526497, 3190808930, 3190807158, 3406716750, 3436155834]}}, "Usage Cost Options": {"Enable usage costs": false, "Currency used for usage costs (Scrap, Economics, ServerRewards)": "Scrap", "Cost to open the SkinBox": 0, "Cost to skin deployables": 0, "Cost to skin attire": 0, "Cost to skin weapons": 0}, "Other Options": {"Allow stacked items": false, "Auth-level required to view blacklisted skins": 2, "Spray can max uses": 10, "Only allow skinning of items in areas where the player has building privilege": false, "Apply skin workshop name to item if available (false keeps the name of the input item)": true}, "Favourites Options": {"Enable favourites system": true, "Enable purging of favourites data": true, "Purge user favourites that haven't been online for x amount of days": 7}, "Set Options": {"Enable set system": true, "Number of skin sets allowed": 3}, "Skin Requests": {"Allow skin requests": true, "Discord webhook for incoming skin requests": "https://discord.com/api/webhooks/1365521310251483226/jVkF-w2Mh_dpY9Hr7YyaGhLkvHRBybMAK6E7S8R6xlZ5b8nDm6Z4YXP7jWS08cT2YEjr", "Days to wait before a user can request a already requested skin": 7}, "Imported Workshop Skins": {"box.wooden": [2900739039, 2900740996, 3107845724, 3107842355, 3107841603, 3107843046, 2900742580, 3107844369, 2900741909, 3107845128, 2900741253, 2900741452, 3107846463, 3420714009, 2856457408, 3628458446, 3446773889], "box.wooden.large": [3239479751, 2485098571, 810687173, 2084011098, 2166075403, 3107848260, 3107849849, 2928679523, 2932178914, 2935600471, 2935601066, 2939124047, 2939124462, 2942506397, 2945794032, 2949032168, 2952657640, 2959826747, 2963031504, 2966049501, 2975697982, 2978635255, 2981653905, 2984712521, 2987737589, 2762325891, 2762326871, 2762327948, 2762330233, 2762331774, 2762328689, 2706016224, 2774133267, 2774134157, 2774136298, 2774135668, 2774137482, 2774137839, 2774159982, 2774137139, 2774141950, 2774139958, 2774138706, 2774139228, 2774139642, 2774138384, 2774140273, 2774140954, 2774141383, 2774141712, 2774138144, 2774142342, 2774143793, 2774142674, 2774142993, 2774143255, 2774144082, 2774144831, 2774145272, 2774148027, 2774143520, 2774145687, 2774144430, 2774146185, 2774151142, 2774149317, 2774149682, 2774154472, 2774165059, 2774156220, 2774152914, 2774154814, 2774153253, 2774153752, 2774155156, 2774152079, 2774156516, 2774158669, 2774151651, 2774158916, 2774159189, 2774159499, 2774157657, 2774158057, 2774159713, 2774158390, 2775973375, 2775972748, 2775974643, 2775974424, 2775973611, 2930776114, 2930794335, 2930806162, 2930822919, 2930837323, 2930860679, 2930864439, 2930872580, 2930897627, 2971300908, 2971304492, 2971307069, 3007218682, 3009198642, 3009336410, 3015373796, 3015395739, 3017633313, 3242428753, 3242981777, 2778493336, 2795950055, 2928475473, 2898024143, 2856025383, 2856019669, 2856015053, 2836019842, 2836018963, 2836014303, 2836016189, 2836017666, 3046914258, 3046914106, 3628456991, 3628463886], "crossbow": [3580022911, 3579998047, 3579948969], "wall.frame.garagedoor": [2148536279, 3241301985, 2752910317, 3283489840, 1557260733, 2168738710, 2133431737, 2991377335, 2586326322, 2979257711, 1440334955, 3048999576, 2255192387, 3141140471, 3094272575, 2876344958, 3113978276, 2172078031, 3235541842, 1372388838, 3023903283, 3265157016, 2682601648, 2457757024, 2166192161, 2937281575, 3380040513, 3371733013, 1187639508, 3408677529, 3217100330, 3270167035, 3295054992, 3419522448, 3449521233, 2052378272, 3309770326, 3580031968, 3580004708, 3579959113, 3628534712], "rug.bear": [2613799472, 2923460588, 2164583269, 3322215598], "door.double.hinged.toptier": [2871518390, 2769243268, 3090203622, 2575456552, 3580031428, 3580004247, 3579948076, 2266832298], "mask.bandana": [2746436535, 1574722565, 816600190, 3107855187, 3107868495, 3107860992, 3107867379], "rifle.lr300": [2193641084, 2409312173, 2543418627, 3368296076, 3372202750, 2365819846, 2557430180], "hammer": [2138223730, 3628449782], "shoes.boots": [911186114, 2050038638, 3107851592, 3107834762, 3107855936, 3107869228, 2922914793, 2730618384, 2766762596, 3550940003, 3580015331, 3579988944, 3579962933, 2957774272], "attire.hide.poncho": [3245755661], "attire.hide.vest": [], "attire.hide.pants": [], "hat.boonie": [], "attire.hide.boots": [], "metal.facemask": [1605901930, 800933810, 3145395239, 3107830924, 2922920700, 839564493, 803801187, 3323125148, 2730597455, 2766803410, 2642930784, 3550728166, 3580013011, 3579986127, 3579944282, 1656595937, 3031141268], "metal.plate.torso": [3145393223, 816098063, 2171315003, 3107834077, 2922921675, 3327424533, 2730615351, 2966057188, 2642929746, 3549897184, 3580012525, 3579987098, 3579945548, 2143175116, 2602738572, 3031140981], "deer.skull.mask": [3164526497, 843823942, 3580019665, 3579994916, 3579959737], "burlap.shirt": [3190808930, 795185645, 912032354, 3134855013], "burlap.trousers": [3190807158, 3134855981, 2822379233], "rifle.ak": [2552738708, 3216540470, 3222604129, 3107875465, 3312588906, 3375817028, 3387930818, 1164351519, 2428514763, 3548070285, 3580010348, 3579983247, 3579889524, 1125809328], "table": [2661728724, 2899558372, 2924941290, 2856461724], "knife.bone": [3107825915, 3107825287, 802812621], "rug": [2927177739, 889479991, 2901631931, 2901628452, 2901633833, 2901634041, 2901629585, 2966509367, 3627813238, 3627850308], "pants": [1502614911, 910808140, 2050030527, 3107854745, 3107839220, 3107860221, 3107870614, 2922911684, 2347193193, 2368585506, 2529277044, 2562666817, 3550157771, 3580017018, 3579988534, 3579954528, 2957853483], "tshirt": [1502559216, 3580021079, 3579996455, 3579943625], "burlap.gloves": [911169463, 2050037289, 2454377972, 3107852333, 3107856647, 3107861723, 3580020235, 3579995319, 3579956678], "door.hinged.metal": [2620604819, 1403885411, 2839756581, 2593972552, 2553152569, 2124665555, 2481946288, 3406716750, 3275019165, 3275019435, 3436155834, 833914324, 3628455528], "smg.thompson": [3154184498, 3107872546, 3107884263, 3580024201, 3579998959, 3579890447], "fridge": [2835736365, 3010775069, 3342924381, 2900720108, 2928505577, 2856438961, 2986997486], "door.hinged.toptier": [801622102, 838828104, 3580031026, 3580003777, 3579946715, 2506963265], "lmg.m249": [1711588659, 3107871697, 2360592677, 2738353314, 2991534509, 3556599811, 3580030460, 3579992843, 3579892994], "mask.balaclava": [785380124], "door.hinged.wood": [1411073464, 2596403452, 2876334234, 2936296793], "chair": [2566480912, 2899483928, 2899483627, 2856465722], "shirt.collared": [1307910990, 3628459732], "hoodie": [2050036062, 3107854157, 3107838479, 3107859609, 3107828402, 3107866519, 2922906722, 2513051057, 3390375537, 2347191017, 2368583775, 2497239256, 2562665334, 3550187755, 3580016466, 3579988100, 3579946178, 2957851194], "coffeecan.helmet": [2953705043, 3580019277, 3579993431, 3579960784], "roadsign.jacket": [2953704420, 3580014541, 3579990568, 3579951483], "roadsign.kilt": [2953703791, 3107840424, 2922923888, 2730616924, 3323535395, 2942983525, 3551521578, 3580014003, 3579990010, 3579952706, 3449435411], "locker": [3107819958, 1269592064, 3223496378], "roadsign.gloves": [2922991093, 3553101787, 3580013586, 3579989398, 3579953216, 3449436059], "jacket": [2496913595, 2988267679, 3580021508, 3579997055, 3579963489], "rifle.l96": [2849409508, 3317577696, 2870395185, 3355824388, 2796406383, 2636718978, 3580029599, 3579991784, 3579957722], "jacket.snow": [2870862403], "largebackpack": [3376100226, 3390287843, 3390223946, 3551462527, 3580022092, 3579997534, 3579957254, 3449439014], "hat.beenie": [3107853211, 3107858328, 3107869906], "target.reactive": [2899431809, 2899431919, 2899431451, 2899432079], "barricade.concrete": [2899525656, 2899430496], "vending.machine": [3107817764], "rifle.semiauto": [3107874233, 3107883028, 3580025610, 3580000392, 3579950168], "door.double.hinged.wood": [2899449529, 2899489317], "smg.2": [3107876545, 3580026338, 3580000941, 3579960198], "shotgun.double": [3107878609], "smg.mp5": [3107879565, 3340497055, 3267154181, 1974038221, 3390007173, 3580023584, 3579998531, 3579955425], "pistol.semiauto": [3107881078, 1289093379, 3628646338], "sleepingbag": [816623663, 3269832336, 3560711964, 3628452378], "rifle.bolt": [1695259300, 2823570500, 3145161332, 2617744110, 3580028983, 3579991083, 3579962018], "pistol.python": [2808947481, 3580026913, 3580001696, 3579953829], "grenade.f1": [2973784242], "furnace": [3178801812, 2503679174, 3628454345, 3628462373], "rocket.launcher": [2946817967, 2806026557, 2575218001, 3580024823, 3579999480, 3579964061], "door.double.hinged.metal": [2982528595, 2926549607, 1882567303, 3265564447], "pistol.revolver": [2744352732], "shotgun.pump": [], "icepick.salvaged": [3549960048], "water.purifier": [2811249978], "bucket.helmet": [3580018756, 3579994374, 3579961616], "bow.hunting": [3580027578, 3580002554, 3579958472], "jackhammer": [3580028265, 3580003184, 3579958113], "tshirt.long": [3580020654, 3579995957, 3579956182], "bed": [3579891115, 3580038203, 3580040128], "pants.shorts": [3628460989], "component.box.wood.large": [2900739039, 2900740996, 3107845724, 3107842355, 3107841603, 3107843046, 2900742580, 3107844369, 2900741909, 3107845128, 2900741253, 2900741452, 3107846463, 3420714009, 2856457408, 3628458446, 3446773889]}, "Blacklisted Skin ID's": [], "Prevent items with the following Skin ID's from being re-skinned": [], "Prevent these items from being re-skinned (shortname)": [], "Version": {"Major": 2, "Minor": 2, "Patch": 31}};
-const CAT_LABELS  = {"box.wooden": "Wooden Box", "box.wooden.large": "Large Wood Box", "crossbow": "Crossbow", "wall.frame.garagedoor": "Garage Door", "rug.bear": "Bear Rug", "door.double.hinged.toptier": "Armored Double Door", "mask.bandana": "Bandana Mask", "rifle.lr300": "LR-300", "hammer": "Hammer", "shoes.boots": "Boots", "attire.hide.poncho": "Hide Poncho", "attire.hide.vest": "Hide Vest", "attire.hide.pants": "Hide Pants", "hat.boonie": "Boonie Hat", "attire.hide.boots": "Hide Boots", "metal.facemask": "Metal Facemask", "metal.plate.torso": "Metal Chest Plate", "deer.skull.mask": "Deer Skull Mask", "burlap.shirt": "Burlap Shirt", "burlap.trousers": "Burlap Trousers", "rifle.ak": "AK-47", "table": "Table", "knife.bone": "Bone Knife", "rug": "Rug", "pants": "Pants", "tshirt": "T-Shirt", "burlap.gloves": "Burlap Gloves", "door.hinged.metal": "Metal Door", "smg.thompson": "Thompson SMG", "fridge": "Fridge", "door.hinged.toptier": "Armored Door", "lmg.m249": "M249", "mask.balaclava": "Balaclava", "door.hinged.wood": "Wooden Door", "chair": "Chair", "shirt.collared": "Collared Shirt", "hoodie": "Hoodie", "coffeecan.helmet": "Coffee Can Helmet", "roadsign.jacket": "Road Sign Jacket", "roadsign.kilt": "Road Sign Kilt", "locker": "Locker", "roadsign.gloves": "Road Sign Gloves", "jacket": "Jacket", "rifle.l96": "L96 Rifle", "jacket.snow": "Snow Jacket", "largebackpack": "Large Backpack", "hat.beenie": "Beenie Hat", "target.reactive": "Reactive Target", "barricade.concrete": "Concrete Barricade", "vending.machine": "Vending Machine", "rifle.semiauto": "Semi-Auto Rifle", "door.double.hinged.wood": "Wooden Double Door", "smg.2": "Custom SMG", "shotgun.double": "Double Barrel", "smg.mp5": "MP5", "pistol.semiauto": "Semi-Auto Pistol", "sleepingbag": "Sleeping Bag", "rifle.bolt": "Bolt Action", "pistol.python": "Python Revolver", "grenade.f1": "F1 Grenade", "furnace": "Furnace", "rocket.launcher": "Rocket Launcher", "door.double.hinged.metal": "Metal Double Door", "pistol.revolver": "Revolver", "shotgun.pump": "Pump Shotgun", "icepick.salvaged": "Salvaged Icepick", "water.purifier": "Water Purifier", "bucket.helmet": "Bucket Helmet", "bow.hunting": "Hunting Bow", "jackhammer": "Jackhammer", "tshirt.long": "Long T-Shirt", "bed": "Bed", "pants.shorts": "Shorts", "component.box.wood.large": "Wood Box (component)"};
-const CAT_GROUPS  = {"box.wooden": "Storage", "box.wooden.large": "Storage", "fridge": "Storage", "locker": "Storage", "component.box.wood.large": "Storage", "door.hinged.wood": "Doors", "door.hinged.metal": "Doors", "door.hinged.toptier": "Doors", "door.double.hinged.wood": "Doors", "door.double.hinged.metal": "Doors", "door.double.hinged.toptier": "Doors", "wall.frame.garagedoor": "Doors", "rifle.ak": "Weapons", "rifle.lr300": "Weapons", "rifle.l96": "Weapons", "rifle.bolt": "Weapons", "rifle.semiauto": "Weapons", "lmg.m249": "Weapons", "smg.thompson": "Weapons", "smg.mp5": "Weapons", "smg.2": "Weapons", "pistol.semiauto": "Weapons", "pistol.python": "Weapons", "pistol.revolver": "Weapons", "shotgun.pump": "Weapons", "shotgun.double": "Weapons", "rocket.launcher": "Weapons", "crossbow": "Weapons", "bow.hunting": "Weapons", "grenade.f1": "Weapons", "knife.bone": "Weapons", "metal.facemask": "Attire", "metal.plate.torso": "Attire", "coffeecan.helmet": "Attire", "bucket.helmet": "Attire", "deer.skull.mask": "Attire", "mask.bandana": "Attire", "mask.balaclava": "Attire", "roadsign.jacket": "Attire", "roadsign.kilt": "Attire", "roadsign.gloves": "Attire", "hoodie": "Attire", "jacket": "Attire", "jacket.snow": "Attire", "shirt.collared": "Attire", "tshirt": "Attire", "tshirt.long": "Attire", "burlap.shirt": "Attire", "burlap.trousers": "Attire", "burlap.gloves": "Attire", "pants": "Attire", "pants.shorts": "Attire", "shoes.boots": "Attire", "hat.beenie": "Attire", "hat.boonie": "Attire", "largebackpack": "Attire", "attire.hide.poncho": "Attire", "attire.hide.vest": "Attire", "attire.hide.pants": "Attire", "attire.hide.boots": "Attire", "table": "Furniture", "chair": "Furniture", "bed": "Furniture", "rug": "Furniture", "rug.bear": "Furniture", "hammer": "Tools", "jackhammer": "Tools", "icepick.salvaged": "Tools", "water.purifier": "Tools", "furnace": "Tools", "vending.machine": "Tools", "target.reactive": "Tools", "barricade.concrete": "Tools", "sleepingbag": "Tools"};
-const PERM_COLORS = ["#E8461A", "#4caf7d", "#4a9eda", "#e8a21a", "#a64ae8", "#e84a8a", "#4ae8d8", "#e8d84a"];
-const STEAM_API   = 'https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/v1/';
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const BASE_CONFIG  = {"Skin Options": {"Maximum number of approved skins allowed for each item (-1 is unlimited)": -1, "Maximum number of pages viewable": 6, "Include approved skins (WARNING! Allowing users to use paid content they don't own is against Rusts TOS)": false, "Only show approved skins that the player owns": true, "Remove approved skin ID's from config workshop skin list": true, "Include redirected skins (WARNING! Allowing users to use paid content they don't own is against Rusts TOS)": false, "Only use approved skins for these item shortnames (only used when 'Include approved skins' is disabled)": [], "Approved skin timeout (seconds)": 180, "Include manually imported workshop skins": true, "Show skin ID's in the name for admins": true, "Skin list order (Config, ConfigReversed, Alphabetical)": "Config", "Steam API key for workshop skins (https://steamcommunity.com/dev/apikey)": "7BBAA6C4F61C8ABDC4F6AAA4843DA893"}, "Cooldown Options": {"Enable cooldowns": false, "Cooldown time start's when a item is removed from the box": true, "Length of cooldown time (seconds)": 0}, "Command Options": {"Commands to open the SkinBox": ["skinbox", "sb"], "Commands to open the deployed item SkinBox": ["skindeployed", "sd"], "Commands to open the skin set box": ["skinset", "ss"], "Allow skinning via Skinbox spray can": false, "Commands to request a skin": ["skinrequest"]}, "Permission Options": {"Permission required to use SkinBox": "skinbox.use", "Permission required to reskin deployed items": "skinbox.use", "Permission required to use admin functions": "skinbox.admin", "Permission that bypasses usage costs": "skinbox.ignorecost", "Permission that bypasses usage cooldown": "skinbox.ignorecooldown", "Permission that bypasses DLC checks": "skinbox.ignoredlccheck", "Permission required to skin weapons": "skinbox.use", "Permission required to skin deployables": "skinbox.use", "Permission required to skin attire": "skinbox.use", "Permission required to view approved skins": "skinbox.use", "Permission required to use skin sets": "skinbox.use", "Permission required to use the request skin command": "skinbox.use", "Custom permissions per skin": {"skinbox.moderator": [2657768804, 2367359297, 2891471916, 1605574469, 1974252534, 2593972552, 1397801899, 2764955948, 2448189526, 2933068526, 2563327535, 2040286809, 2575456552, 2172078031, 3141140471, 2839756581, 1411073464, 889479991, 801622102, 1403885411, 2835736365, 3010775069, 2566480912, 816600190, 3303652830, 3312593417, 3303653646, 3318426834, 3318425833, 3312592708, 3307990655, 3323535395, 1187639508, 2368583775, 2368585506, 2966057188, 3355824388, 3436155834, 3449521233, 833914324, 838828104, 2052378272, 2497239256, 2529277044, 2766762596, 2766803410, 2966509367, 3309770326, 2957853483, 2957851194, 2957774272, 1656595937, 1125809328, 3449435411, 3449439014, 2143175116, 3449436059, 2602738572], "skinbox.example2": [9993, 9994, 9995], "skinbox.example3": [9996, 9997, 9998], "skinbox.cart": [9993, 9994, 9995, 3216540470, 3145395239, 3145393223, 3164526497, 3190808930, 3190807158, 3406716750, 3436155834]}}, "Usage Cost Options": {"Enable usage costs": false, "Currency used for usage costs (Scrap, Economics, ServerRewards)": "Scrap", "Cost to open the SkinBox": 0, "Cost to skin deployables": 0, "Cost to skin attire": 0, "Cost to skin weapons": 0}, "Other Options": {"Allow stacked items": false, "Auth-level required to view blacklisted skins": 2, "Spray can max uses": 10, "Only allow skinning of items in areas where the player has building privilege": false, "Apply skin workshop name to item if available (false keeps the name of the input item)": true}, "Favourites Options": {"Enable favourites system": true, "Enable purging of favourites data": true, "Purge user favourites that haven't been online for x amount of days": 7}, "Set Options": {"Enable set system": true, "Number of skin sets allowed": 3}, "Skin Requests": {"Allow skin requests": true, "Discord webhook for incoming skin requests": "https://discord.com/api/webhooks/1365521310251483226/jVkF-w2Mh_dpY9Hr7YyaGhLkvHRBybMAK6E7S8R6xlZ5b8nDm6Z4YXP7jWS08cT2YEjr", "Days to wait before a user can request a already requested skin": 7}, "Imported Workshop Skins": {"box.wooden": [2900739039, 2900740996, 3107845724, 3107842355, 3107841603, 3107843046, 2900742580, 3107844369, 2900741909, 3107845128, 2900741253, 2900741452, 3107846463, 3420714009, 2856457408, 3628458446, 3446773889], "box.wooden.large": [3239479751, 2485098571, 810687173, 2084011098, 2166075403, 3107848260, 3107849849, 2928679523, 2932178914, 2935600471, 2935601066, 2939124047, 2939124462, 2942506397, 2945794032, 2949032168, 2952657640, 2959826747, 2963031504, 2966049501, 2975697982, 2978635255, 2981653905, 2984712521, 2987737589, 2762325891, 2762326871, 2762327948, 2762330233, 2762331774, 2762328689, 2706016224, 2774133267, 2774134157, 2774136298, 2774135668, 2774137482, 2774137839, 2774159982, 2774137139, 2774141950, 2774139958, 2774138706, 2774139228, 2774139642, 2774138384, 2774140273, 2774140954, 2774141383, 2774141712, 2774138144, 2774142342, 2774143793, 2774142674, 2774142993, 2774143255, 2774144082, 2774144831, 2774145272, 2774148027, 2774143520, 2774145687, 2774144430, 2774146185, 2774151142, 2774149317, 2774149682, 2774154472, 2774165059, 2774156220, 2774152914, 2774154814, 2774153253, 2774153752, 2774155156, 2774152079, 2774156516, 2774158669, 2774151651, 2774158916, 2774159189, 2774159499, 2774157657, 2774158057, 2774159713, 2774158390, 2775973375, 2775972748, 2775974643, 2775974424, 2775973611, 2930776114, 2930794335, 2930806162, 2930822919, 2930837323, 2930860679, 2930864439, 2930872580, 2930897627, 2971300908, 2971304492, 2971307069, 3007218682, 3009198642, 3009336410, 3015373796, 3015395739, 3017633313, 3242428753, 3242981777, 2778493336, 2795950055, 2928475473, 2898024143, 2856025383, 2856019669, 2856015053, 2836019842, 2836018963, 2836014303, 2836016189, 2836017666, 3046914258, 3046914106, 3628456991, 3628463886], "crossbow": [3580022911, 3579998047, 3579948969], "wall.frame.garagedoor": [2148536279, 3241301985, 2752910317, 3283489840, 1557260733, 2168738710, 2133431737, 2991377335, 2586326322, 2979257711, 1440334955, 3048999576, 2255192387, 3141140471, 3094272575, 2876344958, 3113978276, 2172078031, 3235541842, 1372388838, 3023903283, 3265157016, 2682601648, 2457757024, 2166192161, 2937281575, 3380040513, 3371733013, 1187639508, 3408677529, 3217100330, 3270167035, 3295054992, 3419522448, 3449521233, 2052378272, 3309770326, 3580031968, 3580004708, 3579959113, 3628534712], "rug.bear": [2613799472, 2923460588, 2164583269, 3322215598], "door.double.hinged.toptier": [2871518390, 2769243268, 3090203622, 2575456552, 3580031428, 3580004247, 3579948076, 2266832298], "mask.bandana": [2746436535, 1574722565, 816600190, 3107855187, 3107868495, 3107860992, 3107867379], "rifle.lr300": [2193641084, 2409312173, 2543418627, 3368296076, 3372202750, 2365819846, 2557430180], "hammer": [2138223730, 3628449782], "shoes.boots": [911186114, 2050038638, 3107851592, 3107834762, 3107855936, 3107869228, 2922914793, 2730618384, 2766762596, 3550940003, 3580015331, 3579988944, 3579962933, 2957774272], "attire.hide.poncho": [3245755661], "attire.hide.vest": [], "attire.hide.pants": [], "hat.boonie": [], "attire.hide.boots": [], "metal.facemask": [1605901930, 800933810, 3145395239, 3107830924, 2922920700, 839564493, 803801187, 3323125148, 2730597455, 2766803410, 2642930784, 3550728166, 3580013011, 3579986127, 3579944282, 1656595937, 3031141268], "metal.plate.torso": [3145393223, 816098063, 2171315003, 3107834077, 2922921675, 3327424533, 2730615351, 2966057188, 2642929746, 3549897184, 3580012525, 3579987098, 3579945548, 2143175116, 2602738572, 3031140981], "deer.skull.mask": [3164526497, 843823942, 3580019665, 3579994916, 3579959737], "burlap.shirt": [3190808930, 795185645, 912032354, 3134855013], "burlap.trousers": [3190807158, 3134855981, 2822379233], "rifle.ak": [2552738708, 3216540470, 3222604129, 3107875465, 3312588906, 3375817028, 3387930818, 1164351519, 2428514763, 3548070285, 3580010348, 3579983247, 3579889524, 1125809328], "table": [2661728724, 2899558372, 2924941290, 2856461724], "knife.bone": [3107825915, 3107825287, 802812621], "rug": [2927177739, 889479991, 2901631931, 2901628452, 2901633833, 2901634041, 2901629585, 2966509367, 3627813238, 3627850308], "pants": [1502614911, 910808140, 2050030527, 3107854745, 3107839220, 3107860221, 3107870614, 2922911684, 2347193193, 2368585506, 2529277044, 2562666817, 3550157771, 3580017018, 3579988534, 3579954528, 2957853483], "tshirt": [1502559216, 3580021079, 3579996455, 3579943625], "burlap.gloves": [911169463, 2050037289, 2454377972, 3107852333, 3107856647, 3107861723, 3580020235, 3579995319, 3579956678], "door.hinged.metal": [2620604819, 1403885411, 2839756581, 2593972552, 2553152569, 2124665555, 2481946288, 3406716750, 3275019165, 3275019435, 3436155834, 833914324, 3628455528], "smg.thompson": [3154184498, 3107872546, 3107884263, 3580024201, 3579998959, 3579890447], "fridge": [2835736365, 3010775069, 3342924381, 2900720108, 2928505577, 2856438961, 2986997486], "door.hinged.toptier": [801622102, 838828104, 3580031026, 3580003777, 3579946715, 2506963265], "lmg.m249": [1711588659, 3107871697, 2360592677, 2738353314, 2991534509, 3556599811, 3580030460, 3579992843, 3579892994], "mask.balaclava": [785380124], "door.hinged.wood": [1411073464, 2596403452, 2876334234, 2936296793], "chair": [2566480912, 2899483928, 2899483627, 2856465722], "shirt.collared": [1307910990, 3628459732], "hoodie": [2050036062, 3107854157, 3107838479, 3107859609, 3107828402, 3107866519, 2922906722, 2513051057, 3390375537, 2347191017, 2368583775, 2497239256, 2562665334, 3550187755, 3580016466, 3579988100, 3579946178, 2957851194], "coffeecan.helmet": [2953705043, 3580019277, 3579993431, 3579960784], "roadsign.jacket": [2953704420, 3580014541, 3579990568, 3579951483], "roadsign.kilt": [2953703791, 3107840424, 2922923888, 2730616924, 3323535395, 2942983525, 3551521578, 3580014003, 3579990010, 3579952706, 3449435411], "locker": [3107819958, 1269592064, 3223496378], "roadsign.gloves": [2922991093, 3553101787, 3580013586, 3579989398, 3579953216, 3449436059], "jacket": [2496913595, 2988267679, 3580021508, 3579997055, 3579963489], "rifle.l96": [2849409508, 3317577696, 2870395185, 3355824388, 2796406383, 2636718978, 3580029599, 3579991784, 3579957722], "jacket.snow": [2870862403], "largebackpack": [3376100226, 3390287843, 3390223946, 3551462527, 3580022092, 3579997534, 3579957254, 3449439014], "hat.beenie": [3107853211, 3107858328, 3107869906], "target.reactive": [2899431809, 2899431919, 2899431451, 2899432079], "barricade.concrete": [2899525656, 2899430496], "vending.machine": [3107817764], "rifle.semiauto": [3107874233, 3107883028, 3580025610, 3580000392, 3579950168], "door.double.hinged.wood": [2899449529, 2899489317], "smg.2": [3107876545, 3580026338, 3580000941, 3579960198], "shotgun.double": [3107878609], "smg.mp5": [3107879565, 3340497055, 3267154181, 1974038221, 3390007173, 3580023584, 3579998531, 3579955425], "pistol.semiauto": [3107881078, 1289093379, 3628646338], "sleepingbag": [816623663, 3269832336, 3560711964, 3628452378], "rifle.bolt": [1695259300, 2823570500, 3145161332, 2617744110, 3580028983, 3579991083, 3579962018], "pistol.python": [2808947481, 3580026913, 3580001696, 3579953829], "grenade.f1": [2973784242], "furnace": [3178801812, 2503679174, 3628454345, 3628462373], "rocket.launcher": [2946817967, 2806026557, 2575218001, 3580024823, 3579999480, 3579964061], "door.double.hinged.metal": [2982528595, 2926549607, 1882567303, 3265564447], "pistol.revolver": [2744352732], "shotgun.pump": [], "icepick.salvaged": [3549960048], "water.purifier": [2811249978], "bucket.helmet": [3580018756, 3579994374, 3579961616], "bow.hunting": [3580027578, 3580002554, 3579958472], "jackhammer": [3580028265, 3580003184, 3579958113], "tshirt.long": [3580020654, 3579995957, 3579956182], "bed": [3579891115, 3580038203, 3580040128], "pants.shorts": [3628460989], "component.box.wood.large": [2900739039, 2900740996, 3107845724, 3107842355, 3107841603, 3107843046, 2900742580, 3107844369, 2900741909, 3107845128, 2900741253, 2900741452, 3107846463, 3420714009, 2856457408, 3628458446, 3446773889]}, "Blacklisted Skin ID's": [], "Prevent items with the following Skin ID's from being re-skinned": [], "Prevent these items from being re-skinned (shortname)": [], "Version": {"Major": 2, "Minor": 2, "Patch": 31}};
+const CAT_LABELS   = {"box.wooden": "Wooden Box", "box.wooden.large": "Large Wood Box", "crossbow": "Crossbow", "wall.frame.garagedoor": "Garage Door", "rug.bear": "Bear Rug", "door.double.hinged.toptier": "Armored Double Door", "mask.bandana": "Bandana Mask", "rifle.lr300": "LR-300", "hammer": "Hammer", "shoes.boots": "Boots", "attire.hide.poncho": "Hide Poncho", "attire.hide.vest": "Hide Vest", "attire.hide.pants": "Hide Pants", "hat.boonie": "Boonie Hat", "attire.hide.boots": "Hide Boots", "metal.facemask": "Metal Facemask", "metal.plate.torso": "Metal Chest Plate", "deer.skull.mask": "Deer Skull Mask", "burlap.shirt": "Burlap Shirt", "burlap.trousers": "Burlap Trousers", "rifle.ak": "AK-47", "table": "Table", "knife.bone": "Bone Knife", "rug": "Rug", "pants": "Pants", "tshirt": "T-Shirt", "burlap.gloves": "Burlap Gloves", "door.hinged.metal": "Metal Door", "smg.thompson": "Thompson SMG", "fridge": "Fridge", "door.hinged.toptier": "Armored Door", "lmg.m249": "M249", "mask.balaclava": "Balaclava", "door.hinged.wood": "Wooden Door", "chair": "Chair", "shirt.collared": "Collared Shirt", "hoodie": "Hoodie", "coffeecan.helmet": "Coffee Can Helmet", "roadsign.jacket": "Road Sign Jacket", "roadsign.kilt": "Road Sign Kilt", "locker": "Locker", "roadsign.gloves": "Road Sign Gloves", "jacket": "Jacket", "rifle.l96": "L96 Rifle", "jacket.snow": "Snow Jacket", "largebackpack": "Large Backpack", "hat.beenie": "Beenie Hat", "target.reactive": "Reactive Target", "barricade.concrete": "Concrete Barricade", "vending.machine": "Vending Machine", "rifle.semiauto": "Semi-Auto Rifle", "door.double.hinged.wood": "Wooden Double Door", "smg.2": "Custom SMG", "shotgun.double": "Double Barrel", "smg.mp5": "MP5", "pistol.semiauto": "Semi-Auto Pistol", "sleepingbag": "Sleeping Bag", "rifle.bolt": "Bolt Action", "pistol.python": "Python Revolver", "grenade.f1": "F1 Grenade", "furnace": "Furnace", "rocket.launcher": "Rocket Launcher", "door.double.hinged.metal": "Metal Double Door", "pistol.revolver": "Revolver", "shotgun.pump": "Pump Shotgun", "icepick.salvaged": "Salvaged Icepick", "water.purifier": "Water Purifier", "bucket.helmet": "Bucket Helmet", "bow.hunting": "Hunting Bow", "jackhammer": "Jackhammer", "tshirt.long": "Long T-Shirt", "bed": "Bed", "pants.shorts": "Shorts", "component.box.wood.large": "Wood Box (component)"};
+const CAT_GROUPS   = {"box.wooden": "Storage", "box.wooden.large": "Storage", "fridge": "Storage", "locker": "Storage", "component.box.wood.large": "Storage", "door.hinged.wood": "Doors", "door.hinged.metal": "Doors", "door.hinged.toptier": "Doors", "door.double.hinged.wood": "Doors", "door.double.hinged.metal": "Doors", "door.double.hinged.toptier": "Doors", "wall.frame.garagedoor": "Doors", "rifle.ak": "Weapons", "rifle.lr300": "Weapons", "rifle.l96": "Weapons", "rifle.bolt": "Weapons", "rifle.semiauto": "Weapons", "lmg.m249": "Weapons", "smg.thompson": "Weapons", "smg.mp5": "Weapons", "smg.2": "Weapons", "pistol.semiauto": "Weapons", "pistol.python": "Weapons", "pistol.revolver": "Weapons", "shotgun.pump": "Weapons", "shotgun.double": "Weapons", "rocket.launcher": "Weapons", "crossbow": "Weapons", "bow.hunting": "Weapons", "grenade.f1": "Weapons", "knife.bone": "Weapons", "metal.facemask": "Attire", "metal.plate.torso": "Attire", "coffeecan.helmet": "Attire", "bucket.helmet": "Attire", "deer.skull.mask": "Attire", "mask.bandana": "Attire", "mask.balaclava": "Attire", "roadsign.jacket": "Attire", "roadsign.kilt": "Attire", "roadsign.gloves": "Attire", "hoodie": "Attire", "jacket": "Attire", "jacket.snow": "Attire", "shirt.collared": "Attire", "tshirt": "Attire", "tshirt.long": "Attire", "burlap.shirt": "Attire", "burlap.trousers": "Attire", "burlap.gloves": "Attire", "pants": "Attire", "pants.shorts": "Attire", "shoes.boots": "Attire", "hat.beenie": "Attire", "hat.boonie": "Attire", "largebackpack": "Attire", "attire.hide.poncho": "Attire", "attire.hide.vest": "Attire", "attire.hide.pants": "Attire", "attire.hide.boots": "Attire", "table": "Furniture", "chair": "Furniture", "bed": "Furniture", "rug": "Furniture", "rug.bear": "Furniture", "hammer": "Tools", "jackhammer": "Tools", "icepick.salvaged": "Tools", "water.purifier": "Tools", "furnace": "Tools", "vending.machine": "Tools", "target.reactive": "Tools", "barricade.concrete": "Tools", "sleepingbag": "Tools"};
+const PERM_COLORS  = ["#E8461A", "#4caf7d", "#4a9eda", "#e8a21a", "#a64ae8", "#e84a8a", "#4ae8d8", "#e8d84a"];
+
+// ── PROXY ─────────────────────────────────────────────────────────────────────
+let WORKER_URL = localStorage.getItem('skinbox_worker_url') || '';
 
 function proxyImg(url) {
   if (!url) return null;
   const clean = url.replace(/^https?:\/\//, '').replace(/\/\//g, '/');
-  return 'https://images.weserv.nl/?url=' + encodeURIComponent(clean) + '&w=200&h=200&fit=cover&output=webp&errorredirect=' + encodeURIComponent('via.placeholder.com/200x200/1c1b1b/444?text=No+Image');
+  return 'https://images.weserv.nl/?url=' + encodeURIComponent(clean) +
+    '&w=200&h=200&fit=cover&output=webp&errorredirect=' +
+    encodeURIComponent('via.placeholder.com/200x200/1c1b1b/444?text=No+Image');
 }
 
-// ── STATE ────────────────────────────────────────────────────────────────────
-let skins = [];       // [{id, cat, catLabel, group}]
-let skinData = {};    // id -> {name, img, status}
-let permGroups = {};  // permName -> Set of id strings
-let visible = 80;
-let ctxSkinId = null, modalSkinId = null;
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let skins      = [];   // [{id,cat,catLabel,group}]
+let skinData   = {};   // id -> {name,img,status}
+let permGroups = {};   // permName -> Set<id>
+let changelog  = JSON.parse(localStorage.getItem('skinbox_log') || '[]');
+let visible    = 80;
+let gridVisible = 80;
+let mainView   = 'cat';  // 'cat' | 'grid' | 'table'
+let drillCat   = null;
+let ctxSkinId  = null, modalSkinId = null;
 let steamRunning = false;
 
-// ── INIT ─────────────────────────────────────────────────────────────────────
+// ── INIT ──────────────────────────────────────────────────────────────────────
 (function init() {
   const seen = new Set();
   for (const [cat, ids] of Object.entries(BASE_CONFIG['Imported Workshop Skins'])) {
@@ -452,42 +509,44 @@ let steamRunning = false;
 
   populateItemSelects();
   refreshPermSelects();
-  renderTable();
+  renderAll();
   renderPermCards();
+  renderLog();
   updateViewInfo();
   document.getElementById('hdr-count').textContent = skins.length;
-  fetchSteamData();
+  if (localStorage.getItem('skinbox_worker_url')) {
+    document.getElementById('worker-url-input').value = WORKER_URL;
+    fetchSteamData();
+  } else {
+    document.getElementById('load-status').textContent = 'Setup needed';
+    document.getElementById('cors-warning').style.display = 'block';
+    document.getElementById('cors-error-detail').textContent = 'Set your Cloudflare Worker URL in the ⚙ Setup tab.';
+  }
 })();
 
 function populateItemSelects() {
   const cats = [...new Set(skins.map(s => s.cat))].sort();
-  ['add-item', 'bulk-item', 'f-item'].forEach(id => {
-    const el = document.getElementById(id);
-    cats.forEach(c => {
-      const o = document.createElement('option');
-      o.value = c; o.textContent = CAT_LABELS[c] || c;
-      el.appendChild(o);
-    });
+  ['add-item','bulk-item','f-item'].forEach(sid => {
+    const el = document.getElementById(sid);
+    while (el.options.length > 1) el.remove(1);
+    cats.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = CAT_LABELS[c] || c; el.appendChild(o); });
   });
 }
 
 function refreshPermSelects() {
   const groups = Object.keys(permGroups).sort();
-  // Simple perm selects (add/bulk/modal)
-  ['add-perm', 'bulk-perm', 'modal-perm-select'].forEach(id => {
-    const el = document.getElementById(id); if (!el) return;
+  ['add-perm','bulk-perm','modal-perm-select'].forEach(sid => {
+    const el = document.getElementById(sid); if (!el) return;
     const cur = el.value;
     while (el.options.length > 1) el.remove(1);
     groups.forEach(g => { const o = document.createElement('option'); o.value = g; o.textContent = g; el.appendChild(o); });
     el.value = cur || '';
   });
-  // Filter perm select — keep static options, append groups
   const fp = document.getElementById('f-perm');
   const fcur = fp.value;
-  while (fp.options.length > 3) fp.remove(3); // keep All / No restriction / skinbox.use exclusive
+  while (fp.options.length > 3) fp.remove(3);
   groups.forEach(g => { const o = document.createElement('option'); o.value = g; o.textContent = g; fp.appendChild(o); });
   fp.value = fcur || '';
-  // View export perm
   const vep = document.getElementById('view-export-perm');
   const vcur = vep.value;
   while (vep.options.length > 1) vep.remove(1);
@@ -496,106 +555,13 @@ function refreshPermSelects() {
   updateViewInfo();
 }
 
-// ── JSON UPLOAD ───────────────────────────────────────────────────────────────
-function loadJSON(input) {
-  const file = input.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    try {
-      const cfg = JSON.parse(e.target.result);
-      const ws = cfg['Imported Workshop Skins'];
-      const cp = cfg['Permission Options']?.['Custom permissions per skin'] || {};
-      if (!ws) { alert('Invalid SkinBox.json — missing "Imported Workshop Skins"'); return; }
-
-      // Reset state
-      skins = []; skinData = {}; permGroups = {}; visible = 80;
-
-      // Load skins
-      const seen = new Set();
-      for (const [cat, ids] of Object.entries(ws)) {
-        for (const id of ids) {
-          const k = String(id);
-          if (!seen.has(k)) {
-            seen.add(k);
-            skins.push({ id: k, cat, catLabel: CAT_LABELS[cat] || cat, group: CAT_GROUPS[cat] || 'Other' });
-          }
-          if (!skinData[k]) skinData[k] = { name: null, img: null, status: 'loading' };
-        }
-      }
-
-      // Load perm groups
-      for (const [p, ids] of Object.entries(cp)) permGroups[p] = new Set(ids.map(String));
-
-      // Repopulate item selects
-      ['add-item','bulk-item','f-item'].forEach(id => {
-        const el = document.getElementById(id);
-        while (el.options.length > 1) el.remove(1);
-      });
-      populateItemSelects();
-      refreshPermSelects();
-      renderTable();
-      renderPermCards();
-      updateViewInfo();
-      document.getElementById('hdr-count').textContent = skins.length;
-      document.getElementById('json-upload-status').textContent = file.name + ' loaded — ' + skins.length + ' skins';
-      document.getElementById('json-upload-status').style.color = 'var(--green)';
-      toast('Loaded ' + skins.length + ' skins from ' + file.name, 'success');
-
-      // Refetch Steam data for new skins
-      steamRunning = false;
-      document.getElementById('prog').style.display = 'block';
-      document.getElementById('prog').style.width = '0%';
-      fetchSteamData();
-    } catch(err) {
-      alert('Failed to parse JSON: ' + err.message);
-    }
-  };
-  reader.readAsText(file);
-}
-
-
 // ── STEAM FETCH ───────────────────────────────────────────────────────────────
-// Steam blocks direct browser fetches (CORS). We use a tiny Cloudflare Worker
-// as a proxy. Set your worker URL below after deploying it (see setup panel).
-
-let WORKER_URL = localStorage.getItem('skinbox_worker_url') || '';
-
-function proxyImg(url) {
-  if (!url) return null;
-  // Strip scheme, remove any double slashes, encode cleanly
-  const clean = url.replace(/^https?:\/\//, '').replace(/\/\//g, '/');
-  return 'https://images.weserv.nl/?url=' + encodeURIComponent(clean) + '&w=200&h=200&fit=cover&output=webp&errorredirect=' + encodeURIComponent('via.placeholder.com/200x200/1c1b1b/444?text=No+Image');
-}
-
-async function fetchSteamChunk(ids) {
-  if (!WORKER_URL) throw new Error('No proxy URL set — see Setup tab');
-  const p = new URLSearchParams();
-  p.append('itemcount', ids.length);
-  ids.forEach((id, j) => p.append('publishedfileids[' + j + ']', id));
-  const r = await fetch(WORKER_URL, { method: 'POST', body: p.toString() });
-  if (!r.ok) throw new Error('Worker HTTP ' + r.status);
-  const json = await r.json();
-  return json?.response?.publishedfiledetails || [];
-}
-
-function parseSteamResults(files) {
-  for (const f of files) {
-    const k = String(f.publishedfileid);
-    if (!skinData[k]) skinData[k] = {};
-    const tags = (f.tags || []).map(t => (t.tag || '').toLowerCase());
-    skinData[k].name   = f.title || 'Unnamed';
-    skinData[k].img    = proxyImg(f.preview_url || null);
-    skinData[k].status = f.result === 1 ? (tags.includes('featured') || tags.includes('approved') ? 'Approved' : 'Workshop') : 'Unavailable';
-  }
-}
-
 async function fetchSteamData() {
   if (steamRunning) return;
   if (!WORKER_URL) {
     document.getElementById('load-status').textContent = '⚠ No proxy set';
     document.getElementById('cors-warning').style.display = 'block';
-    document.getElementById('cors-error-detail').textContent = 'Set your Cloudflare Worker URL in the Setup tab first.';
+    document.getElementById('cors-error-detail').textContent = 'Set your Cloudflare Worker URL in the ⚙ Setup tab.';
     return;
   }
   steamRunning = true;
@@ -609,8 +575,20 @@ async function fetchSteamData() {
   for (let i = 0; i < ids.length; i += CHUNK) {
     const chunk = ids.slice(i, i + CHUNK);
     try {
-      const files = await fetchSteamChunk(chunk);
-      parseSteamResults(files);
+      const p = new URLSearchParams();
+      p.append('itemcount', chunk.length);
+      chunk.forEach((id, j) => p.append('publishedfileids[' + j + ']', id));
+      const r = await fetch(WORKER_URL, { method: 'POST', body: p.toString() });
+      if (!r.ok) throw new Error('Worker HTTP ' + r.status);
+      const json = await r.json();
+      for (const f of (json?.response?.publishedfiledetails || [])) {
+        const k = String(f.publishedfileid);
+        if (!skinData[k]) skinData[k] = {};
+        const tags = (f.tags || []).map(t => (t.tag || '').toLowerCase());
+        skinData[k].name   = f.title || 'Unnamed';
+        skinData[k].img    = proxyImg(f.preview_url || null);
+        skinData[k].status = f.result === 1 ? (tags.includes('featured') || tags.includes('approved') ? 'Approved' : 'Workshop') : 'Unavailable';
+      }
       anySuccess = true;
     } catch (e) {
       if (!anySuccess) {
@@ -619,27 +597,31 @@ async function fetchSteamData() {
         document.getElementById('steam-retry-btn').style.display = 'inline-block';
         document.getElementById('cors-warning').style.display = 'block';
         document.getElementById('cors-error-detail').textContent = 'Error: ' + (e.message || e);
-        renderTable();
+        renderAll();
         return;
       }
     }
     done += chunk.length;
     document.getElementById('prog').style.width = (done / ids.length * 100) + '%';
-    renderTable();
+    renderAll();
     await new Promise(r => setTimeout(r, 200));
   }
 
   document.getElementById('prog').style.width = '100%';
   setTimeout(() => document.getElementById('prog').style.display = 'none', 600);
-  const loaded = skins.filter(s => skinData[s.id]?.status && skinData[s.id].status !== 'loading').length;
+  const loaded = skins.filter(s => skinData[s.id]?.name).length;
   document.getElementById('load-status').textContent = '✓ ' + loaded + ' / ' + skins.length + ' loaded';
   steamRunning = false;
-  renderTable();
+  renderAll();
 }
 
 async function fetchOneSkin(id) {
+  if (!WORKER_URL) return { name: 'Unknown', img: null, status: 'Unavailable' };
   try {
-    const files = await fetchSteamChunk([id]);
+    const p = new URLSearchParams();
+    p.append('itemcount', 1); p.append('publishedfileids[0]', id);
+    const r = await fetch(WORKER_URL, { method: 'POST', body: p.toString() });
+    const files = (await r.json())?.response?.publishedfiledetails || [];
     if (files.length) {
       const f = files[0];
       const tags = (f.tags || []).map(t => (t.tag || '').toLowerCase());
@@ -650,6 +632,51 @@ async function fetchOneSkin(id) {
 }
 
 function retryFetch() { steamRunning = false; fetchSteamData(); }
+
+// ── CHANGE LOG ────────────────────────────────────────────────────────────────
+function logAction(type, desc, detail) {
+  changelog.unshift({ type, desc, detail: detail || '', time: new Date().toISOString() });
+  if (changelog.length > 500) changelog = changelog.slice(0, 500);
+  localStorage.setItem('skinbox_log', JSON.stringify(changelog));
+  renderLog();
+}
+
+function renderLog() {
+  const container = document.getElementById('log-entries');
+  const empty = document.getElementById('log-empty');
+  if (!changelog.length) { empty.style.display = 'block'; container.innerHTML = ''; return; }
+  empty.style.display = 'none';
+  container.innerHTML = '';
+  const icons = { add:'➕', remove:'➖', perm:'🔑', import:'📂', export:'📤', bulk:'📋' };
+  const classes = { add:'add', remove:'remove', perm:'perm', import:'import', export:'import', bulk:'add' };
+  changelog.forEach(e => {
+    const d = new Date(e.time);
+    const ts = d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+    const div = document.createElement('div'); div.className = 'log-entry';
+    div.innerHTML = '<div class="log-icon ' + (classes[e.type]||'add') + '">' + (icons[e.type]||'•') + '</div>' +
+      '<div style="flex:1"><div class="log-desc">' + e.desc + '</div>' +
+      (e.detail ? '<div class="log-detail">' + e.detail + '</div>' : '') + '</div>' +
+      '<div class="log-time">' + ts + '</div>';
+    container.appendChild(div);
+  });
+}
+
+function clearLog() {
+  if (!confirm('Clear the entire change log? This cannot be undone.')) return;
+  changelog = []; localStorage.removeItem('skinbox_log');
+  renderLog(); toast('Log cleared', 'success');
+}
+
+function exportLog() {
+  if (!changelog.length) { toast('No log entries to export', 'error'); return; }
+  const rows = ['Time,Type,Description,Detail'];
+  changelog.forEach(e => {
+    const esc = v => '"' + String(v||'').replace(/"/g,'""') + '"';
+    rows.push([esc(new Date(e.time).toLocaleString()), e.type, esc(e.desc), esc(e.detail)].join(','));
+  });
+  dl(rows.join('\n'), 'SkinBox_ChangeLog.csv', 'text/csv');
+  toast('Log exported', 'success');
+}
 
 // ── ADD / REMOVE ──────────────────────────────────────────────────────────────
 let previewTimer = null;
@@ -667,13 +694,13 @@ function previewSkin() {
     if (d.img) document.getElementById('prev-img').src = d.img;
     document.getElementById('prev-sub').textContent = '#' + id;
     document.getElementById('prev-badge').textContent = d.status || '';
-    document.getElementById('prev-badge').className = 'badge ' + (d.status === 'Approved' ? 'b-approved' : d.status === 'Workshop' ? 'b-workshop' : 'b-unavail');
+    document.getElementById('prev-badge').className = 'badge ' + badgeClass(d.status);
     if (!skinData[id]) skinData[id] = d;
   }, 500);
 }
 
 function addSkin() {
-  const id = document.getElementById('add-id').value.trim();
+  const id  = document.getElementById('add-id').value.trim();
   const cat = document.getElementById('add-item').value;
   const perm = document.getElementById('add-perm').value;
   if (!id || !/^\d+$/.test(id)) { toast('Enter a valid numeric skin ID', 'error'); return; }
@@ -685,14 +712,23 @@ function addSkin() {
   document.getElementById('add-id').value = '';
   document.getElementById('preview-wrap').style.display = 'none';
   document.getElementById('hdr-count').textContent = skins.length;
-  renderTable(); renderPermCards();
+  logAction('add', 'Added skin #' + id + ' to ' + (CAT_LABELS[cat] || cat), perm ? 'Permission: ' + perm : '');
+  renderAll(); renderPermCards();
   toast('Skin ' + id + ' added', 'success');
-  fetchOneSkin(id).then(d => { skinData[id] = d; renderTable(); });
+  fetchOneSkin(id).then(d => { skinData[id] = d; renderAll(); });
+}
+
+function addSkinToItem() {
+  if (drillCat) {
+    document.getElementById('add-item').value = drillCat;
+    showTab('skins');
+    document.getElementById('add-id').focus();
+  }
 }
 
 function bulkAdd() {
-  const raw = document.getElementById('bulk-ids').value;
-  const cat = document.getElementById('bulk-item').value;
+  const raw  = document.getElementById('bulk-ids').value;
+  const cat  = document.getElementById('bulk-item').value;
   const perm = document.getElementById('bulk-perm').value;
   if (!cat) { toast('Select an item shortname', 'error'); return; }
   const ids = [...new Set(raw.split(/[\n,\s]+/).map(s => s.trim()).filter(s => /^\d{6,12}$/.test(s)))];
@@ -707,121 +743,261 @@ function bulkAdd() {
   }
   document.getElementById('bulk-ids').value = '';
   document.getElementById('hdr-count').textContent = skins.length;
-  renderTable(); renderPermCards();
+  logAction('bulk', 'Bulk added ' + added + ' skins to ' + (CAT_LABELS[cat] || cat), (dupe ? dupe + ' dupes skipped' : '') + (perm ? ' | Permission: ' + perm : ''));
+  renderAll(); renderPermCards();
   toast('Added ' + added + ' skins' + (dupe ? ' (' + dupe + ' dupes skipped)' : ''), 'success');
 }
 
 function removeSkin(id) {
-  skins = skins.filter(s => s.id !== id);
+  const s = skins.find(sk => sk.id === id);
+  const name = skinData[id]?.name || id;
+  skins = skins.filter(sk => sk.id !== id);
   for (const g of Object.values(permGroups)) g.delete(id);
   document.getElementById('hdr-count').textContent = skins.length;
-  renderTable(); renderPermCards();
+  logAction('remove', 'Removed skin "' + name + '" (#' + id + ')', s ? 'Item: ' + s.catLabel : '');
+  renderAll(); renderPermCards();
   toast('Skin removed', 'success');
 }
 
-// ── PERM GROUPS ───────────────────────────────────────────────────────────────
+// ── HELPERS ───────────────────────────────────────────────────────────────────
 function getSkinPerms(id) { return Object.keys(permGroups).filter(p => permGroups[p].has(id)); }
 
-function createPermGroup() {
-  const name = document.getElementById('new-perm-name').value.trim();
-  if (!name) { toast('Enter a permission name', 'error'); return; }
-  if (!name.startsWith('skinbox.')) { toast('Must start with skinbox.', 'error'); return; }
-  if (permGroups[name] !== undefined) { toast('Group already exists', 'error'); return; }
-  permGroups[name] = new Set();
-  document.getElementById('new-perm-name').value = '';
-  refreshPermSelects(); renderPermCards();
-  toast('Created ' + name, 'success');
+function badgeClass(status) {
+  if (status === 'Approved') return 'b-approved';
+  if (status === 'Workshop') return 'b-workshop';
+  if (status === 'Unavailable') return 'b-unavail';
+  return 'b-loading';
+}
+function badgeHtml(status) {
+  const labels = { Approved:'✓ Approved', Workshop:'Workshop', Unavailable:'Unavailable' };
+  return '<span class="badge ' + badgeClass(status) + '">' + (labels[status] || '...') + '</span>';
+}
+function permPillsHtml(id, clickable) {
+  const perms = getSkinPerms(id);
+  const keys  = Object.keys(permGroups);
+  let html = perms.map(p => {
+    const color = PERM_COLORS[keys.indexOf(p) % PERM_COLORS.length];
+    return '<span class="pill" style="background:' + color + '22;color:' + color + ';border:1px solid ' + color + '55"' +
+      (clickable ? ' onclick="openPermModal(\'' + id + '\')"' : '') + '>' + p.replace('skinbox.', '') + '</span>';
+  }).join('');
+  if (clickable) html += '<span class="pill pill-add" onclick="openPermModal(\'' + id + '\')">+perm</span>';
+  return html;
 }
 
-function removePermGroup(name) {
-  delete permGroups[name];
-  refreshPermSelects(); renderPermCards(); renderTable();
-  toast('Removed ' + name, 'success');
-}
-
-function removeSkinFromPerm(perm, id) { permGroups[perm]?.delete(id); renderPermCards(); renderTable(); }
-
-function renderPermCards() {
-  const c = document.getElementById('perm-cards');
-  c.innerHTML = '';
-  const keys = Object.keys(permGroups).sort();
-  if (!keys.length) { c.innerHTML = '<p style="color:var(--text3);font-size:13px;padding:16px">No permission groups. Create one above.</p>'; return; }
-  keys.forEach((perm, i) => {
-    const color = PERM_COLORS[i % PERM_COLORS.length];
-    const ids = [...permGroups[perm]];
-    const div = document.createElement('div'); div.className = 'perm-group-card';
-    div.innerHTML = '<div class="perm-group-header"><div class="perm-dot" style="background:' + color + '"></div><span class="perm-name" style="color:' + color + '">' + perm + '</span><span class="perm-count">' + ids.length + ' skin' + (ids.length !== 1 ? 's' : '') + '</span><button class="btn danger" style="height:28px;padding:0 10px;font-size:11px;margin-left:8px" onclick="removePermGroup(\'' + perm + '\')">Delete</button></div><div class="perm-skins-list" id="psl-' + perm.replace(/\./g, '_') + '"></div>';
-    c.appendChild(div);
-    const list = div.querySelector('.perm-skins-list');
-    if (!ids.length) { list.innerHTML = '<span style="font-size:12px;color:var(--text3)">No skins assigned</span>'; return; }
-    ids.forEach(id => {
-      const d = skinData[id];
-      const chip = document.createElement('div'); chip.className = 'perm-skin-chip';
-      chip.innerHTML = '<span>' + (d?.name || id) + '</span><span class="skin-id">#' + id + '</span><button onclick="removeSkinFromPerm(\'' + perm + '\',\'' + id + '\')" title="Remove">&times;</button>';
-      list.appendChild(chip);
-    });
-  });
-}
-
-// ── TABLE ─────────────────────────────────────────────────────────────────────
+// ── FILTERS ───────────────────────────────────────────────────────────────────
 function filtered() {
-  const q = document.getElementById('f-search').value.trim().toLowerCase();
-  const grp = document.getElementById('f-group').value;
-  const cat = document.getElementById('f-item').value;
+  const q    = document.getElementById('f-search').value.trim().toLowerCase();
+  const grp  = document.getElementById('f-group').value;
+  const cat  = document.getElementById('f-item').value;
   const perm = document.getElementById('f-perm').value;
-  const st = document.getElementById('f-status').value;
-  const allCustomIds = new Set(Object.values(permGroups).flatMap(s => [...s]));
+  const st   = document.getElementById('f-status').value;
+  const allCustom = new Set(Object.values(permGroups).flatMap(s => [...s]));
   return skins.filter(s => {
     if (grp && s.group !== grp) return false;
     if (cat && s.cat !== cat) return false;
     if (st && skinData[s.id]?.status !== st) return false;
     if (perm === '__none__') { if (getSkinPerms(s.id).length) return false; }
-    else if (perm === '__use_exclusive__') { if (allCustomIds.has(s.id)) return false; }
+    else if (perm === '__use_excl__') { if (allCustom.has(s.id)) return false; }
     else if (perm) { if (!permGroups[perm]?.has(s.id)) return false; }
     if (q) { const n = (skinData[s.id]?.name || '').toLowerCase(); if (!n.includes(q) && !s.id.includes(q) && !s.catLabel.toLowerCase().includes(q)) return false; }
     return true;
   });
 }
 
-function badgeHtml(status) {
-  if (status === 'Approved') return '<span class="badge b-approved">&#x2713; Approved</span>';
-  if (status === 'Workshop') return '<span class="badge b-workshop">Workshop</span>';
-  if (status === 'Unavailable') return '<span class="badge b-unavail">Unavailable</span>';
-  return '<span class="badge b-loading">...</span>';
+function hasActiveFilter() {
+  return document.getElementById('f-search').value.trim() ||
+    document.getElementById('f-group').value ||
+    document.getElementById('f-item').value ||
+    document.getElementById('f-perm').value ||
+    document.getElementById('f-status').value;
 }
 
+// ── VIEWS ─────────────────────────────────────────────────────────────────────
+function setMainView(v) {
+  mainView = v;
+  drillCat = null;
+  ['cat','cat-detail','grid','table'].forEach(n => document.getElementById('view-' + n).style.display = 'none');
+  ['cat','grid','table'].forEach(n => document.getElementById('vbtn-' + n).classList.remove('active'));
+  document.getElementById('vbtn-' + v).classList.add('active');
+  renderAll();
+}
+
+function onSearchChange() {
+  // If user types while in category view, switch to grid for search results
+  if (mainView === 'cat' && document.getElementById('f-search').value.trim()) {
+    mainView = 'grid';
+    ['cat','cat-detail','grid','table'].forEach(n => document.getElementById('view-' + n).style.display = 'none');
+    ['cat','grid','table'].forEach(n => document.getElementById('vbtn-' + n).classList.remove('active'));
+    document.getElementById('vbtn-grid').classList.add('active');
+  }
+  renderAll();
+}
+
+function onFilterChange() {
+  if (mainView === 'cat') { mainView = 'grid'; setMainView('grid'); return; }
+  renderAll();
+}
+
+function renderAll() {
+  updateStats();
+  if (mainView === 'cat') {
+    document.getElementById('view-cat').style.display = 'block';
+    document.getElementById('view-cat-detail').style.display = 'none';
+    document.getElementById('view-grid').style.display = 'none';
+    document.getElementById('view-table').style.display = 'none';
+    renderCatGrid();
+  } else if (mainView === 'grid') {
+    document.getElementById('view-cat').style.display = 'none';
+    document.getElementById('view-cat-detail').style.display = 'none';
+    document.getElementById('view-grid').style.display = 'block';
+    document.getElementById('view-table').style.display = 'none';
+    renderSkinGrid();
+  } else {
+    document.getElementById('view-cat').style.display = 'none';
+    document.getElementById('view-cat-detail').style.display = 'none';
+    document.getElementById('view-grid').style.display = 'none';
+    document.getElementById('view-table').style.display = 'block';
+    renderTable();
+  }
+}
+
+function updateStats() {
+  const approved = skins.filter(s => skinData[s.id]?.status === 'Approved').length;
+  const workshop = skins.filter(s => skinData[s.id]?.status === 'Workshop').length;
+  const gated    = skins.filter(s => getSkinPerms(s.id).length > 0).length;
+  document.getElementById('s-total').textContent    = skins.length;
+  document.getElementById('s-approved').textContent = approved;
+  document.getElementById('s-workshop').textContent = workshop;
+  document.getElementById('s-gated').textContent    = gated;
+  document.getElementById('hdr-count').textContent  = skins.length;
+}
+
+// ── CATEGORY GRID ─────────────────────────────────────────────────────────────
+function renderCatGrid() {
+  const grid = document.getElementById('cat-grid');
+  grid.innerHTML = '';
+  // Group skins by cat
+  const byCat = {};
+  for (const s of skins) {
+    if (!byCat[s.cat]) byCat[s.cat] = [];
+    byCat[s.cat].push(s);
+  }
+  const cats = Object.keys(byCat).sort((a, b) => (CAT_LABELS[a]||a).localeCompare(CAT_LABELS[b]||b));
+  for (const cat of cats) {
+    const catSkins = byCat[cat];
+    const count = catSkins.length;
+    // Find a loaded skin image to use as category thumbnail
+    const sample = catSkins.find(s => skinData[s.id]?.img) || catSkins[0];
+    const img = skinData[sample?.id]?.img;
+    // Check if any skins in this cat have perms
+    const hasPerms = catSkins.some(s => getSkinPerms(s.id).length > 0);
+
+    const card = document.createElement('div');
+    card.className = 'cat-card';
+    card.onclick = () => drillIntoCat(cat);
+
+    const imgHtml = img
+      ? '<img src="' + img + '" alt="" loading="lazy" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'">' +
+        '<div class="cat-card-icon" style="display:none">&#x1F5BC;</div>'
+      : '<div class="cat-card-icon">&#x1F5BC;</div>';
+
+    card.innerHTML =
+      '<span class="cat-card-count">' + count + '</span>' +
+      (hasPerms ? '<span class="cat-card-perm" style="background:var(--amber)" title="Has permission-gated skins"></span>' : '') +
+      imgHtml +
+      '<div class="cat-card-name">' + (CAT_LABELS[cat] || cat) + '</div>' +
+      '<div class="cat-card-sub">' + (CAT_GROUPS[cat] || '') + '</div>';
+    grid.appendChild(card);
+  }
+}
+
+function drillIntoCat(cat) {
+  drillCat = cat;
+  document.getElementById('view-cat').style.display = 'none';
+  document.getElementById('view-cat-detail').style.display = 'block';
+  document.getElementById('drill-title').textContent = CAT_LABELS[cat] || cat;
+  const catSkins = skins.filter(s => s.cat === cat);
+  document.getElementById('drill-sub').textContent = catSkins.length + ' skins · ' + (CAT_GROUPS[cat] || '');
+  renderDrillGrid(catSkins);
+}
+
+function backToCat() {
+  drillCat = null;
+  document.getElementById('view-cat-detail').style.display = 'none';
+  document.getElementById('view-cat').style.display = 'block';
+}
+
+function renderDrillGrid(catSkins) {
+  const grid = document.getElementById('drill-skin-grid');
+  grid.innerHTML = '';
+  for (const s of catSkins) {
+    grid.appendChild(makeSkinCard(s, true));
+  }
+}
+
+// ── SKIN CARD GRID ────────────────────────────────────────────────────────────
+function makeSkinCard(s, showCtxMenu) {
+  const d     = skinData[s.id] || {};
+  const card  = document.createElement('div');
+  card.className = 'skin-card';
+
+  const imgHtml = d.img
+    ? '<img src="' + d.img + '" alt="" loading="lazy" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'">' +
+      '<div class="skin-card-ph" style="display:none">&#x1F5BC;</div>'
+    : '<div class="skin-card-ph">&#x1F5BC;</div>';
+
+  card.innerHTML = imgHtml +
+    '<div class="skin-card-body">' +
+    '<div class="skin-card-name" title="' + (d.name || '') + '">' + (d.name || 'Loading...') + '</div>' +
+    '<div class="skin-card-id">#' + s.id + ' &nbsp;<a href="https://steamcommunity.com/sharedfiles/filedetails/?id=' + s.id + '" target="_blank" class="ws-link">&#x2197;</a></div>' +
+    '<div class="skin-card-footer">' +
+    badgeHtml(d.status) +
+    '<div class="perm-pills" style="margin-top:3px">' + permPillsHtml(s.id, true) + '</div>' +
+    '<button class="btn danger" style="height:22px;padding:0 6px;font-size:10px;margin-top:4px" onclick="removeSkin(\'' + s.id + '\')">&#x2715;</button>' +
+    '</div></div>';
+
+  if (showCtxMenu) card.addEventListener('contextmenu', e => { e.preventDefault(); showCtx(e, s.id); });
+  return card;
+}
+
+function renderSkinGrid() {
+  const list    = filtered();
+  const showing = list.slice(0, gridVisible);
+  const grid    = document.getElementById('skin-grid');
+  grid.innerHTML = '';
+  for (const s of showing) grid.appendChild(makeSkinCard(s, true));
+  document.getElementById('pager-grid').textContent = 'Showing ' + showing.length + ' of ' + list.length + ' skins';
+  const btn = document.getElementById('load-more-grid');
+  if (list.length > gridVisible) { btn.style.display = 'block'; btn.textContent = 'Load ' + Math.min(80, list.length - gridVisible) + ' more'; }
+  else btn.style.display = 'none';
+}
+
+function loadMoreGrid() { gridVisible += 80; renderSkinGrid(); }
+
+// ── TABLE ─────────────────────────────────────────────────────────────────────
 function renderTable() {
-  const list = filtered();
+  const list    = filtered();
   const showing = list.slice(0, visible);
-  const tbody = document.getElementById('tbody');
+  const tbody   = document.getElementById('tbody');
   tbody.innerHTML = '';
-  const permKeys = Object.keys(permGroups);
   for (const s of showing) {
-    const d = skinData[s.id] || {};
-    const perms = getSkinPerms(s.id);
+    const d  = skinData[s.id] || {};
     const tr = document.createElement('tr');
-    const imgCell = d.img ? '<img src="' + d.img + '" width="40" height="40" style="object-fit:cover;border-radius:4px" loading="lazy" alt="">' : '<div class="img-ph">&#x1F5BC;</div>';
-    const pillsHtml = perms.map(p => {
-      const color = PERM_COLORS[permKeys.indexOf(p) % PERM_COLORS.length];
-      return '<span class="pill" style="background:' + color + '22;color:' + color + ';border:1px solid ' + color + '55" onclick="openPermModal(\'' + s.id + '\')">' + p.replace('skinbox.', '') + '</span>';
-    }).join('');
-    tr.innerHTML = '<td>' + imgCell + '</td>' +
-      '<td><div style="font-weight:700">' + (d.name || 'Loading...') + '</div><a href="https://steamcommunity.com/sharedfiles/filedetails/?id=' + s.id + '" target="_blank" class="ws-link">#' + s.id + ' &#x2197;</a></td>' +
-      '<td><div>' + s.catLabel + '</div><div style="font-size:11px;color:var(--text3)">' + s.group + '</div></td>' +
-      '<td class="skin-id">' + s.id + '</td>' +
+    const imgHtml = d.img
+      ? '<img src="' + d.img + '" width="38" height="38" style="object-fit:cover;border-radius:4px" alt="" loading="lazy">'
+      : '<div class="img-ph">&#x1F5BC;</div>';
+    tr.innerHTML =
+      '<td>' + imgHtml + '</td>' +
+      '<td><div style="font-weight:700;font-size:12px">' + (d.name || 'Loading...') + '</div>' +
+      '<a href="https://steamcommunity.com/sharedfiles/filedetails/?id=' + s.id + '" target="_blank" class="ws-link">#' + s.id + ' &#x2197;</a></td>' +
+      '<td><div>' + s.catLabel + '</div><div style="font-size:10px;color:var(--text3)">' + s.group + '</div></td>' +
+      '<td class="skin-id-mono">' + s.id + '</td>' +
       '<td>' + badgeHtml(d.status) + '</td>' +
-      '<td><div class="perm-pills">' + pillsHtml + '<span class="pill pill-add" onclick="openPermModal(\'' + s.id + '\')">+ perm</span></div></td>' +
-      '<td><button class="btn danger" style="height:26px;padding:0 8px;font-size:11px" onclick="removeSkin(\'' + s.id + '\')">&#x2715;</button></td>';
+      '<td><div class="perm-pills">' + permPillsHtml(s.id, true) + '</div></td>' +
+      '<td><button class="btn danger" style="height:24px;padding:0 6px;font-size:10px" onclick="removeSkin(\'' + s.id + '\')">&#x2715;</button></td>';
     tr.addEventListener('contextmenu', e => { e.preventDefault(); showCtx(e, s.id); });
     tbody.appendChild(tr);
   }
-  const approved = skins.filter(s => skinData[s.id]?.status === 'Approved').length;
-  const workshop = skins.filter(s => skinData[s.id]?.status === 'Workshop').length;
-  const gated = skins.filter(s => getSkinPerms(s.id).length > 0).length;
-  document.getElementById('s-total').textContent = skins.length;
-  document.getElementById('s-approved').textContent = approved;
-  document.getElementById('s-workshop').textContent = workshop;
-  document.getElementById('s-gated').textContent = gated;
   document.getElementById('pager').textContent = 'Showing ' + showing.length + ' of ' + list.length + ' skins';
   const btn = document.getElementById('load-more-btn');
   if (list.length > visible) { btn.style.display = 'block'; btn.textContent = 'Load ' + Math.min(80, list.length - visible) + ' more'; }
@@ -829,6 +1005,62 @@ function renderTable() {
 }
 
 function loadMore() { visible += 80; renderTable(); }
+
+// ── PERM GROUPS ───────────────────────────────────────────────────────────────
+function createPermGroup() {
+  const name = document.getElementById('new-perm-name').value.trim();
+  if (!name) { toast('Enter a permission name', 'error'); return; }
+  if (!name.startsWith('skinbox.')) { toast('Must start with skinbox.', 'error'); return; }
+  if (permGroups[name] !== undefined) { toast('Group already exists', 'error'); return; }
+  permGroups[name] = new Set();
+  document.getElementById('new-perm-name').value = '';
+  logAction('perm', 'Created permission group: ' + name);
+  refreshPermSelects(); renderPermCards();
+  toast('Created ' + name, 'success');
+}
+
+function removePermGroup(name) {
+  delete permGroups[name];
+  logAction('perm', 'Deleted permission group: ' + name);
+  refreshPermSelects(); renderPermCards(); renderAll();
+  toast('Removed ' + name, 'success');
+}
+
+function removeSkinFromPerm(perm, id) {
+  permGroups[perm]?.delete(id);
+  const name = skinData[id]?.name || id;
+  logAction('perm', 'Removed "' + name + '" from ' + perm);
+  renderPermCards(); renderAll();
+}
+
+function renderPermCards() {
+  const c = document.getElementById('perm-cards');
+  c.innerHTML = '';
+  const keys = Object.keys(permGroups).sort();
+  if (!keys.length) { c.innerHTML = '<p style="color:var(--text3);font-size:12px;padding:14px">No permission groups. Create one above.</p>'; return; }
+  keys.forEach((perm, i) => {
+    const color = PERM_COLORS[i % PERM_COLORS.length];
+    const ids   = [...permGroups[perm]];
+    const div   = document.createElement('div'); div.className = 'perm-group-card';
+    div.innerHTML =
+      '<div class="perm-group-header">' +
+      '<div class="perm-dot" style="background:' + color + '"></div>' +
+      '<span class="perm-name" style="color:' + color + '">' + perm + '</span>' +
+      '<span class="perm-count">' + ids.length + ' skin' + (ids.length !== 1 ? 's' : '') + '</span>' +
+      '<button class="btn danger" style="height:26px;padding:0 8px;font-size:10px;margin-left:8px" onclick="removePermGroup(\'' + perm + '\')">Delete</button>' +
+      '</div><div class="perm-skins-list" id="psl-' + perm.replace(/\./g, '_') + '"></div>';
+    c.appendChild(div);
+    const list = div.querySelector('.perm-skins-list');
+    if (!ids.length) { list.innerHTML = '<span style="font-size:11px;color:var(--text3)">No skins assigned</span>'; return; }
+    ids.forEach(id => {
+      const d = skinData[id];
+      const chip = document.createElement('div'); chip.className = 'perm-skin-chip';
+      chip.innerHTML = '<span>' + (d?.name || id) + '</span><span style="color:var(--text3);font-size:9px">#' + id + '</span>' +
+        '<button onclick="removeSkinFromPerm(\'' + perm + '\',\'' + id + '\')" title="Remove">&times;</button>';
+      list.appendChild(chip);
+    });
+  });
+}
 
 // ── CONTEXT MENU ──────────────────────────────────────────────────────────────
 function showCtx(e, id) {
@@ -840,26 +1072,35 @@ function showCtx(e, id) {
     const has = perms.includes(p);
     const d = document.createElement('div'); d.className = 'ctx-item';
     d.textContent = (has ? '✓ ' : '') + p;
-    d.onclick = () => { if (has) removeSkinFromPerm(p, id); else { permGroups[p].add(id); renderPermCards(); renderTable(); } closeCtx(); };
+    d.onclick = () => {
+      if (has) removeSkinFromPerm(p, id);
+      else {
+        permGroups[p].add(id);
+        const name = skinData[id]?.name || id;
+        logAction('perm', 'Added "' + name + '" to ' + p);
+        renderPermCards(); renderAll();
+      }
+      closeCtx();
+    };
     items.appendChild(d);
   });
   if (!Object.keys(permGroups).length) { items.innerHTML = '<div class="ctx-item" style="color:var(--text3)">No groups yet</div>'; }
   const m = document.getElementById('ctx-menu');
   m.style.display = 'block';
-  m.style.left = Math.min(e.clientX, window.innerWidth - 170) + 'px';
-  m.style.top = Math.min(e.clientY, window.innerHeight - 200) + 'px';
+  m.style.left = Math.min(e.clientX, window.innerWidth - 165) + 'px';
+  m.style.top  = Math.min(e.clientY, window.innerHeight - 200) + 'px';
 }
 function closeCtx() { document.getElementById('ctx-menu').style.display = 'none'; }
 function ctxWorkshop() { if (ctxSkinId) window.open('https://steamcommunity.com/sharedfiles/filedetails/?id=' + ctxSkinId, '_blank'); closeCtx(); }
-function ctxCopy() { if (ctxSkinId) { navigator.clipboard.writeText(ctxSkinId); toast('Copied ' + ctxSkinId, 'success'); } closeCtx(); }
-function ctxRemove() { if (ctxSkinId) removeSkin(ctxSkinId); closeCtx(); }
+function ctxCopy()     { if (ctxSkinId) { navigator.clipboard.writeText(ctxSkinId); toast('Copied ' + ctxSkinId, 'success'); } closeCtx(); }
+function ctxRemove()   { if (ctxSkinId) removeSkin(ctxSkinId); closeCtx(); }
 document.addEventListener('click', e => { if (!e.target.closest('#ctx-menu')) closeCtx(); });
 
 // ── PERM MODAL ────────────────────────────────────────────────────────────────
 function openPermModal(id) {
   modalSkinId = id;
-  const cur = getSkinPerms(id);
   refreshPermSelects();
+  const cur = getSkinPerms(id);
   document.getElementById('modal-perm-select').value = cur[0] || '';
   document.getElementById('perm-modal').classList.add('show');
 }
@@ -867,17 +1108,56 @@ function closeModal() { document.getElementById('perm-modal').classList.remove('
 function applyPerm() {
   if (!modalSkinId) return;
   const newPerm = document.getElementById('modal-perm-select').value;
+  const oldPerms = getSkinPerms(modalSkinId);
   for (const g of Object.values(permGroups)) g.delete(modalSkinId);
   if (newPerm && permGroups[newPerm]) permGroups[newPerm].add(modalSkinId);
-  closeModal(); renderPermCards(); renderTable();
+  const name = skinData[modalSkinId]?.name || modalSkinId;
+  logAction('perm', 'Changed permission for "' + name + '"', (oldPerms.length ? oldPerms.join(', ') : 'none') + ' → ' + (newPerm || 'none'));
+  closeModal(); renderPermCards(); renderAll();
   toast('Permission updated', 'success');
 }
 document.getElementById('perm-modal').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
 
+// ── JSON UPLOAD ───────────────────────────────────────────────────────────────
+function loadJSON(input) {
+  const file = input.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const cfg = JSON.parse(e.target.result);
+      const ws  = cfg['Imported Workshop Skins'];
+      const cp  = cfg['Permission Options']?.['Custom permissions per skin'] || {};
+      if (!ws) { alert('Invalid SkinBox.json'); return; }
+      skins = []; skinData = {}; permGroups = {}; visible = 80; gridVisible = 80;
+      const seen = new Set();
+      for (const [cat, ids] of Object.entries(ws)) {
+        for (const id of ids) {
+          const k = String(id);
+          if (!seen.has(k)) { seen.add(k); skins.push({ id: k, cat, catLabel: CAT_LABELS[cat] || cat, group: CAT_GROUPS[cat] || 'Other' }); }
+          if (!skinData[k]) skinData[k] = { name: null, img: null, status: 'loading' };
+        }
+      }
+      for (const [p, ids] of Object.entries(cp)) permGroups[p] = new Set(ids.map(String));
+      populateItemSelects(); refreshPermSelects();
+      renderAll(); renderPermCards(); updateViewInfo();
+      document.getElementById('hdr-count').textContent = skins.length;
+      document.getElementById('json-upload-status').textContent = file.name + ' — ' + skins.length + ' skins';
+      document.getElementById('json-upload-status').style.color = 'var(--green)';
+      logAction('import', 'Imported ' + skins.length + ' skins from ' + file.name);
+      toast('Loaded ' + skins.length + ' skins', 'success');
+      steamRunning = false;
+      document.getElementById('prog').style.display = 'block';
+      document.getElementById('prog').style.width = '0%';
+      fetchSteamData();
+    } catch(err) { alert('Failed to parse JSON: ' + err.message); }
+  };
+  reader.readAsText(file);
+}
+
 // ── EXPORT ────────────────────────────────────────────────────────────────────
 function buildConfig() {
   const cfg = JSON.parse(JSON.stringify(BASE_CONFIG));
-  const ws = {};
+  const ws  = {};
   for (const s of skins) { if (!ws[s.cat]) ws[s.cat] = []; ws[s.cat].push(parseInt(s.id)); }
   cfg['Imported Workshop Skins'] = ws;
   const cp = {};
@@ -887,35 +1167,38 @@ function buildConfig() {
 }
 
 let lastJSON = '';
-function generateExport() { lastJSON = JSON.stringify(buildConfig(), null, 2); document.getElementById('export-box').textContent = lastJSON; toast('Config generated', 'success'); }
-function downloadJSON() { if (!lastJSON) generateExport(); dl(lastJSON, 'SkinBox.json', 'application/json'); toast('Downloaded SkinBox.json', 'success'); }
-function copyJSON() { if (!lastJSON) generateExport(); navigator.clipboard.writeText(lastJSON); toast('Copied to clipboard', 'success'); }
+function generateExport() {
+  lastJSON = JSON.stringify(buildConfig(), null, 2);
+  document.getElementById('export-box').textContent = lastJSON;
+  logAction('export', 'Generated SkinBox.json export');
+  toast('Config generated', 'success');
+}
+function downloadJSON() {
+  if (!lastJSON) generateExport();
+  dl(lastJSON, 'SkinBox.json', 'application/json');
+  toast('Downloaded SkinBox.json', 'success');
+}
+function copyJSON()  { if (!lastJSON) generateExport(); navigator.clipboard.writeText(lastJSON); toast('Copied!', 'success'); }
 function exportCSV() {
-  const cols = ['Skin ID', 'Item Shortname', 'Item Name', 'Category Group', 'Skin Name', 'Steam Status', 'Permission Groups', 'Workshop URL'];
+  const cols = ['Skin ID','Item Shortname','Item Name','Category Group','Skin Name','Steam Status','Permission Groups','Workshop URL'];
   const rows = [cols.join(',')];
   for (const s of skins) {
-    const d = skinData[s.id] || {};
+    const d     = skinData[s.id] || {};
     const perms = getSkinPerms(s.id).join('|');
-    const esc = v => '"' + String(v || '').replace(/"/g, '""') + '"';
-    rows.push([s.id, s.cat, s.catLabel, s.group, esc(d.name || ''), d.status || '', esc(perms), 'https://steamcommunity.com/sharedfiles/filedetails/?id=' + s.id].join(','));
+    const esc   = v => '"' + String(v||'').replace(/"/g,'""') + '"';
+    rows.push([s.id, s.cat, s.catLabel, s.group, esc(d.name||''), d.status||'', esc(perms), 'https://steamcommunity.com/sharedfiles/filedetails/?id=' + s.id].join(','));
   }
   dl(rows.join('\n'), 'SkinBox_Export.csv', 'text/csv');
-}
-function dl(content, filename, type) {
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([content], { type }));
-  a.download = filename; a.click();
+  toast('CSV exported', 'success');
 }
 
 // ── VIEW-ONLY EXPORT ──────────────────────────────────────────────────────────
 function getViewSkins() {
-  const perm = document.getElementById('view-export-perm').value;
+  const perm  = document.getElementById('view-export-perm').value;
   const scope = document.getElementById('view-export-scope').value;
   if (scope === 'all') return skins;
-  const allCustomIds = new Set(Object.values(permGroups).flatMap(s => [...s]));
-  if (perm === '__use__') {
-    return scope === 'exclusive' ? skins.filter(s => !allCustomIds.has(s.id)) : skins;
-  }
+  const allCustom = new Set(Object.values(permGroups).flatMap(s => [...s]));
+  if (perm === '__use__') return scope === 'exclusive' ? skins.filter(s => !allCustom.has(s.id)) : skins;
   const ids = permGroups[perm] || new Set();
   if (scope === 'exclusive') {
     const otherIds = new Set(Object.entries(permGroups).filter(([p]) => p !== perm).flatMap(([, s]) => [...s]));
@@ -925,15 +1208,14 @@ function getViewSkins() {
 }
 
 function updateViewInfo() {
-  const el = document.getElementById('view-export-info');
-  if (!el) return;
-  const perm = document.getElementById('view-export-perm').value;
+  const el    = document.getElementById('view-export-info'); if (!el) return;
+  const perm  = document.getElementById('view-export-perm').value;
   const scope = document.getElementById('view-export-scope').value;
-  const subset = getViewSkins();
+  const sub   = getViewSkins();
   const label = perm === '__use__' ? 'skinbox.use' : perm;
-  const allCustomIds = new Set(Object.values(permGroups).flatMap(s => [...s]));
-  const hidden = perm === '__use__' && scope === 'exclusive' ? skins.filter(s => allCustomIds.has(s.id)).length : 0;
-  let txt = 'Will export <strong>' + subset.length + ' skin' + (subset.length !== 1 ? 's' : '') + '</strong> for <strong>' + label + '</strong>';
+  const allCustom = new Set(Object.values(permGroups).flatMap(s => [...s]));
+  const hidden = perm === '__use__' && scope === 'exclusive' ? skins.filter(s => allCustom.has(s.id)).length : 0;
+  let txt = 'Will export <strong>' + sub.length + ' skin' + (sub.length !== 1 ? 's' : '') + '</strong> for <strong>' + label + '</strong>';
   if (hidden) txt += ' &mdash; <span style="color:var(--amber)">' + hidden + ' higher-perm skins excluded</span>';
   el.innerHTML = txt;
 }
@@ -943,89 +1225,29 @@ function exportViewChart() {
   const subset    = getViewSkins();
   const permLabel = perm === '__use__' ? 'skinbox.use' : perm;
   const filename  = 'SkinBox_' + permLabel.replace(/[^a-z0-9]/gi, '_') + '.html';
-  const ts        = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+  const ts        = new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
 
   const permKeys = Object.keys(permGroups).sort();
   const permColorsMap = {};
   permKeys.forEach((p, i) => permColorsMap[p] = PERM_COLORS[i % PERM_COLORS.length]);
 
-  // Embed IDs + already-loaded Steam data so the file works offline too
   const skinList = subset.map(s => {
     const d = skinData[s.id] || {};
-    return { id: s.id, cat: s.cat, catLabel: s.catLabel, group: s.group,
-             perms: getSkinPerms(s.id), name: d.name || null,
-             img: d.img || null, status: d.status || 'loading' };
+    return { id:s.id, cat:s.cat, catLabel:s.catLabel, group:s.group, perms:getSkinPerms(s.id), name:d.name||null, img:d.img||null, status:d.status||'loading' };
   });
 
-  const payload = {
-    skins: skinList,
-    pcols: permColorsMap,
-    workerUrl: WORKER_URL,
-    permLabel, ts
-  };
-
-  // Build the view-only HTML as a safe base64-decoded payload — no escaping issues
+  const payload = { skins:skinList, pcols:permColorsMap, workerUrl:WORKER_URL, permLabel, ts };
   const viewHtml = buildViewHtml(payload);
   dl(viewHtml, filename, 'text/html');
-  toast('Exported ' + filename + ' (' + skinList.length + ' skins)', 'success');
+  logAction('export', 'Exported view-only chart: ' + filename, permLabel + ' · ' + skinList.length + ' skins');
+  toast('Exported ' + filename, 'success');
 }
 
 function buildViewHtml(payload) {
   const { skins: skinList, pcols, workerUrl, permLabel, ts } = payload;
-
-  const css = `
-:root{--rust:#E8461A;--bg:#111010;--surface:#1c1b1b;--surface2:#242323;--border:#333;--text:#f0ebe5;--text2:#a09890;--text3:#6a6260;--green:#4caf7d;--green-bg:#1a2e22;--blue:#4a9eda;--blue-bg:#192232;--amber:#e8a21a;--radius:6px}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-header{background:var(--surface);border-bottom:2px solid var(--rust);padding:14px 24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;position:sticky;top:0;z-index:50}
-.logo{display:flex;align-items:center;gap:10px}
-.logo-icon{width:32px;height:32px;background:var(--rust);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:16px}
-h1{font-size:17px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(--text)}
-.perm-tag{background:#1a1020;border:1px solid #a64ae855;color:#c47ae8;font-size:11px;font-weight:700;padding:3px 10px;border-radius:99px;font-family:'Share Tech Mono',monospace}
-.ro{background:#1a2210;border:1px solid #4caf7d55;color:#4caf7d;font-size:10px;font-weight:700;padding:3px 10px;border-radius:99px;font-family:'Share Tech Mono',monospace}
-.ts{font-size:11px;color:var(--text3);font-family:'Share Tech Mono',monospace;margin-left:auto}
-.stats{display:flex;gap:8px;padding:12px 24px;background:#161515;flex-wrap:wrap;border-bottom:1px solid var(--border)}
-.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:9px 16px;min-width:100px}
-.sl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px}
-.sv{font-size:20px;font-weight:900;color:var(--rust);font-family:'Share Tech Mono',monospace}
-.sv.g{color:var(--green)}.sv.b{color:var(--blue)}
-.pw{height:3px;background:var(--surface2)}.pb{height:100%;background:var(--rust);width:0%;transition:width .3s}
-.tb{display:flex;gap:8px;padding:12px 24px;flex-wrap:wrap;align-items:center;background:var(--surface);border-bottom:1px solid var(--border)}
-.tb input,.tb select{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:7px 12px;border-radius:var(--radius);font-size:13px;height:34px;font-family:'Barlow',sans-serif}
-.tb input{flex:1;min-width:160px}.tb input:focus,.tb select:focus{outline:none;border-color:var(--rust)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;padding:20px 24px}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:border-color .12s,transform .1s}
-.card:hover{border-color:var(--rust);transform:translateY(-2px)}
-.card img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:var(--surface2)}
-.card-ph{width:100%;aspect-ratio:1;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:32px;color:var(--text3)}
-.cb{padding:9px 10px}
-.cn{font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px;color:var(--text)}
-.ci{font-size:11px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
-.cid{font-size:10px;color:var(--text3);font-family:'Share Tech Mono',monospace;margin-bottom:6px}
-.cf{display:flex;flex-wrap:wrap;gap:3px}
-.badge{font-size:10px;padding:2px 7px;border-radius:99px;font-weight:700}
-.bap{background:var(--green-bg);color:var(--green)}.bws{background:var(--blue-bg);color:var(--blue)}.bun{background:#2a2a2a;color:var(--text3)}.bld{background:#2a2710;color:#a09050;animation:pulse 1.4s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
-.pill{font-size:10px;padding:2px 7px;border-radius:99px;font-weight:700;font-family:'Share Tech Mono',monospace}
-.vb{background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:4px 10px;border-radius:var(--radius);font-size:12px;font-weight:700;cursor:pointer;font-family:'Barlow',sans-serif}
-.vb.on{background:var(--rust);border-color:var(--rust);color:#fff}
-.tw{padding:0 24px 24px;overflow-x:auto}
-.tbl{width:100%;border-collapse:collapse;font-size:13px}
-.tbl th{background:var(--surface2);color:var(--text2);padding:9px 12px;text-align:left;border-bottom:2px solid var(--rust);font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:700;position:sticky;top:0}
-.tbl td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
-.tbl tr:hover td{background:var(--surface2)}
-.tbl img{width:38px;height:38px;object-fit:cover;border-radius:4px}
-.tbl a{color:var(--blue);text-decoration:none;font-size:11px;font-family:'Share Tech Mono',monospace}
-.tbl a:hover{text-decoration:underline}
-.pgr{text-align:center;padding:12px 24px;font-size:12px;color:var(--text3)}
-.lbtn{display:none;margin:0 auto 24px;background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:8px 24px;border-radius:var(--radius);font-size:13px;font-weight:700;cursor:pointer;font-family:'Barlow',sans-serif}
-footer{text-align:center;padding:16px;color:var(--text3);font-size:11px;border-top:1px solid var(--border);font-family:'Share Tech Mono',monospace}`;
-
   const catLabels = Object.fromEntries(skinList.map(s => [s.cat, s.catLabel]));
   const cats = [...new Set(skinList.map(s => s.cat))].sort();
-  const catOptions = cats.map(c => '<option value="' + c + '">' + (catLabels[c] || c) + '</option>').join('');
-
-  // Safe JSON embeds
+  const catOptions = cats.map(c => '<option value="' + c + '">' + (catLabels[c]||c) + '</option>').join('');
   const jSkins  = JSON.stringify(skinList);
   const jPcols  = JSON.stringify(pcols);
   const jLabel  = JSON.stringify(permLabel);
@@ -1035,18 +1257,80 @@ footer{text-align:center;padding:16px;color:var(--text3);font-size:11px;border-t
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SkinBox \u2014 ${permLabel}</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SkinBox — ${permLabel}</title>
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow:wght@400;600;700;900&display=swap" rel="stylesheet">
-<style>${css}</style>
+<style>
+:root{--rust:#E8461A;--bg:#111010;--surface:#1c1b1b;--surface2:#242323;--border:#333;--text:#f0ebe5;--text2:#a09890;--text3:#6a6260;--green:#4caf7d;--green-bg:#1a2e22;--blue:#4a9eda;--blue-bg:#192232;--amber:#e8a21a;--radius:6px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Barlow',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+header{background:var(--surface);border-bottom:2px solid var(--rust);padding:12px 22px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;position:sticky;top:0;z-index:50}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:30px;height:30px;background:var(--rust);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:15px}
+h1{font-size:16px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(--text)}
+.perm-tag{background:#1a1020;border:1px solid #a64ae855;color:#c47ae8;font-size:10px;font-weight:700;padding:2px 9px;border-radius:99px;font-family:'Share Tech Mono',monospace}
+.ro{background:#1a2210;border:1px solid #4caf7d55;color:#4caf7d;font-size:10px;font-weight:700;padding:2px 9px;border-radius:99px;font-family:'Share Tech Mono',monospace}
+.ts{font-size:10px;color:var(--text3);font-family:'Share Tech Mono',monospace;margin-left:auto}
+.lst{font-size:11px;color:var(--text3)}
+.stats{display:flex;gap:8px;padding:10px 22px;background:#161515;flex-wrap:wrap;border-bottom:1px solid var(--border)}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:8px 14px;min-width:90px}
+.sl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px}
+.sv{font-size:18px;font-weight:900;color:var(--rust);font-family:'Share Tech Mono',monospace}
+.sv.g{color:var(--green)}.sv.b{color:var(--blue)}
+.pw{height:3px;background:var(--surface2)}.pb{height:100%;background:var(--rust);width:0%;transition:width .3s}
+.tb{display:flex;gap:8px;padding:10px 22px;flex-wrap:wrap;align-items:center;background:var(--surface);border-bottom:1px solid var(--border)}
+.tb input,.tb select{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:var(--radius);font-size:12px;height:32px;font-family:'Barlow',sans-serif}
+.tb input{flex:1;min-width:150px}.tb input:focus,.tb select:focus{outline:none;border-color:var(--rust)}
+.vtog{display:flex;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.vb{background:none;border:none;border-right:1px solid var(--border);color:var(--text2);padding:0 12px;height:32px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Barlow',sans-serif}
+.vb:last-child{border-right:none}.vb:hover{background:var(--surface2);color:var(--text)}.vb.on{background:var(--rust);color:#fff}
+/* CATEGORY GRID */
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(115px,1fr));gap:10px;padding:16px 22px}
+.cc{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 8px 9px;display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;transition:border-color .12s,transform .1s;position:relative;text-align:center}
+.cc:hover{border-color:var(--rust);transform:translateY(-2px)}
+.cc img,.cc-ph{width:60px;height:60px;object-fit:contain}
+.cc-ph{display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--text3);background:var(--surface2);border-radius:6px}
+.cc-name{font-size:11px;font-weight:700;color:var(--text);line-height:1.3}
+.cc-sub{font-size:10px;color:var(--text3);font-family:'Share Tech Mono',monospace}
+.cc-count{position:absolute;top:5px;right:5px;background:var(--rust);color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:99px;font-family:'Share Tech Mono',monospace}
+/* DRILL DOWN */
+.dh{display:flex;align-items:center;gap:10px;padding:10px 22px 14px}
+.dback{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:5px 12px;border-radius:var(--radius);font-size:12px;font-weight:700;cursor:pointer;font-family:'Barlow',sans-serif}
+.dt{font-size:17px;font-weight:900;color:var(--text)}.ds{font-size:11px;color:var(--text3);margin-top:1px}
+/* SKIN GRID */
+.sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:10px;padding:0 22px 20px}
+.sc{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:border-color .12s,transform .1s}
+.sc:hover{border-color:var(--rust);transform:translateY(-2px)}
+.sc img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:var(--surface2)}
+.sc-ph{width:100%;aspect-ratio:1;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--text3)}
+.sb{padding:7px 9px}
+.sn{font-size:11px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
+.si{font-size:10px;font-family:'Share Tech Mono',monospace;color:var(--text3);margin-bottom:4px}
+.sf{display:flex;flex-wrap:wrap;gap:3px}
+/* TABLE */
+.tw{padding:0 22px 20px;overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{background:var(--surface2);color:var(--text2);padding:8px 10px;text-align:left;border-bottom:2px solid var(--rust);font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:700;position:sticky;top:0}
+.tbl td{padding:7px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
+.tbl tr:hover td{background:var(--surface2)}
+.tbl img{width:36px;height:36px;object-fit:cover;border-radius:4px}
+.tbl a{color:var(--blue);text-decoration:none;font-size:10px;font-family:'Share Tech Mono',monospace}
+.tbl a:hover{text-decoration:underline}
+.badge{font-size:10px;padding:2px 6px;border-radius:99px;font-weight:700}
+.bap{background:var(--green-bg);color:var(--green)}.bws{background:var(--blue-bg);color:var(--blue)}.bun{background:#2a2a2a;color:var(--text3)}.bld{background:#2a2710;color:#a09050;animation:p 1.4s infinite}
+@keyframes p{0%,100%{opacity:1}50%{opacity:.5}}
+.pill{font-size:10px;padding:2px 6px;border-radius:99px;font-weight:700;font-family:'Share Tech Mono',monospace}
+.pgr{text-align:center;padding:10px 22px;font-size:11px;color:var(--text3)}
+.lbtn{display:none;margin:0 auto 20px;background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:7px 20px;border-radius:var(--radius);font-size:12px;font-weight:700;cursor:pointer;font-family:'Barlow',sans-serif}
+footer{text-align:center;padding:14px;color:var(--text3);font-size:10px;border-top:1px solid var(--border);font-family:'Share Tech Mono',monospace}
+</style>
 </head>
 <body>
 <header>
-  <div class="logo"><div class="logo-icon">&#x1F980;</div><h1>SkinBox Skin List</h1></div>
-  <span class="perm-tag">${permLabel}</span>
+  <div class="logo"><div class="logo-icon">&#x1F980;</div><h1>SkinBox</h1></div>
+  <span class="perm-tag" id="perm-tag">${permLabel}</span>
   <span class="ro">VIEW ONLY</span>
-  <span id="lst" style="font-size:12px;color:var(--text3);margin-left:8px">Loading...</span>
+  <span class="lst" id="lst">Loading...</span>
   <span class="ts">${ts}</span>
 </header>
 <div class="pw"><div class="pb" id="pb"></div></div>
@@ -1057,45 +1341,49 @@ footer{text-align:center;padding:16px;color:var(--text3);font-size:11px;border-t
   <div class="stat"><div class="sl">Loaded</div><div class="sv" id="sl2" style="color:var(--text2)">0</div></div>
 </div>
 <div class="tb">
-  <input type="text" id="search" placeholder="Search name, ID, item..." oninput="render()">
-  <select id="fg" onchange="render()"><option value="">All groups</option><option>Weapons</option><option>Attire</option><option>Doors</option><option>Storage</option><option>Furniture</option><option>Tools</option></select>
-  <select id="fc" onchange="render()"><option value="">All items</option>${catOptions}</select>
-  <select id="fs" onchange="render()"><option value="">All statuses</option><option value="Approved">Approved</option><option value="Workshop">Workshop</option><option value="Unavailable">Unavailable</option></select>
-  <div style="display:flex;gap:6px">
-    <button class="vb on" id="vg" onclick="sv('grid')">&#x229E; Grid</button>
-    <button class="vb" id="vt" onclick="sv('table')">&#x2630; Table</button>
+  <div class="vtog">
+    <button class="vb on" id="vcat" onclick="sv('cat')">&#x229E; Categories</button>
+    <button class="vb" id="vgrid" onclick="sv('grid')">&#x25A6; Grid</button>
+    <button class="vb" id="vtbl" onclick="sv('tbl')">&#x2630; Table</button>
   </div>
+  <input type="text" id="search" placeholder="Search name, ID, item..." oninput="onSearch()">
+  <select id="fg" onchange="onFilter()"><option value="">All groups</option><option>Weapons</option><option>Attire</option><option>Doors</option><option>Storage</option><option>Furniture</option><option>Tools</option></select>
+  <select id="fc" onchange="onFilter()"><option value="">All items</option>${catOptions}</select>
+  <select id="fs" onchange="onFilter()"><option value="">All statuses</option><option value="Approved">Approved</option><option value="Workshop">Workshop</option><option value="Unavailable">Unavailable</option></select>
 </div>
-<div id="gv"><div class="grid" id="grid"></div><p class="pgr" id="pgr"></p><button class="lbtn" id="lb" onclick="more()">Load more</button></div>
-<div id="tv" style="display:none"><div class="tw"><table class="tbl"><thead><tr><th style="width:46px"></th><th>Skin Name</th><th>Item</th><th>Group</th><th>Skin ID</th><th>Status</th><th>Permission</th></tr></thead><tbody id="tbody"></tbody></table></div></div>
-<footer>SkinBox \u2014 ${permLabel} &middot; ${skinList.length} skins &middot; ${ts} &middot; Read-only</footer>
+<!-- CAT VIEW -->
+<div id="view-cat"><div class="cg" id="cg"></div></div>
+<!-- DRILL -->
+<div id="view-drill" style="display:none">
+  <div class="dh"><button class="dback" onclick="backCat()">&#x2190; Back</button><div><div class="dt" id="dt"></div><div class="ds" id="ds"></div></div></div>
+  <div class="sg" id="drill-sg"></div>
+</div>
+<!-- GRID VIEW -->
+<div id="view-grid" style="display:none"><div class="sg" id="sg"></div><p class="pgr" id="pgr"></p><button class="lbtn" id="lb" onclick="more()">Load more</button></div>
+<!-- TABLE VIEW -->
+<div id="view-tbl" style="display:none"><div class="tw"><table class="tbl"><thead><tr><th style="width:40px"></th><th>Skin Name</th><th>Item</th><th>Group</th><th>Skin ID</th><th>Status</th><th>Permission</th></tr></thead><tbody id="tb"></tbody></table></div><p class="pgr" id="tpgr"></p><button class="lbtn" id="tlb" onclick="tmore()">Load more</button></div>
+<footer>SkinBox — ${permLabel} &middot; ${skinList.length} skins &middot; ${ts} &middot; Read-only</footer>
 <script>
-const SKINS  = ${jSkins};
-const PCOLS  = ${jPcols};
-const PLABEL = ${jLabel};
-const TS     = ${jTs};
-const WURL   = ${jWorker};
-
-// skinData starts with embedded names/images (already loaded in manager)
+const SKINS = ${jSkins};
+const PCOLS = ${jPcols};
+const CL    = ${JSON.stringify(catLabels)};
+const WURL  = ${jWorker};
 const skinData = {};
-SKINS.forEach(s => {
-  skinData[s.id] = { name: s.name, img: s.img, status: s.status || 'loading' };
-});
+SKINS.forEach(s => { skinData[s.id] = {name:s.name, img:s.img, status:s.status||'loading'}; });
 
-function proxyImg(url) {
-  if (!url) return null;
-  const clean = url.replace(/^https?:\\/\\//, '').replace(/\\/\\//g, '/');
-  return 'https://images.weserv.nl/?url=' + encodeURIComponent(clean) + '&w=200&h=200&fit=cover&output=webp&errorredirect=' + encodeURIComponent('via.placeholder.com/200x200/1c1b1b/444?text=No+Image');
-}
+function proxyImg(u){if(!u)return null;const c=u.replace(/^https?:\/\//,'').replace(/\/\//g,'/');return 'https://images.weserv.nl/?url='+encodeURIComponent(c)+'&w=200&h=200&fit=cover&output=webp&errorredirect='+encodeURIComponent('via.placeholder.com/200x200/1c1b1b/444?text=No+Image');}
 
-// Refresh any still-loading skins via worker
-async function refreshMissing() {
+let view='cat', drillCat=null, PAGE=80, vis=PAGE, tvis=PAGE;
+
+async function refresh() {
   const missing = SKINS.filter(s => !skinData[s.id]?.name);
-  if (!missing.length) { updateStats(); render(); document.getElementById('lst').textContent = SKINS.length + ' skins'; return; }
-  if (!WURL) { document.getElementById('lst').textContent = SKINS.length + ' skins (no proxy — open from SkinBox Manager to load images)'; render(); return; }
+  if (!missing.length || !WURL) {
+    document.getElementById('lst').textContent = SKINS.length + ' skins';
+    updateStats(); render(); return;
+  }
+  document.getElementById('lst').textContent = 'Refreshing ' + missing.length + ' skins...';
   const ids = missing.map(s => s.id);
   const CHUNK = 100; let done = 0;
-  document.getElementById('lst').textContent = 'Refreshing ' + missing.length + ' skins...';
   for (let i = 0; i < ids.length; i += CHUNK) {
     const chunk = ids.slice(i, i + CHUNK);
     try {
@@ -1107,15 +1395,11 @@ async function refreshMissing() {
       for (const f of (json?.response?.publishedfiledetails || [])) {
         const k = String(f.publishedfileid);
         const tags = (f.tags || []).map(t => (t.tag || '').toLowerCase());
-        skinData[k] = {
-          name: f.title || 'Unnamed',
-          img: proxyImg(f.preview_url || null),
-          status: f.result === 1 ? (tags.includes('featured') || tags.includes('approved') ? 'Approved' : 'Workshop') : 'Unavailable'
-        };
+        skinData[k] = { name:f.title||'Unnamed', img:proxyImg(f.preview_url||null), status:f.result===1?(tags.includes('featured')||tags.includes('approved')?'Approved':'Workshop'):'Unavailable' };
       }
     } catch(e) { console.warn('Fetch error:', e.message); }
     done += chunk.length;
-    document.getElementById('pb').style.width = (done / ids.length * 100) + '%';
+    document.getElementById('pb').style.width = (done/ids.length*100) + '%';
     updateStats(); render();
     await new Promise(res => setTimeout(res, 200));
   }
@@ -1124,117 +1408,140 @@ async function refreshMissing() {
 }
 
 function updateStats() {
-  const vals = Object.values(skinData);
-  document.getElementById('sa').textContent = vals.filter(d => d.status === 'Approved').length;
-  document.getElementById('sw').textContent = vals.filter(d => d.status === 'Workshop').length;
-  document.getElementById('sl2').textContent = vals.filter(d => d.name).length;
+  const v = Object.values(skinData);
+  document.getElementById('sa').textContent = v.filter(d => d.status==='Approved').length;
+  document.getElementById('sw').textContent = v.filter(d => d.status==='Workshop').length;
+  document.getElementById('sl2').textContent = v.filter(d => d.name).length;
 }
 
-let PAGE = 80, vis = PAGE, view = 'grid';
-
 function fil() {
-  const q = document.getElementById('search').value.trim().toLowerCase();
-  const g = document.getElementById('fg').value;
-  const c = document.getElementById('fc').value;
-  const s = document.getElementById('fs').value;
+  const q=document.getElementById('search').value.trim().toLowerCase();
+  const g=document.getElementById('fg').value;
+  const c=document.getElementById('fc').value;
+  const s=document.getElementById('fs').value;
   return SKINS.filter(r => {
-    if (g && r.group !== g) return false;
-    if (c && r.cat !== c) return false;
-    if (s && skinData[r.id]?.status !== s) return false;
-    if (q) { const n = (skinData[r.id]?.name || '').toLowerCase(); if (!n.includes(q) && !r.id.includes(q) && !(r.catLabel || '').toLowerCase().includes(q)) return false; }
+    if(g&&r.group!==g)return false;
+    if(c&&r.cat!==c)return false;
+    if(s&&skinData[r.id]?.status!==s)return false;
+    if(q){const n=(skinData[r.id]?.name||'').toLowerCase();if(!n.includes(q)&&!r.id.includes(q)&&!(r.catLabel||'').toLowerCase().includes(q))return false;}
     return true;
   });
 }
 
 function sb(status) {
-  if (status === 'Approved') return '<span class="badge bap">&#x2713; Approved</span>';
-  if (status === 'Workshop')  return '<span class="badge bws">Workshop</span>';
-  if (status === 'Unavailable') return '<span class="badge bun">Unavailable</span>';
+  if(status==='Approved')return '<span class="badge bap">&#x2713; Approved</span>';
+  if(status==='Workshop')return '<span class="badge bws">Workshop</span>';
+  if(status==='Unavailable')return '<span class="badge bun">Unavailable</span>';
   return '<span class="badge bld">Loading...</span>';
 }
+function pp(perms){return perms.map(p=>{const c=PCOLS[p]||'#888';return '<span class="pill" style="background:'+c+'22;color:'+c+';border:1px solid '+c+'44">'+p.replace('skinbox.','')+' </span>';}).join('');}
 
-function pp(perms) {
-  return perms.map(p => { const c = PCOLS[p] || '#888'; return '<span class="pill" style="background:' + c + '22;color:' + c + ';border:1px solid ' + c + '44">' + p.replace('skinbox.', '') + '</span>'; }).join('');
+function makeSC(r) {
+  const d=skinData[r.id]||{};
+  const el=document.createElement('div');el.className='sc';
+  el.onclick=()=>window.open('https://steamcommunity.com/sharedfiles/filedetails/?id='+r.id,'_blank');
+  el.innerHTML=(d.img?'<img src="'+d.img+'" alt="" loading="lazy">':'')+'<div class="sc-ph" style="'+(d.img?'display:none':'')+'">&#x1F5BC;</div><div class="sb"><div class="sn">'+(d.name||'#'+r.id)+'</div><div class="si">#'+r.id+'</div><div class="sf">'+sb(d.status)+pp(r.perms)+'</div></div>';
+  return el;
 }
 
-function render() {
-  const list = fil(); const show = list.slice(0, vis);
-  if (view === 'grid') {
-    const grid = document.getElementById('grid'); grid.innerHTML = '';
-    show.forEach(r => {
-      const d = skinData[r.id] || {};
-      const el = document.createElement('div'); el.className = 'card';
-      el.onclick = () => window.open('https://steamcommunity.com/sharedfiles/filedetails/?id=' + r.id, '_blank');
-      el.innerHTML = (d.img ? '<img src="' + d.img + '" alt="" loading="lazy">' : '') +
-        '<div class="card-ph" style="' + (d.img ? 'display:none' : '') + '">&#x1F5BC;</div>' +
-        '<div class="cb"><div class="cn">' + (d.name || '#' + r.id) + '</div>' +
-        '<div class="ci">' + r.group + ' &rsaquo; ' + r.catLabel + '</div>' +
-        '<div class="cid">#' + r.id + '</div>' +
-        '<div class="cf">' + sb(d.status) + pp(r.perms) + '</div></div>';
-      grid.appendChild(el);
-    });
-  } else {
-    const tb = document.getElementById('tbody'); tb.innerHTML = '';
-    show.forEach(r => {
-      const d = skinData[r.id] || {};
-      const tr = document.createElement('tr');
-      const img = d.img ? '<img src="' + d.img + '" width="38" height="38" style="object-fit:cover;border-radius:4px" loading="lazy" alt="">' : '<div style="width:38px;height:38px;background:var(--surface2);border-radius:4px;display:flex;align-items:center;justify-content:center;color:var(--text3)">&#x1F5BC;</div>';
-      tr.innerHTML = '<td>' + img + '</td><td><div style="font-weight:700">' + (d.name || '#' + r.id) + '</div></td><td>' + r.catLabel + '</td><td>' + r.group + '</td><td><a href="https://steamcommunity.com/sharedfiles/filedetails/?id=' + r.id + '" target="_blank">#' + r.id + ' &#x2197;</a></td><td>' + sb(d.status) + '</td><td>' + pp(r.perms) + '</td>';
-      tb.appendChild(tr);
-    });
+function renderCat() {
+  const cg=document.getElementById('cg'); cg.innerHTML='';
+  const byCat={};
+  for(const s of SKINS){if(!byCat[s.cat])byCat[s.cat]=[];byCat[s.cat].push(s);}
+  const cats=Object.keys(byCat).sort((a,b)=>(CL[a]||a).localeCompare(CL[b]||b));
+  for(const cat of cats){
+    const cs=byCat[cat];
+    const sample=cs.find(s=>skinData[s.id]?.img)||cs[0];
+    const img=skinData[sample?.id]?.img;
+    const card=document.createElement('div');card.className='cc';
+    card.onclick=()=>drillTo(cat);
+    card.innerHTML='<span class="cc-count">'+cs.length+'</span>'+(img?'<img src="'+img+'" alt="" loading="lazy">':'<div class="cc-ph">&#x1F5BC;</div>')+'<div class="cc-name">'+(CL[cat]||cat)+'</div><div class="cc-sub">'+(SKINS.find(s=>s.cat===cat)?.group||'')+'</div>';
+    cg.appendChild(card);
   }
-  document.getElementById('pgr').textContent = 'Showing ' + show.length + ' of ' + list.length + ' skins';
-  const lb = document.getElementById('lb');
-  if (list.length > vis) { lb.style.display = 'block'; lb.textContent = 'Load ' + Math.min(PAGE, list.length - vis) + ' more'; }
-  else lb.style.display = 'none';
 }
 
-function more() { vis += PAGE; render(); }
-function sv(v) {
-  view = v; vis = PAGE;
-  document.getElementById('gv').style.display = v === 'grid' ? 'block' : 'none';
-  document.getElementById('tv').style.display = v === 'table' ? 'block' : 'none';
-  document.getElementById('vg').className = 'vb' + (v === 'grid' ? ' on' : '');
-  document.getElementById('vt').className = 'vb' + (v === 'table' ? ' on' : '');
+function drillTo(cat) {
+  drillCat=cat;
+  const cs=SKINS.filter(s=>s.cat===cat);
+  document.getElementById('dt').textContent=CL[cat]||cat;
+  document.getElementById('ds').textContent=cs.length+' skins';
+  const sg=document.getElementById('drill-sg'); sg.innerHTML='';
+  cs.forEach(s=>sg.appendChild(makeSC(s)));
+  document.getElementById('view-cat').style.display='none';
+  document.getElementById('view-drill').style.display='block';
+}
+function backCat(){drillCat=null;document.getElementById('view-drill').style.display='none';document.getElementById('view-cat').style.display='block';}
+
+function renderGrid() {
+  const list=fil();const show=list.slice(0,vis);
+  const sg=document.getElementById('sg');sg.innerHTML='';
+  show.forEach(s=>sg.appendChild(makeSC(s)));
+  document.getElementById('pgr').textContent='Showing '+show.length+' of '+list.length+' skins';
+  const lb=document.getElementById('lb');
+  if(list.length>vis){lb.style.display='block';lb.textContent='Load '+Math.min(PAGE,list.length-vis)+' more';}
+  else lb.style.display='none';
+}
+
+function renderTbl() {
+  const list=fil();const show=list.slice(0,tvis);
+  const tb=document.getElementById('tb');tb.innerHTML='';
+  show.forEach(r=>{
+    const d=skinData[r.id]||{};
+    const tr=document.createElement('tr');
+    const img=d.img?'<img src="'+d.img+'" width="36" height="36" style="object-fit:cover;border-radius:4px" loading="lazy">':'<div style="width:36px;height:36px;background:var(--surface2);border-radius:4px;display:flex;align-items:center;justify-content:center;color:var(--text3)">&#x1F5BC;</div>';
+    tr.innerHTML='<td>'+img+'</td><td><div style="font-weight:700">'+(d.name||'#'+r.id)+'</div></td><td>'+r.catLabel+'</td><td>'+r.group+'</td><td><a href="https://steamcommunity.com/sharedfiles/filedetails/?id='+r.id+'" target="_blank">#'+r.id+' &#x2197;</a></td><td>'+sb(d.status)+'</td><td>'+pp(r.perms)+'</td>';
+    tb.appendChild(tr);
+  });
+  document.getElementById('tpgr').textContent='Showing '+show.length+' of '+list.length+' skins';
+  const lb=document.getElementById('tlb');
+  if(list.length>tvis){lb.style.display='block';lb.textContent='Load '+Math.min(PAGE,list.length-tvis)+' more';}
+  else lb.style.display='none';
+}
+
+function render(){
+  if(view==='cat'){if(drillCat){document.getElementById('drill-sg').innerHTML='';SKINS.filter(s=>s.cat===drillCat).forEach(s=>document.getElementById('drill-sg').appendChild(makeSC(s)));}else renderCat();}
+  else if(view==='grid')renderGrid();
+  else renderTbl();
+}
+
+function sv(v){
+  view=v;vis=PAGE;tvis=PAGE;
+  ['cat','drill','grid','tbl'].forEach(n=>{const el=document.getElementById('view-'+(n==='tbl'?'tbl':n));if(el)el.style.display='none';});
+  document.getElementById('view-'+v).style.display='block';
+  ['cat','grid','tbl'].forEach(n=>document.getElementById('v'+n).className='vb');
+  document.getElementById('v'+v).className='vb on';
   render();
 }
 
-// Initial render with embedded data, then refresh any missing
+function onSearch(){if(view==='cat'){view='grid';sv('grid');}else render();}
+function onFilter(){if(view==='cat'){view='grid';sv('grid');}else render();}
+function more(){vis+=PAGE;renderGrid();}
+function tmore(){tvis+=PAGE;renderTbl();}
+
 render();
 updateStats();
-refreshMissing();
+refresh();
 <\/script>
 </body></html>`;
 }
 
-
 // ── SETUP ─────────────────────────────────────────────────────────────────────
-function copyWorkerCode() {
-  const code = document.getElementById('worker-code').textContent;
-  navigator.clipboard.writeText(code);
-  toast('Worker code copied!', 'success');
-}
-
 async function saveWorkerUrl() {
   const url = document.getElementById('worker-url-input').value.trim();
   if (!url || !url.startsWith('https://')) { toast('Enter a valid https:// URL', 'error'); return; }
   const result = document.getElementById('worker-test-result');
-  result.style.color = 'var(--text3)';
-  result.textContent = 'Testing connection...';
+  result.style.color = 'var(--text3)'; result.textContent = 'Testing...';
   try {
-    const p = new URLSearchParams();
-    p.append('itemcount', 1);
-    p.append('publishedfileids[0]', '2900739039');
+    const p = new URLSearchParams(); p.append('itemcount', 1); p.append('publishedfileids[0]', '2900739039');
     const r = await fetch(url, { method: 'POST', body: p.toString() });
     if (!r.ok) throw new Error('HTTP ' + r.status);
     const json = await r.json();
     const name = json?.response?.publishedfiledetails?.[0]?.title;
-    if (!name) throw new Error('No skin data returned');
+    if (!name) throw new Error('No data returned');
     WORKER_URL = url;
     localStorage.setItem('skinbox_worker_url', url);
     result.style.color = 'var(--green)';
     result.textContent = '✓ Connected! Test skin: "' + name + '"';
-    document.getElementById('worker-status-box').style.display = 'none';
     toast('Worker URL saved — loading skins!', 'success');
     steamRunning = false;
     document.getElementById('prog').style.display = 'block';
@@ -1244,31 +1551,28 @@ async function saveWorkerUrl() {
     fetchSteamData();
   } catch(e) {
     result.style.color = 'var(--red)';
-    result.textContent = '✗ Failed: ' + e.message + ' — double-check your Worker URL and that it deployed successfully';
+    result.textContent = '✗ Failed: ' + e.message;
   }
 }
 
-// Pre-fill saved URL if exists
-(function() {
-  const saved = localStorage.getItem('skinbox_worker_url');
-  if (saved) {
-    const input = document.getElementById('worker-url-input');
-    if (input) input.value = saved;
-  }
-})();
-
-// ── TABS / TOAST ──────────────────────────────────────────────────────────────
+// ── TABS ──────────────────────────────────────────────────────────────────────
 function showTab(t) {
   document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
   document.getElementById('tab-' + t).classList.add('active');
-  document.querySelector('.nav-btn[onclick="showTab(\''+t+'\')"]').classList.add('active');
+  document.querySelector('.nav-btn[onclick="showTab(\'' + t + '\')"]').classList.add('active');
 }
 
+// ── UTILS ─────────────────────────────────────────────────────────────────────
+function dl(content, filename, type) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([content], {type}));
+  a.download = filename; a.click();
+}
 let toastTimer;
 function toast(msg, type) {
   const el = document.getElementById('toast');
-  el.textContent = msg; el.className = 'toast show ' + (type || '');
+  el.textContent = msg; el.className = 'toast show ' + (type||'');
   clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
 }
 </script>
