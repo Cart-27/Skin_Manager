@@ -1018,6 +1018,17 @@ async function fetchNomPreview(val) {
     document.getElementById('nom-preview').style.display = 'block';
     document.getElementById('nom-msg').textContent = existing ? 'This skin is already nominated' : '';
     nomPreviewData.alreadyExists = !!existing;
+
+    // Check if purchasable in-game
+    const isPurchasable = nomPreviewData.status === 'Approved';
+    const onServer      = isAlreadyOnServer(nomPreviewData.skin_id);
+    const purchasableEl = document.getElementById('nom-prev-purchasable');
+    if (purchasableEl) purchasableEl.style.display = isPurchasable ? 'block' : 'none';
+    if (onServer) {
+      document.getElementById('nom-prev-exists').textContent = '⚠ This skin is already on the server';
+      document.getElementById('nom-prev-exists').style.color = 'var(--red)';
+    }
+    if (isPurchasable || onServer) nomPreviewData.alreadyExists = true;
     updateNomBtn();
   } catch(e) {
     document.getElementById('nom-msg').textContent = 'Error: ' + e.message;
@@ -1502,32 +1513,7 @@ function loadSkinBoxJSON(input) {
 
 function isAlreadyOnServer(skinId) { return skinboxIds.has(String(skinId)); }
 
-// ── UPDATE NOMINATION PREVIEW to check purchasable + server ───────────────────
-// Patch fetchNomPreview to also check these
-const _origFetchNomPreview = fetchNomPreview;
-async function fetchNomPreview(val) {
-  await _origFetchNomPreview(val);
-  // After preview loads, check purchasable and server status
-  if (!nomPreviewData) return;
-  const purchasableEl = document.getElementById('nom-prev-purchasable');
-  const existsEl      = document.getElementById('nom-prev-exists');
-  const submitBtn     = document.getElementById('nom-submit-btn');
 
-  const isPurchasable = nomPreviewData.status === 'Approved';
-  const onServer      = isAlreadyOnServer(nomPreviewData.skin_id);
-
-  if (purchasableEl) {
-    purchasableEl.style.display = isPurchasable ? 'block' : 'none';
-  }
-  if (onServer && existsEl) {
-    existsEl.textContent = '⚠ This skin is already on the server';
-    existsEl.style.color = 'var(--red)';
-  }
-  if (isPurchasable || onServer) {
-    nomPreviewData.alreadyExists = true;
-    if (submitBtn) submitBtn.disabled = true;
-  }
-}
 
 // ── MOD PANEL ─────────────────────────────────────────────────────────────────
 function openModPanel() {
