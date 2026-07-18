@@ -637,7 +637,7 @@ const VOTE_MONTH = getVoteMonth();
 
   // Authenticated — show app
   showApp();
-  initPickers();
+  setTimeout(initPickers, 50);
   await loadVoteLimits();
   await loadData();
   renderVoteRemaining();
@@ -784,23 +784,54 @@ function updateStats() {
 // ═══════════════════════════════════════════════════════════════
 function renderLeaderboard() {
   const list    = document.getElementById('leaderboard-list');
-  const pending = nominations.filter(n => n.status === 'pending').sort((a,b) => b.vote_total - a.vote_total);
-  if (!pending.length) { list.innerHTML = '<div class="empty"><div class="empty-icon">&#x1F3C6;</div><div>No pending nominations yet</div></div>'; return; }
+  const pending  = nominations.filter(n => n.status === 'pending').sort((a,b) => b.vote_total - a.vote_total);
+  const approved = nominations.filter(n => n.status === 'approved').sort((a,b) => b.vote_total - a.vote_total);
   list.innerHTML = '';
-  pending.forEach((n, i) => {
-    const rank  = i + 1;
-    const medal = rank <= 3 ? ['&#x1F947;','&#x1F948;','&#x1F949;'][rank-1] : '#' + rank;
-    const score = parseInt(n.vote_total || 0);
-    const imgHtml = n.skin_img ? '<img class="lb-img" src="' + n.skin_img + '" alt="" loading="lazy" onerror="this.style.display=\'none\'"><div class="lb-img-ph" style="display:none">&#x1F5BC;</div>' : '<div class="lb-img-ph">&#x1F5BC;</div>';
-    const row = document.createElement('div'); row.className = 'lb-row';
-    row.innerHTML = '<div class="lb-rank">' + medal + '</div>' + imgHtml +
-      '<div class="lb-info"><div class="lb-name">' + (n.skin_name||'#'+n.skin_id) + '</div>' +
-      '<div class="lb-sub">' + (n.item_name||n.item_cat||'Unknown item') + '</div>' +
-      '<div class="lb-by">by ' + n.submitted_by_discord + '</div></div>' +
-      voteHtml(n) +
-      '<a href="https://steamcommunity.com/sharedfiles/filedetails/?id=' + n.skin_id + '" target="_blank" class="btn" style="font-size:11px;height:28px;padding:0 8px">&#x2197;</a>';
-    list.appendChild(row);
-  });
+
+  if (!pending.length && !approved.length) {
+    list.innerHTML = '<div class="empty"><div class="empty-icon">&#x1F3C6;</div><div>No nominations yet</div></div>';
+    return;
+  }
+
+  // Pending — open for voting
+  if (pending.length) {
+    list.innerHTML += '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--amber);margin-bottom:10px">&#x1F3AF; Open for Voting</div>';
+    pending.forEach((n, i) => {
+      const rank  = i + 1;
+      const medal = rank <= 3 ? ['&#x1F947;','&#x1F948;','&#x1F949;'][rank-1] : '#' + rank;
+      const score = parseInt(n.vote_total || 0);
+      const imgHtml = n.skin_img ? '<img class="lb-img" src="' + n.skin_img + '" alt="" loading="lazy" onerror="this.style.display=\'none\'"><div class="lb-img-ph" style="display:none">&#x1F5BC;</div>' : '<div class="lb-img-ph">&#x1F5BC;</div>';
+      const row = document.createElement('div'); row.className = 'lb-row';
+      row.innerHTML = '<div class="lb-rank">' + medal + '</div>' + imgHtml +
+        '<div class="lb-info"><div class="lb-name">' + (n.skin_name||'#'+n.skin_id) + '</div>' +
+        '<div class="lb-sub">' + (n.item_name||n.item_cat||'Unknown item') + '</div>' +
+        '<div class="lb-by">by ' + n.submitted_by_discord + '</div></div>' +
+        voteHtml(n) +
+        '<a href="https://steamcommunity.com/sharedfiles/filedetails/?id=' + n.skin_id + '" target="_blank" class="btn" style="font-size:11px;height:28px;padding:0 8px">&#x2197;</a>';
+      list.appendChild(row);
+    });
+  }
+
+  // Approved — already being added
+  if (approved.length) {
+    const sep = document.createElement('div');
+    sep.style.cssText = 'font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--green);margin:18px 0 10px';
+    sep.innerHTML = '&#x2713; Approved — Being Added to Server';
+    list.appendChild(sep);
+    approved.forEach(n => {
+      const score = parseInt(n.vote_total || 0);
+      const imgHtml = n.skin_img ? '<img class="lb-img" src="' + n.skin_img + '" alt="" loading="lazy" onerror="this.style.display=\'none\'"><div class="lb-img-ph" style="display:none">&#x1F5BC;</div>' : '<div class="lb-img-ph">&#x1F5BC;</div>';
+      const row = document.createElement('div'); row.className = 'lb-row';
+      row.style.opacity = '0.8';
+      row.innerHTML = '<div class="lb-rank" style="color:var(--green)">&#x2713;</div>' + imgHtml +
+        '<div class="lb-info"><div class="lb-name">' + (n.skin_name||'#'+n.skin_id) + '</div>' +
+        '<div class="lb-sub">' + (n.item_name||n.item_cat||'Unknown item') + '</div>' +
+        '<div class="lb-by">by ' + n.submitted_by_discord + '</div></div>' +
+        '<span class="badge b-approved" style="flex-shrink:0">&#x2713; Approved</span>' +
+        '<a href="https://steamcommunity.com/sharedfiles/filedetails/?id=' + n.skin_id + '" target="_blank" class="btn" style="font-size:11px;height:28px;padding:0 8px">&#x2197;</a>';
+      list.appendChild(row);
+    });
+  }
 }
 
 function renderAll() {
@@ -1072,6 +1103,7 @@ function checkAdminPass() {
   if (document.getElementById('admin-pass-input').value === ADMIN_PASS) {
     closeAdminModal(); adminLoggedIn = true;
     document.getElementById('admin-panel').style.display = 'block';
+    setTimeout(initPickers, 50);
     loadAdmin();
   } else toast('Wrong password','error');
 }
@@ -1404,14 +1436,16 @@ let nomCatPicker, collCatPicker, admCatPicker, admCollCatPicker;
 function initPickers() {
   // Nominate tab picker
   const nomWrap = document.getElementById('nom-cat-wrap');
-  if (nomWrap) { nomCatPicker = makeItemPicker('nom-cat-search', 'Search items...'); nomWrap.appendChild(nomCatPicker.wrap); }
+  if (nomWrap && !nomCatPicker) { nomCatPicker = makeItemPicker('nom-cat-search', 'Search items...'); nomWrap.appendChild(nomCatPicker.wrap); }
   // Collection expander picker
   const collWrap = document.getElementById('coll-cat-wrap');
-  if (collWrap) { collCatPicker = makeItemPicker('coll-cat-search', 'Search items...'); collWrap.appendChild(collCatPicker.wrap); }
+  if (collWrap && !collCatPicker) { collCatPicker = makeItemPicker('coll-cat-search', 'Search items...'); collWrap.appendChild(collCatPicker.wrap); }
+  // Admin add skin picker
+  const admWrap = document.getElementById('adm-cat-wrap');
+  if (admWrap && !admCatPicker) { admCatPicker = makeItemPicker('adm-cat-search', 'Search items...'); admWrap.appendChild(admCatPicker.wrap); }
   // Admin collection picker
   const admCollWrap = document.getElementById('adm-coll-cat-wrap');
-  if (admCollWrap) { admCollCatPicker = makeItemPicker('adm-coll-cat-search', 'Search items...'); admCollWrap.appendChild(admCollCatPicker.wrap); }
-  if (admWrap) { admCatPicker = makeItemPicker('adm-cat-search', 'Search items...'); admWrap.appendChild(admCatPicker.wrap); }
+  if (admCollWrap && !admCollCatPicker) { admCollCatPicker = makeItemPicker('adm-coll-cat-search', 'Search items...'); admCollWrap.appendChild(admCollCatPicker.wrap); }
 }
 
 function getNomCat()  { return nomCatPicker?.getValue()  || ''; }
