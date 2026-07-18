@@ -143,13 +143,14 @@ details summary:hover{color:var(--text)}
 
 <script>
 // ═══════════════════════════════════════════════════════════════
-// CONFIG — fill these in before uploading
+// CONFIG — stored in localStorage, set via Setup screen
 // ═══════════════════════════════════════════════════════════════
-const SUPABASE_URL  = 'https://jysvwzwumkiyhshpcdab.supabase.co';
-const SUPABASE_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp5c3Z3end1bWtpeWhzaHBjZGFiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzNzMzNDgsImV4cCI6MjA5Njk0OTM0OH0.GOiyTUe1sjPfngA4A_cUHLEWay7RwDoL70BxLmVYu5c';
-const WORKER_URL    = 'https://steam-proxy.rustinction.workers.dev';
-const ADMIN_PASS    = 'Riderdieistheway1!';
-const SERVER_NAME   = 'Rustinction';
+function getCfg(key, def) { return localStorage.getItem('svote_' + key) || def; }
+const SUPABASE_URL  = getCfg('supabase_url',  '');
+const SUPABASE_KEY  = getCfg('supabase_key',  '');
+const WORKER_URL    = getCfg('worker_url',    '');
+const ADMIN_PASS    = getCfg('admin_pass',    '');
+const SERVER_NAME   = getCfg('server_name',   'Rustinction');
 
 // Role config — matches your Discord roles
 const ROLE_CONFIG = {
@@ -163,6 +164,42 @@ const ROLE_CONFIG = {
 
 const CAT_LABELS = {"rifle.ak":"AK-47","rifle.bolt":"Bolt Action","rifle.lr300":"LR-300","rifle.l96":"L96 Rifle","rifle.semiauto":"Semi-Auto Rifle","lmg.m249":"M249","smg.thompson":"Thompson SMG","smg.mp5":"MP5","smg.2":"Custom SMG","pistol.semiauto":"Semi-Auto Pistol","pistol.python":"Python Revolver","pistol.revolver":"Revolver","shotgun.pump":"Pump Shotgun","shotgun.double":"Double Barrel","crossbow":"Crossbow","bow.hunting":"Hunting Bow","rocket.launcher":"Rocket Launcher","knife.bone":"Bone Knife","grenade.f1":"F1 Grenade","metal.facemask":"Metal Facemask","metal.plate.torso":"Metal Chest Plate","coffeecan.helmet":"Coffee Can Helmet","bucket.helmet":"Bucket Helmet","hoodie":"Hoodie","jacket":"Jacket","jacket.snow":"Snow Jacket","pants":"Pants","shoes.boots":"Boots","largebackpack":"Large Backpack","roadsign.jacket":"Road Sign Jacket","roadsign.kilt":"Road Sign Kilt","roadsign.gloves":"Road Sign Gloves","door.hinged.wood":"Wooden Door","door.hinged.metal":"Metal Door","door.hinged.toptier":"Armored Door","door.double.hinged.wood":"Wooden Double Door","door.double.hinged.metal":"Metal Double Door","door.double.hinged.toptier":"Armored Double Door","wall.frame.garagedoor":"Garage Door","box.wooden":"Wooden Box","box.wooden.large":"Large Wood Box","fridge":"Fridge","locker":"Locker","sleepingbag":"Sleeping Bag","rug":"Rug","rug.bear":"Bear Rug","furnace":"Furnace"};
 </script>
+
+<!-- SETUP SCREEN (shows when config not set) -->
+<div id="setup-screen" style="display:none;min-height:100vh;padding:40px 24px;max-width:600px;margin:0 auto">
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
+    <div class="logo-icon" style="width:40px;height:40px;font-size:20px">&#x1F980;</div>
+    <div><div style="font-size:20px;font-weight:900">SkinBox Voting — Setup</div><div style="font-size:12px;color:var(--text3)">One-time configuration — saved in your browser</div></div>
+  </div>
+  <div class="panel">
+    <h3>&#x2699; Configuration</h3>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:16px;line-height:1.7">Fill these in once — they save to your browser and persist across updates. You never need to re-enter them unless you clear your browser data.</p>
+    <div class="form-group" style="margin-bottom:12px">
+      <label>Supabase Project URL</label>
+      <input type="text" id="setup-supabase-url" placeholder="https://xxxx.supabase.co" value="">
+    </div>
+    <div class="form-group" style="margin-bottom:12px">
+      <label>Supabase Anon Key</label>
+      <input type="text" id="setup-supabase-key" placeholder="eyJ..." value="">
+    </div>
+    <div class="form-group" style="margin-bottom:12px">
+      <label>Cloudflare Worker URL</label>
+      <input type="text" id="setup-worker-url" placeholder="https://steam-proxy.rustinction.workers.dev" value="">
+    </div>
+    <div class="form-group" style="margin-bottom:12px">
+      <label>Admin Password</label>
+      <input type="password" id="setup-admin-pass" placeholder="Your secret admin password">
+    </div>
+    <div class="form-group" style="margin-bottom:16px">
+      <label>Server Name</label>
+      <input type="text" id="setup-server-name" placeholder="Rustinction" value="">
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn primary" onclick="saveSetup()">&#x2713; Save &amp; Continue</button>
+      <span id="setup-msg" style="font-size:12px;color:var(--text3);align-self:center"></span>
+    </div>
+  </div>
+</div>
 
 <!-- ACCESS DENIED / LOGIN SCREEN -->
 <div id="access-screen" class="access-screen" style="display:none">
@@ -372,6 +409,7 @@ const CAT_LABELS = {"rifle.ak":"AK-47","rifle.bolt":"Bolt Action","rifle.lr300":
   <div style="background:var(--surface);border-bottom:2px solid var(--rust);padding:13px 24px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10">
     <div class="logo-icon">&#x1F6E1;</div>
     <h2 style="font-size:15px;font-weight:900">Admin Panel</h2>
+    <button class="btn blue" style="height:28px;font-size:11px" onclick="openReconfigure()">&#x2699; Reconfigure</button>
     <button class="btn" style="margin-left:auto" onclick="closeAdmin()">&#x2715; Close</button>
   </div>
   <div style="padding:18px 24px">
@@ -538,6 +576,11 @@ const VOTE_MONTH = getVoteMonth();
 // INIT — check auth on load
 // ═══════════════════════════════════════════════════════════════
 (async function init() {
+  // Show setup screen if config not saved yet
+  if (!localStorage.getItem('svote_supabase_url') || !localStorage.getItem('svote_admin_pass')) {
+    document.getElementById('setup-screen').style.display = 'block';
+    return;
+  }
   document.getElementById('server-title').textContent = SERVER_NAME + ' SkinBox';
   document.getElementById('discord-login-link').href = WORKER_URL + '/discord-login';
 
@@ -850,6 +893,13 @@ async function fetchNomPreview(val) {
     document.getElementById('nom-msg').textContent = '';
     nomPreviewData.blocked = !!(existing || isApproved || onServer);
     document.getElementById('nom-submit-btn').disabled = nomPreviewData.blocked;
+    // Auto-detect item category from SkinBox.json if loaded
+    const detectedCat = skinCatMap[skinId];
+    const catSelect = document.getElementById('nom-cat');
+    if (detectedCat && catSelect) {
+      catSelect.value = detectedCat;
+      document.getElementById('nom-prev-sub').textContent = '#' + skinId + ' — ' + (CAT_LABELS[detectedCat] || detectedCat) + ' (auto-detected)';
+    }
   } catch(e) { document.getElementById('nom-msg').textContent = 'Error: ' + e.message; }
 }
 
@@ -967,6 +1017,9 @@ async function nominateSelected() {
 // ═══════════════════════════════════════════════════════════════
 // SKINBOX JSON
 // ═══════════════════════════════════════════════════════════════
+// skinCatMap: skin_id -> cat shortname (built from SkinBox.json)
+let skinCatMap = {};
+
 function loadSkinBoxJSON(input) {
   const file = input.files[0]; if(!file) return;
   const reader = new FileReader();
@@ -976,8 +1029,15 @@ function loadSkinBoxJSON(input) {
       const ws  = cfg['Imported Workshop Skins'];
       if (!ws) { toast('Invalid SkinBox.json','error'); return; }
       skinboxIds = new Set();
-      for (const ids of Object.values(ws)) ids.forEach(id => skinboxIds.add(String(id)));
-      document.getElementById('skinbox-json-status').textContent = '✓ ' + skinboxIds.size + ' server skins loaded';
+      skinCatMap = {};
+      for (const [cat, ids] of Object.entries(ws)) {
+        ids.forEach(id => {
+          const k = String(id);
+          skinboxIds.add(k);
+          skinCatMap[k] = cat;
+        });
+      }
+      document.getElementById('skinbox-json-status').textContent = '✓ ' + skinboxIds.size + ' server skins loaded — item auto-detect enabled';
       document.getElementById('skinbox-json-status').style.color = 'var(--green)';
       toast('Loaded '+skinboxIds.size+' server skins','success');
     } catch(e) { toast('Failed: '+e.message,'error'); }
@@ -998,6 +1058,35 @@ function checkAdminPass() {
   } else toast('Wrong password','error');
 }
 function closeAdmin() { document.getElementById('admin-panel').style.display='none'; }
+
+function saveSetup() {
+  const url  = document.getElementById('setup-supabase-url').value.trim();
+  const key  = document.getElementById('setup-supabase-key').value.trim();
+  const wurl = document.getElementById('setup-worker-url').value.trim();
+  const pass = document.getElementById('setup-admin-pass').value.trim();
+  const name = document.getElementById('setup-server-name').value.trim() || 'Rustinction';
+  if (!url || !key || !wurl || !pass) { document.getElementById('setup-msg').textContent = 'All fields required'; document.getElementById('setup-msg').style.color='var(--red)'; return; }
+  localStorage.setItem('svote_supabase_url', url);
+  localStorage.setItem('svote_supabase_key', key);
+  localStorage.setItem('svote_worker_url',   wurl);
+  localStorage.setItem('svote_admin_pass',   pass);
+  localStorage.setItem('svote_server_name',  name);
+  document.getElementById('setup-msg').textContent = '✓ Saved — reloading...';
+  document.getElementById('setup-msg').style.color = 'var(--green)';
+  setTimeout(() => window.location.reload(), 800);
+}
+
+function openReconfigure() {
+  // Pre-fill with existing values
+  document.getElementById('setup-supabase-url').value  = localStorage.getItem('svote_supabase_url') || '';
+  document.getElementById('setup-supabase-key').value  = localStorage.getItem('svote_supabase_key') || '';
+  document.getElementById('setup-worker-url').value    = localStorage.getItem('svote_worker_url')   || '';
+  document.getElementById('setup-admin-pass').value    = localStorage.getItem('svote_admin_pass')   || '';
+  document.getElementById('setup-server-name').value   = localStorage.getItem('svote_server_name')  || 'Rustinction';
+  document.getElementById('admin-panel').style.display = 'none';
+  document.getElementById('setup-screen').style.display = 'block';
+  document.getElementById('main-app').style.display    = 'none';
+}
 
 async function loadAdmin() {
   await loadData();
