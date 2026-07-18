@@ -137,6 +137,16 @@ header{background:var(--surface);border-bottom:2px solid var(--rust);padding:0 2
 .empty-icon{font-size:48px;margin-bottom:12px}
 details summary{font-size:11px;color:var(--text3);cursor:pointer;user-select:none;padding:4px 0}
 details summary:hover{color:var(--text)}
+/* SEARCHABLE ITEM SELECT */
+.item-search-wrap{position:relative}
+.item-search-input{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:7px 11px;border-radius:var(--radius);font-size:12px;font-family:'Barlow',sans-serif;width:100%;cursor:pointer}
+.item-search-input:focus{outline:none;border-color:var(--rust)}
+.item-dropdown{position:absolute;top:100%;left:0;right:0;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);z-index:200;max-height:220px;overflow-y:auto;display:none;box-shadow:0 8px 24px #00000088}
+.item-dropdown.open{display:block}
+.item-option{padding:8px 12px;font-size:12px;cursor:pointer;color:var(--text);display:flex;align-items:center;gap:8px}
+.item-option:hover,.item-option.selected{background:var(--surface3)}
+.item-option.selected{color:var(--rust)}
+.item-shortname{font-size:10px;color:var(--text3);font-family:'Share Tech Mono',monospace;margin-left:auto}
 </style>
 </head>
 <body>
@@ -287,32 +297,7 @@ const CAT_LABELS = {"rifle.ak":"AK-47","rifle.bolt":"Bolt Action","rifle.lr300":
       </div>
       <div class="form-group" style="flex:1">
         <label>Item (optional)</label>
-        <select id="nom-cat">
-          <option value="">— select item —</option>
-          <option value="rifle.ak">AK-47</option><option value="rifle.bolt">Bolt Action</option>
-          <option value="rifle.lr300">LR-300</option><option value="rifle.l96">L96 Rifle</option>
-          <option value="rifle.semiauto">Semi-Auto Rifle</option><option value="lmg.m249">M249</option>
-          <option value="smg.thompson">Thompson SMG</option><option value="smg.mp5">MP5</option>
-          <option value="smg.2">Custom SMG</option><option value="pistol.semiauto">Semi-Auto Pistol</option>
-          <option value="pistol.python">Python Revolver</option><option value="pistol.revolver">Revolver</option>
-          <option value="shotgun.pump">Pump Shotgun</option><option value="shotgun.double">Double Barrel</option>
-          <option value="crossbow">Crossbow</option><option value="bow.hunting">Hunting Bow</option>
-          <option value="rocket.launcher">Rocket Launcher</option><option value="knife.bone">Bone Knife</option>
-          <option value="grenade.f1">F1 Grenade</option><option value="metal.facemask">Metal Facemask</option>
-          <option value="metal.plate.torso">Metal Chest Plate</option><option value="coffeecan.helmet">Coffee Can Helmet</option>
-          <option value="bucket.helmet">Bucket Helmet</option><option value="hoodie">Hoodie</option>
-          <option value="jacket">Jacket</option><option value="jacket.snow">Snow Jacket</option>
-          <option value="pants">Pants</option><option value="shoes.boots">Boots</option>
-          <option value="largebackpack">Large Backpack</option><option value="roadsign.jacket">Road Sign Jacket</option>
-          <option value="roadsign.kilt">Road Sign Kilt</option><option value="roadsign.gloves">Road Sign Gloves</option>
-          <option value="door.hinged.wood">Wooden Door</option><option value="door.hinged.metal">Metal Door</option>
-          <option value="door.hinged.toptier">Armored Door</option><option value="door.double.hinged.wood">Wooden Double Door</option>
-          <option value="door.double.hinged.metal">Metal Double Door</option><option value="door.double.hinged.toptier">Armored Double Door</option>
-          <option value="wall.frame.garagedoor">Garage Door</option><option value="box.wooden">Wooden Box</option>
-          <option value="box.wooden.large">Large Wood Box</option><option value="fridge">Fridge</option>
-          <option value="locker">Locker</option><option value="sleepingbag">Sleeping Bag</option>
-          <option value="rug">Rug</option><option value="rug.bear">Bear Rug</option><option value="furnace">Furnace</option>
-        </select>
+        <div id="nom-cat-wrap"></div>
       </div>
     </div>
     <div id="nom-preview" style="display:none">
@@ -345,82 +330,7 @@ const CAT_LABELS = {"rifle.ak":"AK-47","rifle.bolt":"Bolt Action","rifle.lr300":
       </div>
       <div class="form-group" style="flex:1">
         <label>Item for all skins</label>
-        <select id="coll-cat">
-          <option value="">— select item —</option>
-          <option value="rifle.ak">AK-47</option>
-          <option value="rifle.bolt">Bolt Action</option>
-          <option value="rifle.lr300">LR-300</option>
-          <option value="rifle.l96">L96 Rifle</option>
-          <option value="rifle.semiauto">Semi-Auto Rifle</option>
-          <option value="lmg.m249">M249</option>
-          <option value="smg.thompson">Thompson SMG</option>
-          <option value="smg.mp5">MP5</option>
-          <option value="smg.2">Custom SMG</option>
-          <option value="pistol.semiauto">Semi-Auto Pistol</option>
-          <option value="pistol.python">Python Revolver</option>
-          <option value="pistol.revolver">Revolver</option>
-          <option value="shotgun.pump">Pump Shotgun</option>
-          <option value="shotgun.double">Double Barrel</option>
-          <option value="crossbow">Crossbow</option>
-          <option value="bow.hunting">Hunting Bow</option>
-          <option value="rocket.launcher">Rocket Launcher</option>
-          <option value="knife.bone">Bone Knife</option>
-          <option value="grenade.f1">F1 Grenade</option>
-          <option value="metal.facemask">Metal Facemask</option>
-          <option value="metal.plate.torso">Metal Chest Plate</option>
-          <option value="coffeecan.helmet">Coffee Can Helmet</option>
-          <option value="bucket.helmet">Bucket Helmet</option>
-          <option value="deer.skull.mask">Deer Skull Mask</option>
-          <option value="mask.bandana">Bandana Mask</option>
-          <option value="mask.balaclava">Balaclava</option>
-          <option value="hoodie">Hoodie</option>
-          <option value="jacket">Jacket</option>
-          <option value="jacket.snow">Snow Jacket</option>
-          <option value="shirt.collared">Collared Shirt</option>
-          <option value="tshirt">T-Shirt</option>
-          <option value="tshirt.long">Long T-Shirt</option>
-          <option value="burlap.shirt">Burlap Shirt</option>
-          <option value="burlap.trousers">Burlap Trousers</option>
-          <option value="burlap.gloves">Burlap Gloves</option>
-          <option value="pants">Pants</option>
-          <option value="pants.shorts">Shorts</option>
-          <option value="shoes.boots">Boots</option>
-          <option value="attire.hide.poncho">Hide Poncho</option>
-          <option value="attire.hide.vest">Hide Vest</option>
-          <option value="attire.hide.pants">Hide Pants</option>
-          <option value="attire.hide.boots">Hide Boots</option>
-          <option value="hat.beenie">Beenie Hat</option>
-          <option value="hat.boonie">Boonie Hat</option>
-          <option value="largebackpack">Large Backpack</option>
-          <option value="roadsign.jacket">Road Sign Jacket</option>
-          <option value="roadsign.kilt">Road Sign Kilt</option>
-          <option value="roadsign.gloves">Road Sign Gloves</option>
-          <option value="door.hinged.wood">Wooden Door</option>
-          <option value="door.hinged.metal">Metal Door</option>
-          <option value="door.hinged.toptier">Armored Door</option>
-          <option value="door.double.hinged.wood">Wooden Double Door</option>
-          <option value="door.double.hinged.metal">Metal Double Door</option>
-          <option value="door.double.hinged.toptier">Armored Double Door</option>
-          <option value="wall.frame.garagedoor">Garage Door</option>
-          <option value="box.wooden">Wooden Box</option>
-          <option value="box.wooden.large">Large Wood Box</option>
-          <option value="fridge">Fridge</option>
-          <option value="locker">Locker</option>
-          <option value="sleepingbag">Sleeping Bag</option>
-          <option value="rug">Rug</option>
-          <option value="rug.bear">Bear Rug</option>
-          <option value="table">Table</option>
-          <option value="chair">Chair</option>
-          <option value="bed">Bed</option>
-          <option value="furnace">Furnace</option>
-          <option value="vending.machine">Vending Machine</option>
-          <option value="target.reactive">Reactive Target</option>
-          <option value="barricade.concrete">Concrete Barricade</option>
-          <option value="hammer">Hammer</option>
-          <option value="jackhammer">Jackhammer</option>
-          <option value="icepick.salvaged">Salvaged Icepick</option>
-          <option value="water.purifier">Water Purifier</option>
-        </select>
+        <div id="coll-cat-wrap"></div>
       </div>
       <button class="btn" onclick="expandCollection()" style="flex:0 0 auto">&#x1F4E6; Expand</button>
     </div>
@@ -514,82 +424,7 @@ const CAT_LABELS = {"rifle.ak":"AK-47","rifle.bolt":"Bolt Action","rifle.lr300":
         </div>
         <div class="form-group">
           <label>Item</label>
-          <select id="adm-skin-cat">
-            <option value="">— select —</option>
-            <option value="rifle.ak">AK-47</option>
-            <option value="rifle.bolt">Bolt Action</option>
-            <option value="rifle.lr300">LR-300</option>
-            <option value="rifle.l96">L96 Rifle</option>
-            <option value="rifle.semiauto">Semi-Auto Rifle</option>
-            <option value="lmg.m249">M249</option>
-            <option value="smg.thompson">Thompson SMG</option>
-            <option value="smg.mp5">MP5</option>
-            <option value="smg.2">Custom SMG</option>
-            <option value="pistol.semiauto">Semi-Auto Pistol</option>
-            <option value="pistol.python">Python Revolver</option>
-            <option value="pistol.revolver">Revolver</option>
-            <option value="shotgun.pump">Pump Shotgun</option>
-            <option value="shotgun.double">Double Barrel</option>
-            <option value="crossbow">Crossbow</option>
-            <option value="bow.hunting">Hunting Bow</option>
-            <option value="rocket.launcher">Rocket Launcher</option>
-            <option value="knife.bone">Bone Knife</option>
-            <option value="grenade.f1">F1 Grenade</option>
-            <option value="metal.facemask">Metal Facemask</option>
-            <option value="metal.plate.torso">Metal Chest Plate</option>
-            <option value="coffeecan.helmet">Coffee Can Helmet</option>
-            <option value="bucket.helmet">Bucket Helmet</option>
-            <option value="deer.skull.mask">Deer Skull Mask</option>
-            <option value="mask.bandana">Bandana Mask</option>
-            <option value="mask.balaclava">Balaclava</option>
-            <option value="hoodie">Hoodie</option>
-            <option value="jacket">Jacket</option>
-            <option value="jacket.snow">Snow Jacket</option>
-            <option value="shirt.collared">Collared Shirt</option>
-            <option value="tshirt">T-Shirt</option>
-            <option value="tshirt.long">Long T-Shirt</option>
-            <option value="burlap.shirt">Burlap Shirt</option>
-            <option value="burlap.trousers">Burlap Trousers</option>
-            <option value="burlap.gloves">Burlap Gloves</option>
-            <option value="pants">Pants</option>
-            <option value="pants.shorts">Shorts</option>
-            <option value="shoes.boots">Boots</option>
-            <option value="attire.hide.poncho">Hide Poncho</option>
-            <option value="attire.hide.vest">Hide Vest</option>
-            <option value="attire.hide.pants">Hide Pants</option>
-            <option value="attire.hide.boots">Hide Boots</option>
-            <option value="hat.beenie">Beenie Hat</option>
-            <option value="hat.boonie">Boonie Hat</option>
-            <option value="largebackpack">Large Backpack</option>
-            <option value="roadsign.jacket">Road Sign Jacket</option>
-            <option value="roadsign.kilt">Road Sign Kilt</option>
-            <option value="roadsign.gloves">Road Sign Gloves</option>
-            <option value="door.hinged.wood">Wooden Door</option>
-            <option value="door.hinged.metal">Metal Door</option>
-            <option value="door.hinged.toptier">Armored Door</option>
-            <option value="door.double.hinged.wood">Wooden Double Door</option>
-            <option value="door.double.hinged.metal">Metal Double Door</option>
-            <option value="door.double.hinged.toptier">Armored Double Door</option>
-            <option value="wall.frame.garagedoor">Garage Door</option>
-            <option value="box.wooden">Wooden Box</option>
-            <option value="box.wooden.large">Large Wood Box</option>
-            <option value="fridge">Fridge</option>
-            <option value="locker">Locker</option>
-            <option value="sleepingbag">Sleeping Bag</option>
-            <option value="rug">Rug</option>
-            <option value="rug.bear">Bear Rug</option>
-            <option value="table">Table</option>
-            <option value="chair">Chair</option>
-            <option value="bed">Bed</option>
-            <option value="furnace">Furnace</option>
-            <option value="vending.machine">Vending Machine</option>
-            <option value="target.reactive">Reactive Target</option>
-            <option value="barricade.concrete">Concrete Barricade</option>
-            <option value="hammer">Hammer</option>
-            <option value="jackhammer">Jackhammer</option>
-            <option value="icepick.salvaged">Salvaged Icepick</option>
-            <option value="water.purifier">Water Purifier</option>
-          </select>
+          <div id="adm-cat-wrap"></div>
         </div>
         <div class="form-group" style="flex:0 0 auto">
           <label>Status</label>
@@ -715,6 +550,8 @@ const VOTE_MONTH = getVoteMonth();
     document.getElementById('setup-screen').style.display = 'block';
     return;
   }
+  // Init pickers early so they're ready
+  setTimeout(initPickers, 100);
   document.getElementById('server-title').textContent = SERVER_NAME + ' SkinBox';
   document.getElementById('discord-login-link').href = WORKER_URL + '/discord-login';
 
@@ -754,6 +591,7 @@ const VOTE_MONTH = getVoteMonth();
 
   // Authenticated — show app
   showApp();
+  initPickers();
   await loadVoteLimits();
   await loadData();
   renderVoteRemaining();
@@ -1029,9 +867,9 @@ async function fetchNomPreview(val) {
     document.getElementById('nom-submit-btn').disabled = nomPreviewData.blocked;
     // Auto-detect item category from SkinBox.json if loaded
     const detectedCat = skinCatMap[skinId];
-    const catSelect = document.getElementById('nom-cat');
-    if (detectedCat && catSelect) {
-      catSelect.value = detectedCat;
+    // picker auto-set below
+    if (detectedCat) {
+      if(nomCatPicker) nomCatPicker.setValue(detectedCat);
       document.getElementById('nom-prev-sub').textContent = '#' + skinId + ' — ' + (CAT_LABELS[detectedCat] || detectedCat) + ' (auto-detected)';
     }
   } catch(e) { document.getElementById('nom-msg').textContent = 'Error: ' + e.message; }
@@ -1039,7 +877,7 @@ async function fetchNomPreview(val) {
 
 async function submitNomination() {
   if (!nomPreviewData || nomPreviewData.blocked || !currentUser) return;
-  const cat = document.getElementById('nom-cat').value;
+  const cat = getNomCat();
   try {
     document.getElementById('nom-submit-btn').disabled = true;
     await sbPost('nominations', {
@@ -1130,7 +968,7 @@ function collDeselectAll() { collSkins.forEach(s=>s.selected=false); renderColl(
 
 async function nominateSelected() {
   if (!currentUser) return;
-  const cat   = document.getElementById('coll-cat').value;
+  const cat = getCollCat();
   if (!cat) { toast('Select an item type', 'error'); return; }
   const toAdd = collSkins.filter(s => s.selected && !s.alreadyNom && !s.isApproved && !s.onServer);
   if (!toAdd.length) { toast('No skins selected', 'error'); return; }
@@ -1339,7 +1177,7 @@ async function fetchAdminPreview(val) {
 }
 async function adminAddSkin() {
   if (!admSkinData) return;
-  const cat=document.getElementById('adm-skin-cat').value;
+  const cat=getAdmCat();
   const status=document.getElementById('adm-skin-status').value;
   try {
     document.getElementById('adm-add-btn').disabled=true;
@@ -1427,6 +1265,105 @@ async function showVoters(skinId, skinName) {
   }
 }
 document.getElementById('voters-modal').addEventListener('click', e => { if (e.target === e.currentTarget) e.currentTarget.classList.remove('show'); });
+
+
+// ── ITEM LIST ─────────────────────────────────────────────────────────────────
+const ALL_ITEMS = [
+  {v:'rifle.ak',l:'AK-47'},{v:'rifle.bolt',l:'Bolt Action'},{v:'rifle.lr300',l:'LR-300'},
+  {v:'rifle.l96',l:'L96 Rifle'},{v:'rifle.semiauto',l:'Semi-Auto Rifle'},{v:'lmg.m249',l:'M249'},
+  {v:'smg.thompson',l:'Thompson SMG'},{v:'smg.mp5',l:'MP5'},{v:'smg.2',l:'Custom SMG'},
+  {v:'pistol.semiauto',l:'Semi-Auto Pistol'},{v:'pistol.python',l:'Python Revolver'},
+  {v:'pistol.revolver',l:'Revolver'},{v:'shotgun.pump',l:'Pump Shotgun'},
+  {v:'shotgun.double',l:'Double Barrel'},{v:'crossbow',l:'Crossbow'},
+  {v:'bow.hunting',l:'Hunting Bow'},{v:'rocket.launcher',l:'Rocket Launcher'},
+  {v:'knife.bone',l:'Bone Knife'},{v:'grenade.f1',l:'F1 Grenade'},
+  {v:'metal.facemask',l:'Metal Facemask'},{v:'metal.plate.torso',l:'Metal Chest Plate'},
+  {v:'coffeecan.helmet',l:'Coffee Can Helmet'},{v:'bucket.helmet',l:'Bucket Helmet'},
+  {v:'deer.skull.mask',l:'Deer Skull Mask'},{v:'mask.bandana',l:'Bandana Mask'},
+  {v:'mask.balaclava',l:'Balaclava'},{v:'hoodie',l:'Hoodie'},{v:'jacket',l:'Jacket'},
+  {v:'jacket.snow',l:'Snow Jacket'},{v:'shirt.collared',l:'Collared Shirt'},
+  {v:'tshirt',l:'T-Shirt'},{v:'tshirt.long',l:'Long T-Shirt'},
+  {v:'burlap.shirt',l:'Burlap Shirt'},{v:'burlap.trousers',l:'Burlap Trousers'},
+  {v:'burlap.gloves',l:'Burlap Gloves'},{v:'pants',l:'Pants'},{v:'pants.shorts',l:'Shorts'},
+  {v:'shoes.boots',l:'Boots'},{v:'attire.hide.poncho',l:'Hide Poncho'},
+  {v:'attire.hide.vest',l:'Hide Vest'},{v:'attire.hide.pants',l:'Hide Pants'},
+  {v:'attire.hide.boots',l:'Hide Boots'},{v:'hat.beenie',l:'Beenie Hat'},
+  {v:'hat.boonie',l:'Boonie Hat'},{v:'largebackpack',l:'Large Backpack'},
+  {v:'roadsign.jacket',l:'Road Sign Jacket'},{v:'roadsign.kilt',l:'Road Sign Kilt'},
+  {v:'roadsign.gloves',l:'Road Sign Gloves'},
+  {v:'door.hinged.wood',l:'Wooden Door'},{v:'door.hinged.metal',l:'Metal Door'},
+  {v:'door.hinged.toptier',l:'Armored Door'},{v:'door.double.hinged.wood',l:'Wooden Double Door'},
+  {v:'door.double.hinged.metal',l:'Metal Double Door'},{v:'door.double.hinged.toptier',l:'Armored Double Door'},
+  {v:'wall.frame.garagedoor',l:'Garage Door'},
+  {v:'box.wooden',l:'Wooden Box'},{v:'box.wooden.large',l:'Large Wood Box'},
+  {v:'fridge',l:'Fridge'},{v:'locker',l:'Locker'},{v:'sleepingbag',l:'Sleeping Bag'},
+  {v:'rug',l:'Rug'},{v:'rug.bear',l:'Bear Rug'},{v:'table',l:'Table'},
+  {v:'chair',l:'Chair'},{v:'bed',l:'Bed'},{v:'furnace',l:'Furnace'},
+  {v:'vending.machine',l:'Vending Machine'},{v:'target.reactive',l:'Reactive Target'},
+  {v:'barricade.concrete',l:'Concrete Barricade'},{v:'hammer',l:'Hammer'},
+  {v:'jackhammer',l:'Jackhammer'},{v:'icepick.salvaged',l:'Salvaged Icepick'},
+  {v:'water.purifier',l:'Water Purifier'},
+];
+
+// Creates a searchable item picker and returns {wrap, getValue, setValue}
+function makeItemPicker(id, placeholder) {
+  const wrap  = document.createElement('div'); wrap.className = 'item-search-wrap';
+  const input = document.createElement('input'); input.type='text'; input.className='item-search-input'; input.placeholder=placeholder||'Search items...'; input.id=id; input.autocomplete='off';
+  const drop  = document.createElement('div'); drop.className='item-dropdown'; drop.id=id+'-drop';
+  wrap.appendChild(input); wrap.appendChild(drop);
+  let selectedVal = '';
+
+  function renderDrop(q) {
+    const items = q ? ALL_ITEMS.filter(i => i.l.toLowerCase().includes(q)||i.v.toLowerCase().includes(q)) : ALL_ITEMS;
+    drop.innerHTML = '';
+    if (!q) {
+      const blank = document.createElement('div'); blank.className='item-option'; blank.textContent='— select item —';
+      blank.onclick = () => { selectedVal=''; input.value=''; drop.classList.remove('open'); };
+      drop.appendChild(blank);
+    }
+    items.forEach(item => {
+      const opt = document.createElement('div'); opt.className='item-option'+(item.v===selectedVal?' selected':'');
+      opt.innerHTML = '<span>'+item.l+'</span><span class="item-shortname">'+item.v+'</span>';
+      opt.onclick = () => { selectedVal=item.v; input.value=item.l; drop.classList.remove('open'); input.dispatchEvent(new Event('change')); };
+      drop.appendChild(opt);
+    });
+    if (!items.length) { drop.innerHTML='<div class="item-option" style="color:var(--text3)">No items found</div>'; }
+  }
+
+  input.addEventListener('focus', () => { renderDrop(input.value.trim().toLowerCase()); drop.classList.add('open'); });
+  input.addEventListener('input', () => { selectedVal=''; renderDrop(input.value.trim().toLowerCase()); drop.classList.add('open'); });
+  document.addEventListener('click', e => { if (!wrap.contains(e.target)) drop.classList.remove('open'); });
+
+  return {
+    wrap,
+    getValue: () => selectedVal,
+    setValue: (v) => {
+      selectedVal = v;
+      const item = ALL_ITEMS.find(i => i.v === v);
+      input.value = item ? item.l : '';
+    }
+  };
+}
+
+// Global picker instances
+let nomCatPicker, collCatPicker, admCatPicker;
+
+function initPickers() {
+  // Nominate tab picker
+  const nomWrap = document.getElementById('nom-cat-wrap');
+  if (nomWrap) { nomCatPicker = makeItemPicker('nom-cat-search', 'Search items...'); nomWrap.appendChild(nomCatPicker.wrap); }
+  // Collection expander picker
+  const collWrap = document.getElementById('coll-cat-wrap');
+  if (collWrap) { collCatPicker = makeItemPicker('coll-cat-search', 'Search items...'); collWrap.appendChild(collCatPicker.wrap); }
+  // Admin add skin picker
+  const admWrap = document.getElementById('adm-cat-wrap');
+  if (admWrap) { admCatPicker = makeItemPicker('adm-cat-search', 'Search items...'); admWrap.appendChild(admCatPicker.wrap); }
+}
+
+function getNomCat()  { return nomCatPicker?.getValue()  || ''; }
+function getCollCat() { return collCatPicker?.getValue() || ''; }
+function getAdmCat()  { return admCatPicker?.getValue()  || ''; }
+
 
 // ═══════════════════════════════════════════════════════════════
 // TABS / TOAST / UTILS
