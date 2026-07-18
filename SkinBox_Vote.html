@@ -445,7 +445,49 @@ const CAT_LABELS = {"rifle.ak":"AK-47","rifle.bolt":"Bolt Action","rifle.lr300":
       <span id="adm-add-msg" style="font-size:12px;color:var(--text3);margin-left:8px"></span>
     </div>
 
-    <!-- Nominations management -->
+    <!-- Admin Collection Expander -->
+    <div class="panel">
+      <h3>&#x1F4E6; Expand Workshop Collection</h3>
+      <p style="font-size:12px;color:var(--text2);margin-bottom:12px">Paste a collection URL to expand all skins inside. Purchasable and already-nominated skins are filtered automatically.</p>
+      <div class="form-row">
+        <div class="form-group" style="flex:2">
+          <label>Collection URL or ID</label>
+          <input type="text" id="adm-coll-id" placeholder="https://steamcommunity.com/sharedfiles/filedetails/?id=...">
+        </div>
+        <div class="form-group" style="flex:1">
+          <label>Item for all skins</label>
+          <div id="adm-coll-cat-wrap"></div>
+        </div>
+        <div class="form-group" style="flex:0 0 auto">
+          <label>Add as</label>
+          <select id="adm-coll-status" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:7px 11px;border-radius:var(--radius);font-size:12px;font-family:'Barlow',sans-serif">
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+          </select>
+        </div>
+        <button class="btn" onclick="adminExpandCollection()" style="flex:0 0 auto">&#x1F4E6; Expand</button>
+      </div>
+      <div id="adm-coll-loading" style="display:none;font-size:12px;color:var(--text3);margin-top:8px">&#x23F3; Loading...</div>
+      <div id="adm-coll-error" style="display:none;font-size:12px;color:var(--red);margin-top:8px"></div>
+      <div id="adm-coll-results" style="display:none;margin-top:12px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap">
+          <span id="adm-coll-summary" style="font-size:12px;color:var(--text2)"></span>
+          <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2);cursor:pointer">
+            <input type="checkbox" id="adm-coll-hide-purchasable" onchange="renderAdmColl()" checked> Hide purchasable in-game
+          </label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2);cursor:pointer">
+            <input type="checkbox" id="adm-coll-hide-existing" onchange="renderAdmColl()" checked> Hide already nominated
+          </label>
+          <button class="btn" style="height:26px;font-size:11px" onclick="admCollSelectAll()">Select All</button>
+          <button class="btn" style="height:26px;font-size:11px" onclick="admCollDeselectAll()">Deselect All</button>
+        </div>
+        <div class="coll-grid" id="adm-coll-grid"></div>
+        <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
+          <button class="btn primary" onclick="adminAddSelected()">&#x2795; Add Selected</button>
+          <span id="adm-coll-msg" style="font-size:12px;color:var(--text3)"></span>
+        </div>
+      </div>
+    </div>
     <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
       <button class="btn" onclick="loadAdmin()">&#x21BA; Refresh</button>
       <button class="btn success" onclick="exportApproved()">&#x2B07; Export Approved IDs</button>
@@ -545,12 +587,23 @@ const VOTE_MONTH = getVoteMonth();
 // INIT — check auth on load
 // ═══════════════════════════════════════════════════════════════
 (async function init() {
-  // Show setup screen if config not saved yet
+  // If config not set, show a generic "site unavailable" message to players
+  // Only admin can reach setup via the admin panel
   if (!localStorage.getItem('svote_supabase_url') || !localStorage.getItem('svote_admin_pass')) {
-    document.getElementById('setup-screen').style.display = 'block';
+    // Check for secret admin setup param: ?setup=1
+    const setupParam = new URLSearchParams(window.location.search).get('setup');
+    if (setupParam === '1') {
+      window.history.replaceState({}, '', window.location.pathname);
+      document.getElementById('setup-screen').style.display = 'block';
+      return;
+    }
+    // Players just see the access screen with a "coming soon" message
+    document.getElementById('access-title').textContent = SERVER_NAME + ' SkinBox Voting';
+    document.getElementById('access-sub').textContent = 'The voting system is being set up. Check back soon!';
+    document.getElementById('discord-login-link').style.display = 'none';
+    document.getElementById('access-screen').style.display = 'flex';
     return;
   }
-  // Init pickers early so they're ready
   setTimeout(initPickers, 100);
   document.getElementById('server-title').textContent = SERVER_NAME + ' SkinBox';
   document.getElementById('discord-login-link').href = WORKER_URL + '/discord-login';
@@ -1046,6 +1099,7 @@ function saveSetup() {
   document.getElementById('setup-msg').textContent = '✓ Saved — reloading...';
   document.getElementById('setup-msg').style.color = 'var(--green)';
   setTimeout(() => window.location.reload(), 800);
+  // Note: reload will re-run init with config now set
 }
 
 function openReconfigure() {
@@ -1055,9 +1109,10 @@ function openReconfigure() {
   document.getElementById('setup-worker-url').value    = localStorage.getItem('svote_worker_url')   || '';
   document.getElementById('setup-admin-pass').value    = localStorage.getItem('svote_admin_pass')   || '';
   document.getElementById('setup-server-name').value   = localStorage.getItem('svote_server_name')  || 'Rustinction';
-  document.getElementById('admin-panel').style.display = 'none';
+  document.getElementById('admin-panel').style.display  = 'none';
   document.getElementById('setup-screen').style.display = 'block';
-  document.getElementById('main-app').style.display    = 'none';
+  document.getElementById('main-app').style.display     = 'none';
+  document.getElementById('access-screen').style.display = 'none';
 }
 
 async function loadAdmin() {
@@ -1346,7 +1401,7 @@ function makeItemPicker(id, placeholder) {
 }
 
 // Global picker instances
-let nomCatPicker, collCatPicker, admCatPicker;
+let nomCatPicker, collCatPicker, admCatPicker, admCollCatPicker;
 
 function initPickers() {
   // Nominate tab picker
@@ -1355,8 +1410,9 @@ function initPickers() {
   // Collection expander picker
   const collWrap = document.getElementById('coll-cat-wrap');
   if (collWrap) { collCatPicker = makeItemPicker('coll-cat-search', 'Search items...'); collWrap.appendChild(collCatPicker.wrap); }
-  // Admin add skin picker
-  const admWrap = document.getElementById('adm-cat-wrap');
+  // Admin collection picker
+  const admCollWrap = document.getElementById('adm-coll-cat-wrap');
+  if (admCollWrap) { admCollCatPicker = makeItemPicker('adm-coll-cat-search', 'Search items...'); admCollWrap.appendChild(admCollCatPicker.wrap); }
   if (admWrap) { admCatPicker = makeItemPicker('adm-cat-search', 'Search items...'); admWrap.appendChild(admCatPicker.wrap); }
 }
 
@@ -1364,6 +1420,109 @@ function getNomCat()  { return nomCatPicker?.getValue()  || ''; }
 function getCollCat() { return collCatPicker?.getValue() || ''; }
 function getAdmCat()  { return admCatPicker?.getValue()  || ''; }
 
+
+// ── ADMIN COLLECTION EXPANDER ─────────────────────────────────────────────────
+let admCollSkins = [];
+
+async function adminExpandCollection() {
+  const val   = document.getElementById('adm-coll-id').value.trim();
+  const match = val.match(/[?&]id=(\d+)/) || val.match(/^(\d{6,12})$/);
+  if (!match) { document.getElementById('adm-coll-error').style.display='block'; document.getElementById('adm-coll-error').textContent='Enter a valid collection URL or ID'; return; }
+  const collId = match[1];
+  document.getElementById('adm-coll-results').style.display='none';
+  document.getElementById('adm-coll-error').style.display='none';
+  document.getElementById('adm-coll-loading').style.display='block';
+  try {
+    const cp = new URLSearchParams(); cp.append('collectioncount',1); cp.append('publishedfileids[0]', collId);
+    const cr  = await fetch(WORKER_URL+'/collection', {method:'POST',body:cp.toString()});
+    const cj  = await cr.json();
+    let childIds = cj?.response?.collectiondetails?.[0]?.children?.map(c=>String(c.publishedfileid)) || [];
+    if (!childIds.length) {
+      const p=new URLSearchParams(); p.append('itemcount',1); p.append('publishedfileids[0]',collId);
+      const j=await (await fetch(WORKER_URL,{method:'POST',body:p.toString()})).json();
+      childIds=j?.response?.publishedfiledetails?.[0]?.children?.map(c=>String(c.publishedfileid))||[];
+    }
+    if (!childIds.length) throw new Error('No skins found — make sure this is a public Workshop collection');
+    admCollSkins = [];
+    const existIds = new Set(nominations.map(n=>n.skin_id));
+    for (let i=0; i<childIds.length; i+=100) {
+      const chunk=childIds.slice(i,i+100);
+      const sp=new URLSearchParams(); sp.append('itemcount',chunk.length);
+      chunk.forEach((id,j)=>sp.append('publishedfileids['+j+']',id));
+      const sj=await (await fetch(WORKER_URL,{method:'POST',body:sp.toString()})).json();
+      for (const f of (sj?.response?.publishedfiledetails||[])) {
+        const tags=(f.tags||[]).map(t=>(t.tag||'').toLowerCase());
+        const isApproved=tags.includes('featured')||tags.includes('approved')||tags.includes('twitch rival');
+        const onServer=skinboxIds.has(String(f.publishedfileid));
+        const alreadyNom=existIds.has(String(f.publishedfileid));
+        admCollSkins.push({id:String(f.publishedfileid),name:f.title||'Unnamed',img:WORKER_URL+'?url='+encodeURIComponent(f.preview_url||''),isApproved,onServer,alreadyNom,selected:!alreadyNom});
+      }
+      await new Promise(r=>setTimeout(r,200));
+    }
+    document.getElementById('adm-coll-loading').style.display='none';
+    document.getElementById('adm-coll-results').style.display='block';
+    renderAdmColl();
+  } catch(e) {
+    document.getElementById('adm-coll-loading').style.display='none';
+    document.getElementById('adm-coll-error').style.display='block';
+    document.getElementById('adm-coll-error').textContent=e.message;
+  }
+}
+
+function renderAdmColl() {
+  const hidePurchasable = document.getElementById('adm-coll-hide-purchasable').checked;
+  const hideExisting    = document.getElementById('adm-coll-hide-existing').checked;
+  const visible = admCollSkins.filter(s => {
+    if (hidePurchasable && s.isApproved) return false;
+    if (hideExisting && s.alreadyNom) return false;
+    return true;
+  });
+  const hidden  = admCollSkins.length - visible.length;
+  const sel     = visible.filter(s=>s.selected&&!s.alreadyNom).length;
+  document.getElementById('adm-coll-summary').innerHTML =
+    '<strong>'+admCollSkins.length+'</strong> total &nbsp;&#x2022;&nbsp; '+
+    '<span style="color:var(--red)">'+hidden+' hidden</span> &nbsp;&#x2022;&nbsp; '+
+    '<strong style="color:var(--green)">'+sel+' selected</strong>';
+  const grid=document.getElementById('adm-coll-grid'); grid.innerHTML='';
+  visible.forEach(s=>{
+    const card=document.createElement('div');
+    card.className='coll-card'+(s.selected&&!s.alreadyNom?' selected':'')+(s.alreadyNom?' blocked':'');
+    if (!s.alreadyNom) card.onclick=()=>{s.selected=!s.selected;renderAdmColl();};
+    card.innerHTML='<div style="position:relative">'+
+      (s.img?'<img src="'+s.img+'" alt="" loading="lazy" style="width:100%;aspect-ratio:1;object-fit:cover;display:block;background:var(--surface2)">':'<div class="coll-card-ph">&#x1F5BC;</div>')+
+      (s.selected&&!s.alreadyNom?'<div class="check-badge">&#x2713;</div>':'')+
+      (s.isApproved?'<span style="position:absolute;top:4px;left:4px;background:var(--green-bg);color:var(--green);font-size:9px;font-weight:700;padding:1px 5px;border-radius:99px">Purchasable</span>':'')+
+      '</div><div class="coll-card-body"><div class="coll-card-name">'+s.name+'</div>'+
+      '<div class="coll-card-id">#'+s.id+'</div>'+
+      (s.alreadyNom?'<span class="coll-card-tag" style="background:var(--amber-bg);color:var(--amber)">Nominated</span>':'')+
+      '</div>';
+    grid.appendChild(card);
+  });
+  if (!visible.length) grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:20px;color:var(--text3)">No skins to show — try unchecking filters</div>';
+}
+
+function admCollSelectAll()   { admCollSkins.forEach(s=>{if(!s.alreadyNom)s.selected=true;}); renderAdmColl(); }
+function admCollDeselectAll() { admCollSkins.forEach(s=>s.selected=false); renderAdmColl(); }
+
+async function adminAddSelected() {
+  const cat    = admCollCatPicker?.getValue() || '';
+  const status = document.getElementById('adm-coll-status').value;
+  if (!cat) { toast('Select an item type first','error'); return; }
+  const toAdd  = admCollSkins.filter(s=>s.selected&&!s.alreadyNom);
+  if (!toAdd.length) { toast('No skins selected','error'); return; }
+  document.getElementById('adm-coll-msg').textContent='Adding '+toAdd.length+' skins...';
+  let added=0, failed=0;
+  for (const s of toAdd) {
+    try {
+      await sbPost('nominations',{skin_id:s.id,skin_name:s.name,skin_img:s.img,skin_url:'https://steamcommunity.com/sharedfiles/filedetails/?id='+s.id,item_cat:cat,item_name:CAT_LABELS[cat]||cat,submitted_by_discord:'Admin',submitted_by_steam:'Admin',status});
+      s.alreadyNom=true; s.selected=false; added++;
+    } catch(e) { failed++; }
+    await new Promise(r=>setTimeout(r,150));
+  }
+  document.getElementById('adm-coll-msg').textContent='';
+  toast('Added '+added+' skins'+(failed?' ('+failed+' failed)':''),'success');
+  await loadAdmin(); renderAdmColl();
+}
 
 // ═══════════════════════════════════════════════════════════════
 // TABS / TOAST / UTILS
