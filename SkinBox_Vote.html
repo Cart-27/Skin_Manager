@@ -347,14 +347,79 @@ const CAT_LABELS = {"rifle.ak":"AK-47","rifle.bolt":"Bolt Action","rifle.lr300":
         <label>Item for all skins</label>
         <select id="coll-cat">
           <option value="">— select item —</option>
-          <option value="rifle.ak">AK-47</option><option value="rifle.bolt">Bolt Action</option>
-          <option value="rifle.lr300">LR-300</option><option value="smg.thompson">Thompson SMG</option>
-          <option value="smg.mp5">MP5</option><option value="pistol.semiauto">Semi-Auto Pistol</option>
-          <option value="metal.facemask">Metal Facemask</option><option value="metal.plate.torso">Metal Chest Plate</option>
-          <option value="hoodie">Hoodie</option><option value="jacket">Jacket</option><option value="pants">Pants</option>
-          <option value="door.hinged.wood">Wooden Door</option><option value="door.hinged.metal">Metal Door</option>
-          <option value="door.hinged.toptier">Armored Door</option><option value="wall.frame.garagedoor">Garage Door</option>
-          <option value="box.wooden">Wooden Box</option><option value="box.wooden.large">Large Wood Box</option>
+          <option value="rifle.ak">AK-47</option>
+          <option value="rifle.bolt">Bolt Action</option>
+          <option value="rifle.lr300">LR-300</option>
+          <option value="rifle.l96">L96 Rifle</option>
+          <option value="rifle.semiauto">Semi-Auto Rifle</option>
+          <option value="lmg.m249">M249</option>
+          <option value="smg.thompson">Thompson SMG</option>
+          <option value="smg.mp5">MP5</option>
+          <option value="smg.2">Custom SMG</option>
+          <option value="pistol.semiauto">Semi-Auto Pistol</option>
+          <option value="pistol.python">Python Revolver</option>
+          <option value="pistol.revolver">Revolver</option>
+          <option value="shotgun.pump">Pump Shotgun</option>
+          <option value="shotgun.double">Double Barrel</option>
+          <option value="crossbow">Crossbow</option>
+          <option value="bow.hunting">Hunting Bow</option>
+          <option value="rocket.launcher">Rocket Launcher</option>
+          <option value="knife.bone">Bone Knife</option>
+          <option value="grenade.f1">F1 Grenade</option>
+          <option value="metal.facemask">Metal Facemask</option>
+          <option value="metal.plate.torso">Metal Chest Plate</option>
+          <option value="coffeecan.helmet">Coffee Can Helmet</option>
+          <option value="bucket.helmet">Bucket Helmet</option>
+          <option value="deer.skull.mask">Deer Skull Mask</option>
+          <option value="mask.bandana">Bandana Mask</option>
+          <option value="mask.balaclava">Balaclava</option>
+          <option value="hoodie">Hoodie</option>
+          <option value="jacket">Jacket</option>
+          <option value="jacket.snow">Snow Jacket</option>
+          <option value="shirt.collared">Collared Shirt</option>
+          <option value="tshirt">T-Shirt</option>
+          <option value="tshirt.long">Long T-Shirt</option>
+          <option value="burlap.shirt">Burlap Shirt</option>
+          <option value="burlap.trousers">Burlap Trousers</option>
+          <option value="burlap.gloves">Burlap Gloves</option>
+          <option value="pants">Pants</option>
+          <option value="pants.shorts">Shorts</option>
+          <option value="shoes.boots">Boots</option>
+          <option value="attire.hide.poncho">Hide Poncho</option>
+          <option value="attire.hide.vest">Hide Vest</option>
+          <option value="attire.hide.pants">Hide Pants</option>
+          <option value="attire.hide.boots">Hide Boots</option>
+          <option value="hat.beenie">Beenie Hat</option>
+          <option value="hat.boonie">Boonie Hat</option>
+          <option value="largebackpack">Large Backpack</option>
+          <option value="roadsign.jacket">Road Sign Jacket</option>
+          <option value="roadsign.kilt">Road Sign Kilt</option>
+          <option value="roadsign.gloves">Road Sign Gloves</option>
+          <option value="door.hinged.wood">Wooden Door</option>
+          <option value="door.hinged.metal">Metal Door</option>
+          <option value="door.hinged.toptier">Armored Door</option>
+          <option value="door.double.hinged.wood">Wooden Double Door</option>
+          <option value="door.double.hinged.metal">Metal Double Door</option>
+          <option value="door.double.hinged.toptier">Armored Double Door</option>
+          <option value="wall.frame.garagedoor">Garage Door</option>
+          <option value="box.wooden">Wooden Box</option>
+          <option value="box.wooden.large">Large Wood Box</option>
+          <option value="fridge">Fridge</option>
+          <option value="locker">Locker</option>
+          <option value="sleepingbag">Sleeping Bag</option>
+          <option value="rug">Rug</option>
+          <option value="rug.bear">Bear Rug</option>
+          <option value="table">Table</option>
+          <option value="chair">Chair</option>
+          <option value="bed">Bed</option>
+          <option value="furnace">Furnace</option>
+          <option value="vending.machine">Vending Machine</option>
+          <option value="target.reactive">Reactive Target</option>
+          <option value="barricade.concrete">Concrete Barricade</option>
+          <option value="hammer">Hammer</option>
+          <option value="jackhammer">Jackhammer</option>
+          <option value="icepick.salvaged">Salvaged Icepick</option>
+          <option value="water.purifier">Water Purifier</option>
         </select>
       </div>
       <button class="btn" onclick="expandCollection()" style="flex:0 0 auto">&#x1F4E6; Expand</button>
@@ -451,10 +516,79 @@ const CAT_LABELS = {"rifle.ak":"AK-47","rifle.bolt":"Bolt Action","rifle.lr300":
           <label>Item</label>
           <select id="adm-skin-cat">
             <option value="">— select —</option>
-            <option value="rifle.ak">AK-47</option><option value="rifle.bolt">Bolt Action</option>
-            <option value="hoodie">Hoodie</option><option value="jacket">Jacket</option>
-            <option value="metal.facemask">Metal Facemask</option><option value="door.hinged.metal">Metal Door</option>
+            <option value="rifle.ak">AK-47</option>
+            <option value="rifle.bolt">Bolt Action</option>
+            <option value="rifle.lr300">LR-300</option>
+            <option value="rifle.l96">L96 Rifle</option>
+            <option value="rifle.semiauto">Semi-Auto Rifle</option>
+            <option value="lmg.m249">M249</option>
+            <option value="smg.thompson">Thompson SMG</option>
+            <option value="smg.mp5">MP5</option>
+            <option value="smg.2">Custom SMG</option>
+            <option value="pistol.semiauto">Semi-Auto Pistol</option>
+            <option value="pistol.python">Python Revolver</option>
+            <option value="pistol.revolver">Revolver</option>
+            <option value="shotgun.pump">Pump Shotgun</option>
+            <option value="shotgun.double">Double Barrel</option>
+            <option value="crossbow">Crossbow</option>
+            <option value="bow.hunting">Hunting Bow</option>
+            <option value="rocket.launcher">Rocket Launcher</option>
+            <option value="knife.bone">Bone Knife</option>
+            <option value="grenade.f1">F1 Grenade</option>
+            <option value="metal.facemask">Metal Facemask</option>
+            <option value="metal.plate.torso">Metal Chest Plate</option>
+            <option value="coffeecan.helmet">Coffee Can Helmet</option>
+            <option value="bucket.helmet">Bucket Helmet</option>
+            <option value="deer.skull.mask">Deer Skull Mask</option>
+            <option value="mask.bandana">Bandana Mask</option>
+            <option value="mask.balaclava">Balaclava</option>
+            <option value="hoodie">Hoodie</option>
+            <option value="jacket">Jacket</option>
+            <option value="jacket.snow">Snow Jacket</option>
+            <option value="shirt.collared">Collared Shirt</option>
+            <option value="tshirt">T-Shirt</option>
+            <option value="tshirt.long">Long T-Shirt</option>
+            <option value="burlap.shirt">Burlap Shirt</option>
+            <option value="burlap.trousers">Burlap Trousers</option>
+            <option value="burlap.gloves">Burlap Gloves</option>
+            <option value="pants">Pants</option>
+            <option value="pants.shorts">Shorts</option>
+            <option value="shoes.boots">Boots</option>
+            <option value="attire.hide.poncho">Hide Poncho</option>
+            <option value="attire.hide.vest">Hide Vest</option>
+            <option value="attire.hide.pants">Hide Pants</option>
+            <option value="attire.hide.boots">Hide Boots</option>
+            <option value="hat.beenie">Beenie Hat</option>
+            <option value="hat.boonie">Boonie Hat</option>
+            <option value="largebackpack">Large Backpack</option>
+            <option value="roadsign.jacket">Road Sign Jacket</option>
+            <option value="roadsign.kilt">Road Sign Kilt</option>
+            <option value="roadsign.gloves">Road Sign Gloves</option>
+            <option value="door.hinged.wood">Wooden Door</option>
+            <option value="door.hinged.metal">Metal Door</option>
+            <option value="door.hinged.toptier">Armored Door</option>
+            <option value="door.double.hinged.wood">Wooden Double Door</option>
+            <option value="door.double.hinged.metal">Metal Double Door</option>
+            <option value="door.double.hinged.toptier">Armored Double Door</option>
+            <option value="wall.frame.garagedoor">Garage Door</option>
+            <option value="box.wooden">Wooden Box</option>
             <option value="box.wooden.large">Large Wood Box</option>
+            <option value="fridge">Fridge</option>
+            <option value="locker">Locker</option>
+            <option value="sleepingbag">Sleeping Bag</option>
+            <option value="rug">Rug</option>
+            <option value="rug.bear">Bear Rug</option>
+            <option value="table">Table</option>
+            <option value="chair">Chair</option>
+            <option value="bed">Bed</option>
+            <option value="furnace">Furnace</option>
+            <option value="vending.machine">Vending Machine</option>
+            <option value="target.reactive">Reactive Target</option>
+            <option value="barricade.concrete">Concrete Barricade</option>
+            <option value="hammer">Hammer</option>
+            <option value="jackhammer">Jackhammer</option>
+            <option value="icepick.salvaged">Salvaged Icepick</option>
+            <option value="water.purifier">Water Purifier</option>
           </select>
         </div>
         <div class="form-group" style="flex:0 0 auto">
