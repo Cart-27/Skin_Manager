@@ -397,7 +397,7 @@ const CAT_LABELS = {"rifle.ak":"AK-47","rifle.bolt":"Bolt Action","rifle.lr300":
       <h3>&#x1F3AF; Monthly Vote Limits per Role</h3>
       <p style="font-size:12px;color:var(--text2);margin-bottom:14px">Adjust how many votes each role gets per month. Players with multiple roles get the highest limit — not combined.</p>
       <table class="vl-table">
-        <thead><tr><th>Role</th><th>Monthly Votes</th><th></th></tr></thead>
+        <thead><tr><th>Role</th><th>Monthly Votes</th><th>Monthly Nominations</th><th></th></tr></thead>
         <tbody id="vl-tbody"></tbody>
       </table>
       <div style="margin-top:10px;display:flex;gap:8px">
@@ -560,9 +560,11 @@ const CAT_LABELS = {"rifle.ak":"AK-47","rifle.bolt":"Bolt Action","rifle.lr300":
 let currentUser   = null;  // {name, id, avatar, roles:[roleId,...]}
 let nominations   = [];
 let myVotes       = {};    // skin_id -> vote value
-let voteLimits    = {};    // role_id -> monthly_votes
+let voteLimits    = {};    // role_id -> {monthly_votes, monthly_noms}
 let myVoteCount   = 0;     // votes used this month
 let myVoteLimit   = 5;     // votes allowed this month
+let myNomCount    = 0;     // nominations used this month
+let myNomLimit    = 3;     // nominations allowed this month
 let skinboxIds    = new Set();
 let adminLoggedIn = false;
 let collSkins     = [];
@@ -691,27 +693,39 @@ async function loadVoteLimits() {
   try {
     const rows = await sbGet('vote_limits', '');
     voteLimits = {};
-    rows.forEach(r => voteLimits[r.role_id] = r.monthly_votes);
-    // Calculate this user's limit = max across their roles
-    const userLimits = (currentUser?.roles || []).map(rid => voteLimits[rid] || 5).filter(Boolean);
-    myVoteLimit = userLimits.length ? Math.max(...userLimits) : 5;
-  } catch(e) { myVoteLimit = 5; }
+    rows.forEach(r => voteLimits[r.role_id] = { monthly_votes: r.monthly_votes, monthly_noms: r.monthly_noms || 3 });
+    // Calculate this user's limits = max across their roles
+    const userVoteLimits = (currentUser?.roles || []).map(rid => voteLimits[rid]?.monthly_votes || 5).filter(Boolean);
+    const userNomLimits  = (currentUser?.roles || []).map(rid => voteLimits[rid]?.monthly_noms  || 3).filter(Boolean);
+    myVoteLimit = userVoteLimits.length ? Math.max(...userVoteLimits) : 5;
+    myNomLimit  = userNomLimits.length  ? Math.max(...userNomLimits)  : 3;
+  } catch(e) { myVoteLimit = 5; myNomLimit = 3; }
 }
 
 function renderVoteRemaining() {
   const used = Object.values(myVotes).filter(v => v !== 0).length;
   myVoteCount = used;
-  const remaining = Math.max(0, myVoteLimit - used);
-  document.getElementById('vote-remaining').textContent = remaining + ' / ' + myVoteLimit + ' votes remaining this month';
+  const votesLeft = Math.max(0, myVoteLimit - used);
+  const nomsLeft  = Math.max(0, myNomLimit - myNomCount);
+  document.getElementById('vote-remaining').textContent =
+    votesLeft + '/' + myVoteLimit + ' votes · ' + nomsLeft + '/' + myNomLimit + ' nominations remaining';
   // Show warning if out of votes
   const warn = document.getElementById('vote-limit-warning');
-  if (remaining === 0) {
+  if (votesLeft === 0 && nomsLeft === 0) {
     warn.style.display = 'block';
-    warn.textContent = 'You have used all ' + myVoteLimit + ' of your votes this month. Votes reset on the first Thursday of next month.';
+    warn.textContent = 'You have used all your votes and nominations for this month. Limits reset on the first Thursday of next month.';
+  } else if (votesLeft === 0) {
+    warn.style.display = 'block';
+    warn.textContent = 'You have used all ' + myVoteLimit + ' of your votes this month.';
+  } else if (nomsLeft === 0) {
+    warn.style.display = 'block';
+    warn.textContent = 'You have used all ' + myNomLimit + ' of your nominations this month.';
   } else {
     warn.style.display = 'none';
   }
 }
+
+function canNominateMore() { return myNomCount < myNomLimit; }
 
 function canVoteMore() {
   const used = Object.values(myVotes).filter(v => v !== 0).length;
@@ -764,6 +778,12 @@ async function loadData() {
       const votes = await sbGet('votes', 'discord_id=eq.' + currentUser.id + '&vote_month=eq.' + VOTE_MONTH + '&select=skin_id,vote');
       myVotes = {};
       votes.forEach(v => myVotes[v.skin_id] = v.vote);
+      // Count nominations this month
+      const myNoms = nominations.filter(n =>
+        n.submitted_by_steam === currentUser.id &&
+        n.created_at && n.created_at.startsWith(VOTE_MONTH)
+      );
+      myNomCount = myNoms.length;
     }
     updateStats();
     renderLeaderboard();
@@ -941,7 +961,11 @@ async function fetchNomPreview(val) {
     document.getElementById('nom-preview').style.display = 'block';
     document.getElementById('nom-msg').textContent = '';
     nomPreviewData.blocked = !!(existing || isApproved || onServer);
-    document.getElementById('nom-submit-btn').disabled = nomPreviewData.blocked;
+    const nomLimitReached = !canNominateMore();
+    document.getElementById('nom-submit-btn').disabled = nomPreviewData.blocked || nomLimitReached;
+    if (nomLimitReached && !nomPreviewData.blocked) {
+      document.getElementById('nom-msg').textContent = 'You have used all ' + myNomLimit + ' nominations this month';
+    }
     // Auto-detect item category from SkinBox.json if loaded
     const detectedCat = skinCatMap[skinId];
     // picker auto-set below
@@ -954,6 +978,10 @@ async function fetchNomPreview(val) {
 
 async function submitNomination() {
   if (!nomPreviewData || nomPreviewData.blocked || !currentUser) return;
+  if (!canNominateMore()) {
+    toast('You have used all ' + myNomLimit + ' of your nominations this month', 'error');
+    return;
+  }
   const cat = getNomCat();
   try {
     document.getElementById('nom-submit-btn').disabled = true;
@@ -1049,9 +1077,13 @@ async function nominateSelected() {
   if (!cat) { toast('Select an item type', 'error'); return; }
   const toAdd = collSkins.filter(s => s.selected && !s.alreadyNom && !s.isApproved && !s.onServer);
   if (!toAdd.length) { toast('No skins selected', 'error'); return; }
-  document.getElementById('coll-msg').textContent = 'Submitting ' + toAdd.length + ' nominations...';
+  const nomsLeft = myNomLimit - myNomCount;
+  if (nomsLeft <= 0) { toast('You have used all your nominations this month', 'error'); return; }
+  const limited = toAdd.slice(0, nomsLeft);
+  if (limited.length < toAdd.length) toast('Only adding ' + limited.length + ' of ' + toAdd.length + ' — monthly limit reached', 'error');
+  document.getElementById('coll-msg').textContent = 'Submitting ' + limited.length + ' nominations...';
   let added=0, failed=0;
-  for (const s of toAdd) {
+  for (const s of limited) {
     try {
       await sbPost('nominations', { skin_id:s.id, skin_name:s.name, skin_img:s.img, skin_url:'https://steamcommunity.com/sharedfiles/filedetails/?id='+s.id, item_cat:cat, item_name:CAT_LABELS[cat]||cat, submitted_by_discord:currentUser.name, submitted_by_steam:currentUser.id, status:'pending' });
       s.alreadyNom=true; s.selected=false; added++;
@@ -1156,29 +1188,37 @@ function renderVoteLimitTable() {
   const tbody = document.getElementById('vl-tbody');
   tbody.innerHTML = '';
   Object.entries(ROLE_CONFIG).forEach(([rid, rc]) => {
-    const limit = voteLimits[rid] || 5;
+    const vl = voteLimits[rid]?.monthly_votes || 5;
+    const nl = voteLimits[rid]?.monthly_noms  || 3;
     const tr = document.createElement('tr');
     tr.innerHTML = '<td><span class="role-badge" style="background:'+rc.color+'22;color:'+rc.color+';border:1px solid '+rc.color+'55">'+rc.name+'</span></td>' +
-      '<td><input type="number" class="vl-input" data-role="'+rid+'" value="'+limit+'" min="1" max="99"></td>' +
-      '<td style="font-size:11px;color:var(--text3)">votes/month</td>';
+      '<td><input type="number" class="vl-input" data-role="'+rid+'" data-type="votes" value="'+vl+'" min="1" max="99"></td>' +
+      '<td><input type="number" class="vl-input" data-role="'+rid+'" data-type="noms" value="'+nl+'" min="1" max="99"></td>' +
+      '<td style="font-size:11px;color:var(--text3)">per month</td>';
     tbody.appendChild(tr);
   });
 }
 
 async function saveVoteLimits() {
-  const inputs = document.querySelectorAll('.vl-input');
-  const msg    = document.getElementById('vl-msg');
+  const msg = document.getElementById('vl-msg');
   msg.textContent = 'Saving...';
   try {
-    for (const input of inputs) {
-      const rid   = input.dataset.role;
-      const votes = parseInt(input.value) || 5;
-      await sbPatch('vote_limits', 'role_id=eq.' + rid, { monthly_votes: votes });
-      voteLimits[rid] = votes;
+    // Group inputs by role
+    const byRole = {};
+    document.querySelectorAll('.vl-input').forEach(input => {
+      const rid = input.dataset.role;
+      if (!byRole[rid]) byRole[rid] = {};
+      byRole[rid][input.dataset.type] = parseInt(input.value) || (input.dataset.type === 'votes' ? 5 : 3);
+    });
+    for (const [rid, vals] of Object.entries(byRole)) {
+      await sbPatch('vote_limits', 'role_id=eq.' + rid, { monthly_votes: vals.votes, monthly_noms: vals.noms });
+      voteLimits[rid] = { monthly_votes: vals.votes, monthly_noms: vals.noms };
     }
-    // Recalculate current user's limit
-    const userLimits = (currentUser?.roles||[]).map(rid=>voteLimits[rid]||5).filter(Boolean);
-    myVoteLimit = userLimits.length ? Math.max(...userLimits) : 5;
+    // Recalculate current user's limits
+    const userVoteLimits = (currentUser?.roles||[]).map(rid=>voteLimits[rid]?.monthly_votes||5).filter(Boolean);
+    const userNomLimits  = (currentUser?.roles||[]).map(rid=>voteLimits[rid]?.monthly_noms||3).filter(Boolean);
+    myVoteLimit = userVoteLimits.length ? Math.max(...userVoteLimits) : 5;
+    myNomLimit  = userNomLimits.length  ? Math.max(...userNomLimits)  : 3;
     renderVoteRemaining();
     msg.style.color = 'var(--green)'; msg.textContent = '✓ Saved';
     setTimeout(()=>msg.textContent='', 2000);
